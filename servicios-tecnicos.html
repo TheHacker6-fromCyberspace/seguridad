@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="es" id="htmlRoot">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios Técnicos - Escuela Superior Vocacional Pablo Colón Berdecia</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dark-mode-fix-v2.css?v=2">
+    <link rel="stylesheet" href="dropdown-fix.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="image-popup.css">
+    <link rel="stylesheet" href="notification-bot.css">
+    <script src="translations.js"></script>
+    <style>
+        /* Asegurar que el header se vea correctamente */
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .hero-tech {
+            margin-top: 0;
+        }
+
+        /* Fix para dropdowns (select) - Removido para usar dropdown-fix.css */
+
+        /* Fix para inputs en modo oscuro */
+        body.dark-mode .form-control,
+        body.dark-mode input.form-control,
+        body.dark-mode textarea.form-control {
+            background-color: #1e293b !important;
+            color: #e5e7eb !important;
+            border: 2px solid #334155 !important;
+        }
+
+        body.dark-mode .form-control:focus,
+        body.dark-mode input.form-control:focus,
+        body.dark-mode textarea.form-control:focus {
+            border-color: #38bdf8 !important;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2) !important;
+        }
+
+        body.dark-mode .form-control::placeholder,
+        body.dark-mode input.form-control::placeholder,
+        body.dark-mode textarea.form-control::placeholder {
+            color: #94a3b8 !important;
+        }
+
+        /* Fix para labels en modo oscuro */
+        body.dark-mode .form-label {
+            color: #e5e7eb !important;
+        }
+
+        /* Fix para score-input en modo oscuro */
+        body.dark-mode .score-input {
+            background-color: #1e293b !important;
+            color: #e5e7eb !important;
+            border: 2px solid #334155 !important;
+        }
+
+        body.dark-mode .score-input:focus {
+            border-color: #38bdf8 !important;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2) !important;
+        }
+
+        /* Hero Section */
+        .hero-tech {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.9), rgba(41, 128, 185, 0.9)),
+                url('https://images.unsplash.com/photo-1581092160562-40aa08e78837?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0 80px;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-tech h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+            border-left: 4px solid #3498db;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card.success {
+            border-left-color: #2ecc71;
+        }
+
+        .stat-card.warning {
+            border-left-color: #f39c12;
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #3498db;
+        }
+
+        .stat-card.success .stat-icon {
+            color: #2ecc71;
+        }
+
+        .stat-card.warning .stat-icon {
+            color: #f39c12;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 1rem;
+        }
+
+        /* Modern Form */
+        .ticket-form {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 40px auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.95rem;
+        }
+
+        .form-control,
+        .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #3498db;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        /* Ticket List */
+        .ticket-list {
+            display: grid;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .ticket-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #3498db;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .ticket-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+        }
+
+        .ticket-card.resolved {
+            border-left-color: #2ecc71;
+            opacity: 0.8;
+        }
+
+        .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .ticket-id {
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-badge.abierto {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-badge.resuelto {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge.en-progreso {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        /* Tech Portal */
+        .tech-portal {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+            display: none;
+        }
+
+        .tech-portal.active {
+            display: block;
+        }
+
+        .login-box {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Grading Section */
+        .grading-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .grading-table th,
+        .grading-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .grading-table th {
+            background: #3498db;
+            color: white;
+            font-weight: 600;
+        }
+
+        .grading-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .score-input {
+            width: 80px;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        /* Dark Mode */
+        body.dark-mode .stat-card,
+        body.dark-mode .ticket-form,
+        body.dark-mode .ticket-card,
+        body.dark-mode .login-box,
+        body.dark-mode .grading-table {
+            background: rgba(17, 24, 39, 0.95) !important;
+            border-color: rgba(56, 189, 248, 0.2) !important;
+            color: #E5E7EB !important;
+        }
+
+        body.dark-mode .stat-number,
+        body.dark-mode .form-label,
+        body.dark-mode .ticket-id {
+            color: #38BDF8 !important;
+        }
+
+        body.dark-mode .form-control,
+        body.dark-mode .form-select,
+        body.dark-mode .score-input {
+            background: rgba(0, 0, 0, 0.3) !important;
+            border-color: rgba(56, 189, 248, 0.4) !important;
+            color: #E5E7EB !important;
+        }
+
+        body.dark-mode .grading-table th {
+            background: #38BDF8 !important;
+        }
+
+        body.dark-mode .tech-portal {
+            background: rgba(15, 23, 42, 0.95) !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="logo-area">
+                <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+                <div class="logo-text">
+                    <span class="logo-title" data-translate="Escuela Superior Vocacional">Escuela Superior
+                        Vocacional</span>
+                    <span class="logo-subtitle" data-translate="Pablo Colón Berdecia">Pablo Colón Berdecia</span>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html" data-translate="Inicio">Inicio</a></li>
+                        <li><a href="quienes-somos.html" data-translate="La escuela">La escuela</a></li>
+                        <li class="dropdown">
+                            <a href="#" style="pointer-events: none;">Servicios Digitales <i
+                                    class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="matricula.html">📝 Matrícula Online</a></li>
+                                <li><a href="solicitudes.html">📄 Solicitud de Documentos</a></li>
+                                <li><a href="servicios-tecnicos.html">🔧 Servicios Técnicos</a></li>
+                                <li><a href="enfermeria.html">⚕️ Enfermería</a></li>
+                                <li><a href="orientacion.html">🧠 Orientación</a></li>
+                                <li><a href="biblioteca.html">📚 Biblioteca</a></li>
+                                <li><a href="comedor.html">🍽️ Comedor</a></li>
+                                <li><a href="padres.html">👨‍👩‍👧 Portal de Padres</a></li>
+                                <li><a href="seguridad.html">🛡️ Seguridad</a></li>
+                                <li><a href="evidencia.html">📊 Dashboard Evidencia</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="participacion-comunitaria.html" data-translate="Vida estudiantil">Vida
+                                estudiantil</a></li>
+                        <li><a href="#contacto" data-translate="Contacto">Contacto</a></li>
+                    </ul>
+                </nav>
+                <button class="hamburger-menu" id="hamburgerBtn" aria-label="Abrir menú">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Menú lateral hamburguesa -->
+    <div class="sidebar-menu" id="sidebarMenu">
+        <div class="sidebar-header">
+            <h3 data-translate="⚙️ Configuración">⚙️ Configuración</h3>
+            <button class="sidebar-close" id="closeSidebar">&times;</button>
+        </div>
+        <div class="sidebar-content">
+            <!-- Cambiar Tema -->
+            <div class="sidebar-item" id="themeToggle">
+                <span class="sidebar-icon">🎨</span>
+                <span class="sidebar-text" data-translate="Cambiar Tema">Cambiar Tema</span>
+                <span class="sidebar-arrow">›</span>
+            </div>
+            <div class="theme-options" id="themeOptions" style="display: none;">
+                <button class="theme-option" id="selectLightMode" data-translate="Modo Claro">
+                    <span>☀️</span> Modo Claro
+                </button>
+                <button class="theme-option" id="selectDarkMode" data-translate="Modo Oscuro">
+                    <span>🌙</span> Modo Oscuro
+                </button>
+            </div>
+
+            <!-- Cambiar Idioma -->
+            <div class="sidebar-item" id="languageToggle">
+                <span class="sidebar-icon">🌐</span>
+                <span class="sidebar-text" data-translate="Cambiar Idioma">Cambiar Idioma</span>
+                <span class="sidebar-arrow">›</span>
+            </div>
+            <div class="theme-options" id="languageOptions" style="display: none;">
+                <button class="theme-option" id="selectSpanish" data-translate="Español">
+                    <span>🇵🇷</span> Español
+                </button>
+                <button class="theme-option" id="selectEnglish" data-translate="English">
+                    <span>🇺🇸</span> English
+                </button>
+            </div>
+
+            <!-- Separador -->
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 1rem 0;"></div>
+
+            <!-- Dashboard Administrativo -->
+            <a href="admin.html" class="sidebar-item sidebar-link"
+                style="text-decoration: none; color: inherit; display: flex; align-items: center; padding: 1rem; cursor: pointer; transition: background 0.3s;">
+                <span class="sidebar-icon">⚙️</span>
+                <span class="sidebar-text" data-translate="Dashboard Admin">Dashboard Admin</span>
+                <span class="sidebar-arrow">›</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Overlay para cerrar el menú -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Theme Selection Popup -->
+    <div id="themePopup" class="theme-popup">
+        <div class="theme-popup-content">
+            <h3>Selecciona tu tema preferido</h3>
+            <p>Elige cómo quieres ver el sitio web</p>
+            <div class="theme-buttons">
+                <button class="theme-btn theme-btn-light" id="btnLightMode">
+                    ☀️ Modo Claro
+                </button>
+                <button class="theme-btn theme-btn-dark" id="btnDarkMode">
+                    🌙 Modo Oscuro
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <!-- Hero Section -->
+    <section class="hero-tech">
+        <div class="container">
+            <h1><i class="fas fa-tools"></i> Servicios Técnicos</h1>
+            <p>Sistema de Soporte Técnico - Gestión de Tickets y Evaluación de Estudiantes</p>
+        </div>
+    </section>
+
+
+    <!-- Ticket Form -->
+    <div class="ticket-form">
+        <h2><i class="fas fa-plus-circle"></i> Abrir Nuevo Ticket de Soporte</h2>
+        <form id="ticketForm">
+            <div class="form-group">
+                <label class="form-label">Nombre Completo</label>
+                <input type="text" class="form-control" id="studentName" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="studentEmail" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Categoría del Problema</label>
+                <select class="form-select" id="ticketCategory" required>
+                    <option value="">Selecciona una categoría</option>
+                    <option value="hardware">Hardware (Computadoras, Impresoras)</option>
+                    <option value="software">Software (Programas, Aplicaciones)</option>
+                    <option value="red">Red e Internet</option>
+                    <option value="cuenta">Cuentas y Accesos</option>
+                    <option value="otro">Otro</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Prioridad</label>
+                <select class="form-select" id="ticketPriority" required>
+                    <option value="baja">Baja</option>
+                    <option value="media" selected>Media</option>
+                    <option value="alta">Alta</option>
+                    <option value="urgente">Urgente</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Descripción del Problema</label>
+                <textarea class="form-control" id="ticketDescription" required
+                    placeholder="Describe detalladamente el problema que estás experimentando..."></textarea>
+            </div>
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-paper-plane"></i> Enviar Ticket
+            </button>
+        </form>
+    </div>
+
+    <!-- Main Content -->
+    <section class="section">
+        <div class="container">
+            <!-- Statistics -->
+            <div class="stats-grid">
+                <div class="stat-card info">
+                    <div class="stat-icon"><i class="fas fa-ticket-alt"></i></div>
+                    <div class="stat-number" id="totalTickets">0</div>
+                    <div class="stat-label">Total Tickets</div>
+                </div>
+                <div class="stat-card warning">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-number" id="openTickets">0</div>
+                    <div class="stat-label">Tickets Abiertos</div>
+                </div>
+                <div class="stat-card success">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-number" id="resolvedTickets">0</div>
+                    <div class="stat-label">Tickets Resueltos</div>
+                </div>
+                <div class="stat-card info">
+                    <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+                    <div class="stat-number" id="resolutionRate">0%</div>
+                    <div class="stat-label">Tasa de Resolución</div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters">
+                <div class="filter-group">
+                    <label class="form-label">Filtrar por Estado</label>
+                    <select class="form-select" id="filterStatus">
+                        <option value="todos">Todos</option>
+                        <option value="abierto">Abiertos</option>
+                        <option value="en-progreso">En Progreso</option>
+                        <option value="resuelto">Resueltos</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="form-label">Filtrar por Fecha</label>
+                    <input type="date" class="form-control" id="filterDate">
+                </div>
+                <div class="filter-group">
+                    <label class="form-label">Buscar</label>
+                    <input type="text" class="form-control" id="searchTickets" placeholder="Buscar por nombre o ID...">
+                </div>
+            </div>
+
+            <!-- Ticket List -->
+            <h2><i class="fas fa-list"></i> Solicitudes de Servicio</h2>
+            <div class="ticket-list" id="ticketList">
+                <!-- Tickets will be dynamically loaded here -->
+            </div>
+
+
+            <!-- Tech Portal Button -->
+            <div style="text-align: center; margin: 40px 0;">
+                <button class="btn-submit" onclick="toggleTechPortal()" style="max-width: 400px; margin: 0 auto;">
+                    <i class="fas fa-user-cog"></i> Portal de Técnicos
+                </button>
+            </div>
+
+            <!-- Tech Portal (Hidden by default) -->
+            <div class="tech-portal" id="techPortal">
+                <!-- Login Box -->
+                <div class="login-box" id="techLogin">
+                    <h3><i class="fas fa-lock"></i> Acceso al Portal</h3>
+                    <div style="margin-bottom: 20px;">
+                        <button class="btn-submit" onclick="showTechLogin()" style="margin-bottom: 10px;">
+                            <i class="fas fa-user-cog"></i> Soy Técnico
+                        </button>
+                        <button class="btn-submit" onclick="showTeacherLogin()"
+                            style="background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);">
+                            <i class="fas fa-chalkboard-teacher"></i> Soy Maestro
+                        </button>
+                    </div>
+
+                    <!-- Tech Login Form -->
+                    <form id="techLoginForm" style="display: none;">
+                        <h4>Acceso para Técnicos</h4>
+                        <div class="form-group">
+                            <label class="form-label">Usuario</label>
+                            <input type="text" class="form-control" id="techUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="techPassword" required>
+                        </div>
+                        <button type="submit" class="btn-submit">
+                            <i class="fas fa-sign-in-alt"></i> Acceder
+                        </button>
+                        <button type="button" class="btn-submit" onclick="showRegisterForm()"
+                            style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%); margin-top: 10px;">
+                            <i class="fas fa-user-plus"></i> Registrarse como Técnico
+                        </button>
+                    </form>
+
+                    <!-- Teacher Login Form -->
+                    <form id="teacherLoginForm" style="display: none;">
+                        <h4>Acceso para Maestros</h4>
+                        <div class="form-group">
+                            <label class="form-label">Usuario</label>
+                            <input type="text" class="form-control" id="teacherUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="teacherPassword" required>
+                        </div>
+                        <button type="submit" class="btn-submit"
+                            style="background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);">
+                            <i class="fas fa-sign-in-alt"></i> Acceder
+                        </button>
+                    </form>
+
+                    <!-- Register Form -->
+                    <form id="registerForm" style="display: none;">
+                        <h4>Registro de Técnico</h4>
+                        <div class="form-group">
+                            <label class="form-label">Nombre Completo</label>
+                            <input type="text" class="form-control" id="regFullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Usuario</label>
+                            <input type="text" class="form-control" id="regUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="regPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Especialidad</label>
+                            <select class="form-select" id="regSpecialty" required>
+                                <option value="">Selecciona una especialidad</option>
+                                <option value="hardware">Hardware</option>
+                                <option value="software">Software</option>
+                                <option value="redes">Redes</option>
+                                <option value="general">General</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-submit"
+                            style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%);">
+                            <i class="fas fa-user-plus"></i> Registrarse
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Tech Content -->
+                <div id="techContent" style="display: none;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3><i class="fas fa-user-cog"></i> Panel de Técnico: <span id="loggedTechName"></span></h3>
+                        <button class="btn-submit" onclick="logout()"
+                            style="width: auto; padding: 10px 20px; background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                        </button>
+                    </div>
+
+                    <h4><i class="fas fa-tasks"></i> Mis Tickets Asignados</h4>
+                    <div id="myTicketsList" class="ticket-list"></div>
+                </div>
+
+                <!-- Teacher Content -->
+                <div id="teacherContent" style="display: none;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3><i class="fas fa-chalkboard-teacher"></i> Panel de Maestro: <span
+                                id="loggedTeacherName"></span></h3>
+                        <button class="btn-submit" onclick="logout()"
+                            style="width: auto; padding: 10px 20px; background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                        </button>
+                    </div>
+
+                    <h4><i class="fas fa-graduation-cap"></i> Evaluación de Técnicos</h4>
+                    <p>Asigna puntuaciones a los técnicos según su desempeño</p>
+
+                    <table class="grading-table">
+                        <thead>
+                            <tr>
+                                <th>Técnico</th>
+                                <th>Tickets Resueltos</th>
+                                <th>Calificación Promedio</th>
+                                <th>Puntuación del Maestro</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gradingTableBody">
+                            <!-- Will be populated dynamically -->
+                        </tbody>
+                    </table>
+
+                    <h4 style="margin-top: 40px;"><i class="fas fa-chart-bar"></i> Todos los Tickets</h4>
+                    <div id="allTicketsList" class="ticket-list"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Script inline para modo claro/oscuro y hamburger menu
+        (function () {
+            function hidePopup() {
+                document.getElementById('themePopup').classList.add('hidden');
+            }
+
+            function setLightMode() {
+                document.body.classList.remove('dark-mode');
+                localStorage.setItem('theme', 'light');
+                hidePopup();
+            }
+
+            function setDarkMode() {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+                hidePopup();
+            }
+
+            function checkTheme() {
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'dark') {
+                    document.body.classList.add('dark-mode');
+                    hidePopup();
+                } else if (savedTheme === 'light') {
+                    hidePopup();
+                }
+            }
+
+            // Ejecutar inmediatamente
+            checkTheme();
+
+            // Agregar event listeners cuando el DOM esté listo
+            document.addEventListener('DOMContentLoaded', function () {
+                const btnLight = document.getElementById('btnLightMode');
+                const btnDark = document.getElementById('btnDarkMode');
+
+                if (btnLight) {
+                    btnLight.addEventListener('click', setLightMode);
+                }
+                if (btnDark) {
+                    btnDark.addEventListener('click', setDarkMode);
+                }
+
+                // Hamburger menu functionality
+                const hamburgerBtn = document.getElementById('hamburgerBtn');
+                const sidebarMenu = document.getElementById('sidebarMenu');
+                const sidebarOverlay = document.getElementById('sidebarOverlay');
+                const closeSidebar = document.getElementById('closeSidebar');
+                const themeToggle = document.getElementById('themeToggle');
+                const themeOptions = document.getElementById('themeOptions');
+                const selectLightMode = document.getElementById('selectLightMode');
+                const selectDarkMode = document.getElementById('selectDarkMode');
+
+                // Abrir sidebar
+                if (hamburgerBtn) {
+                    hamburgerBtn.addEventListener('click', function () {
+                        sidebarMenu.classList.add('active');
+                        sidebarOverlay.classList.add('active');
+                    });
+                }
+
+                // Cerrar sidebar
+                function closeSidebarMenu() {
+                    sidebarMenu.classList.remove('active');
+                    sidebarOverlay.classList.remove('active');
+                    themeOptions.style.display = 'none';
+                }
+
+                if (closeSidebar) {
+                    closeSidebar.addEventListener('click', closeSidebarMenu);
+                }
+
+                if (sidebarOverlay) {
+                    sidebarOverlay.addEventListener('click', closeSidebarMenu);
+                }
+
+                // Toggle theme options
+                if (themeToggle) {
+                    themeToggle.addEventListener('click', function () {
+                        if (themeOptions.style.display === 'none') {
+                            themeOptions.style.display = 'block';
+                        } else {
+                            themeOptions.style.display = 'none';
+                        }
+                    });
+                }
+
+                // Seleccionar modo claro desde sidebar
+                if (selectLightMode) {
+                    selectLightMode.addEventListener('click', function () {
+                        setLightMode();
+                        closeSidebarMenu();
+                    });
+                }
+
+                // Seleccionar modo oscuro desde sidebar
+                if (selectDarkMode) {
+                    selectDarkMode.addEventListener('click', function () {
+                        setDarkMode();
+                        closeSidebarMenu();
+                    });
+                }
+
+                // Toggle language options
+                const languageToggle = document.getElementById('languageToggle');
+                const languageOptions = document.getElementById('languageOptions');
+                const selectSpanish = document.getElementById('selectSpanish');
+                const selectEnglish = document.getElementById('selectEnglish');
+
+                if (languageToggle) {
+                    languageToggle.addEventListener('click', function () {
+                        if (languageOptions.style.display === 'none') {
+                            languageOptions.style.display = 'block';
+                        } else {
+                            languageOptions.style.display = 'none';
+                        }
+                    });
+                }
+
+                // Seleccionar español
+                if (selectSpanish) {
+                    selectSpanish.addEventListener('click', function () {
+                        localStorage.setItem('language', 'es');
+                        document.getElementById('htmlRoot').setAttribute('lang', 'es');
+                        if (typeof translatePage === 'function') {
+                            translatePage('es');
+                        }
+                        closeSidebarMenu();
+                    });
+                }
+
+                // Seleccionar inglés
+                if (selectEnglish) {
+                    selectEnglish.addEventListener('click', function () {
+                        localStorage.setItem('language', 'en');
+                        document.getElementById('htmlRoot').setAttribute('lang', 'en');
+                        if (typeof translatePage === 'function') {
+                            translatePage('en');
+                        }
+                        closeSidebarMenu();
+                    });
+                }
+            });
+        })();
+    </script>
+
+    <script src="js/services-manager.js"></script>
+    <script>
+        // Authentication System
+        let currentUser = null;
+        let currentUserType = null;
+
+        // Default teacher account
+        const DEFAULT_TEACHER = {
+            username: 'maestro',
+            password: 'maestro2026',
+            fullName: 'Maestro Principal',
+            role: 'teacher'
+        };
+
+        // Initialize teacher if not exists
+        function initializeTeacher() {
+            const teachers = JSON.parse(localStorage.getItem('teachers') || '[]');
+            if (teachers.length === 0) {
+                teachers.push(DEFAULT_TEACHER);
+                localStorage.setItem('teachers', JSON.stringify(teachers));
+            }
+        }
+
+        // Toggle Tech Portal
+        function toggleTechPortal() {
+            const portal = document.getElementById('techPortal');
+            portal.classList.toggle('active');
+        }
+
+        // Show Login Forms
+        function showTechLogin() {
+            document.getElementById('techLoginForm').style.display = 'block';
+            document.getElementById('teacherLoginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'none';
+        }
+
+        function showTeacherLogin() {
+            document.getElementById('techLoginForm').style.display = 'none';
+            document.getElementById('teacherLoginForm').style.display = 'block';
+            document.getElementById('registerForm').style.display = 'none';
+        }
+
+        function showRegisterForm() {
+            document.getElementById('techLoginForm').style.display = 'none';
+            document.getElementById('teacherLoginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+        }
+
+        // Tech Registration
+        document.getElementById('registerForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const fullName = document.getElementById('regFullName').value;
+            const username = document.getElementById('regUsername').value;
+            const password = document.getElementById('regPassword').value;
+            const specialty = document.getElementById('regSpecialty').value;
+
+            const technicians = JSON.parse(localStorage.getItem('technicians') || '[]');
+
+            // Check if username exists
+            if (technicians.find(t => t.username === username)) {
+                alert('❌ El usuario ya existe. Por favor elige otro.');
+                return;
+            }
+
+            const newTech = {
+                id: 'TECH-' + Date.now(),
+                fullName,
+                username,
+                password,
+                specialty,
+                registeredDate: new Date().toISOString(),
+                ticketsResolved: 0,
+                averageRating: 0
+            };
+
+            technicians.push(newTech);
+            localStorage.setItem('technicians', JSON.stringify(technicians));
+
+            alert('✅ Registro exitoso! Ahora puedes iniciar sesión.');
+            this.reset();
+            showTechLogin();
+        });
+
+        // Tech Login
+        document.getElementById('techLoginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const username = document.getElementById('techUsername').value;
+            const password = document.getElementById('techPassword').value;
+
+            const technicians = JSON.parse(localStorage.getItem('technicians') || '[]');
+            const tech = technicians.find(t => t.username === username && t.password === password);
+
+            if (tech) {
+                currentUser = tech;
+                currentUserType = 'tech';
+                document.getElementById('techLogin').style.display = 'none';
+                document.getElementById('techContent').style.display = 'block';
+                document.getElementById('loggedTechName').textContent = tech.fullName;
+                loadMyTickets();
+            } else {
+                alert('❌ Usuario o contraseña incorrectos');
+                document.getElementById('techPassword').value = '';
+            }
+        });
+
+        // Teacher Login
+        document.getElementById('teacherLoginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const username = document.getElementById('teacherUsername').value;
+            const password = document.getElementById('teacherPassword').value;
+
+            const teachers = JSON.parse(localStorage.getItem('teachers') || '[]');
+            const teacher = teachers.find(t => t.username === username && t.password === password);
+
+            if (teacher) {
+                currentUser = teacher;
+                currentUserType = 'teacher';
+                document.getElementById('techLogin').style.display = 'none';
+                document.getElementById('teacherContent').style.display = 'block';
+                document.getElementById('loggedTeacherName').textContent = teacher.fullName;
+                loadGradingTable();
+                loadAllTicketsForTeacher();
+            } else {
+                alert('❌ Usuario o contraseña incorrectos');
+                document.getElementById('teacherPassword').value = '';
+            }
+        });
+
+        // Logout
+        function logout() {
+            currentUser = null;
+            currentUserType = null;
+            document.getElementById('techLogin').style.display = 'block';
+            document.getElementById('techContent').style.display = 'none';
+            document.getElementById('teacherContent').style.display = 'none';
+            document.getElementById('techLoginForm').style.display = 'none';
+            document.getElementById('teacherLoginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'none';
+        }
+
+        // Submit Ticket
+        document.getElementById('ticketForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const ticket = {
+                id: 'TKT-' + Date.now(),
+                studentName: document.getElementById('studentName').value,
+                studentEmail: document.getElementById('studentEmail').value,
+                category: document.getElementById('ticketCategory').value,
+                priority: document.getElementById('ticketPriority').value,
+                description: document.getElementById('ticketDescription').value,
+                status: 'abierto',
+                date: new Date().toISOString(),
+                assignedTo: null,
+                resolvedBy: null,
+                resolvedDate: null,
+                completedDate: null,
+                rating: null,
+                ratingComment: null,
+                score: 0
+            };
+
+            // Save to services manager
+            window.serviceManager.addTicket(ticket);
+
+            // Reset form
+            this.reset();
+
+            // Show success message
+            alert('✅ Ticket creado exitosamente. ID: ' + ticket.id);
+
+            // Reload tickets
+            loadTickets();
+            updateStats();
+        });
+
+        // Load My Tickets (for technicians)
+        function loadMyTickets() {
+            const tickets = window.serviceManager.getAllTickets();
+            const myTickets = tickets.filter(t => t.assignedTo === currentUser.username || t.resolvedBy === currentUser.username);
+            const myTicketsList = document.getElementById('myTicketsList');
+
+            if (myTickets.length === 0) {
+                myTicketsList.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">No tienes tickets asignados</p>';
+                return;
+            }
+
+            myTicketsList.innerHTML = myTickets.map(ticket => `
+                <div class="ticket-card ${ticket.status === 'resuelto' || ticket.status === 'completado' ? 'resolved' : ''}">
+                    <div>
+                        <div class="ticket-header">
+                            <span class="ticket-id">${ticket.id}</span>
+                            <span class="status-badge ${ticket.status}">${ticket.status.toUpperCase()}</span>
+                        </div>
+                        <p><strong>Cliente:</strong> ${ticket.studentName}</p>
+                        <p><strong>Email:</strong> ${ticket.studentEmail}</p>
+                        <p><strong>Categoría:</strong> ${ticket.category}</p>
+                        <p><strong>Prioridad:</strong> ${ticket.priority}</p>
+                        <p><strong>Descripción:</strong> ${ticket.description}</p>
+                        <p><strong>Fecha:</strong> ${new Date(ticket.date).toLocaleDateString()}</p>
+                        ${ticket.rating ? `
+                            <p><strong>Calificación del Cliente:</strong> ${'⭐'.repeat(ticket.rating)} (${ticket.rating}/5)</p>
+                            ${ticket.ratingComment ? `<p><strong>Comentario:</strong> ${ticket.ratingComment}</p>` : ''}
+                        ` : ''}
+                    </div>
+                    <div>
+                        ${ticket.status === 'abierto' || ticket.status === 'en-progreso' ? `
+                            <button class="btn-submit" style="width: auto; padding: 10px 20px; font-size: 0.9rem; margin-bottom: 10px;"
+                                onclick="markAsResolved('${ticket.id}')">
+                                <i class="fas fa-check"></i> Marcar como Resuelto
+                            </button>
+                        ` : ''}
+                        ${ticket.status === 'resuelto' && !ticket.rating ? `
+                            <button class="btn-submit" style="width: auto; padding: 10px 20px; font-size: 0.9rem; background: linear-gradient(135deg, #27ae60 0%, #229954 100%);"
+                                onclick="sendSurveyLink('${ticket.id}')">
+                                <i class="fas fa-paper-plane"></i> Enviar Encuesta
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Mark ticket as resolved
+        function markAsResolved(ticketId) {
+            const tickets = window.serviceManager.getAllTickets();
+            const ticket = tickets.find(t => t.id === ticketId);
+
+            if (ticket) {
+                ticket.status = 'resuelto';
+                ticket.resolvedBy = currentUser.username;
+                ticket.resolvedDate = new Date().toISOString();
+                window.serviceManager.updateTicket(ticket);
+
+                // Update technician stats
+                const technicians = JSON.parse(localStorage.getItem('technicians') || '[]');
+                const tech = technicians.find(t => t.username === currentUser.username);
+                if (tech) {
+                    tech.ticketsResolved = (tech.ticketsResolved || 0) + 1;
+                    localStorage.setItem('technicians', JSON.stringify(technicians));
+                }
+
+                alert('✅ Ticket marcado como resuelto. Ahora puedes enviar la encuesta de satisfacción al cliente.');
+                loadMyTickets();
+                loadTickets();
+                updateStats();
+            }
+        }
+
+        // Send survey link
+        function sendSurveyLink(ticketId) {
+            const ticket = window.serviceManager.getAllTickets().find(t => t.id === ticketId);
+            if (!ticket) return;
+
+            const surveyUrl = `${window.location.origin}${window.location.pathname.replace('servicios-tecnicos.html', '')}encuesta-satisfaccion.html?ticket=${ticketId}`;
+
+            // Copy to clipboard
+            navigator.clipboard.writeText(surveyUrl).then(() => {
+                alert(`✅ Enlace de encuesta copiado al portapapeles!\n\nEnvía este enlace a: ${ticket.studentEmail}\n\n${surveyUrl}`);
+            }).catch(() => {
+                prompt('Copia este enlace y envíalo al cliente:', surveyUrl);
+            });
+        }
+
+        // Load Tickets
+        function loadTickets() {
+            const tickets = window.serviceManager.getAllTickets();
+            const ticketList = document.getElementById('ticketList');
+
+            if (tickets.length === 0) {
+                ticketList.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">No hay tickets registrados</p>';
+                return;
+            }
+
+            // Apply filters
+            const statusFilter = document.getElementById('filterStatus').value;
+            const dateFilter = document.getElementById('filterDate').value;
+            const searchQuery = document.getElementById('searchTickets').value.toLowerCase();
+
+            let filteredTickets = tickets.filter(ticket => {
+                const matchesStatus = statusFilter === 'todos' || ticket.status === statusFilter;
+                const matchesDate = !dateFilter || ticket.date.startsWith(dateFilter);
+                const matchesSearch = !searchQuery ||
+                    ticket.studentName.toLowerCase().includes(searchQuery) ||
+                    ticket.id.toLowerCase().includes(searchQuery);
+
+                return matchesStatus && matchesDate && matchesSearch;
+            });
+
+            ticketList.innerHTML = filteredTickets.map(ticket => `
+                <div class="ticket-card ${ticket.status === 'resuelto' || ticket.status === 'completado' ? 'resolved' : ''}">
+                    <div>
+                        <div class="ticket-header">
+                            <span class="ticket-id">${ticket.id}</span>
+                            <span class="status-badge ${ticket.status}">${ticket.status.toUpperCase()}</span>
+                        </div>
+                        <p><strong>Cliente:</strong> ${ticket.studentName}</p>
+                        <p><strong>Categoría:</strong> ${ticket.category}</p>
+                        <p><strong>Prioridad:</strong> ${ticket.priority}</p>
+                        <p><strong>Descripción:</strong> ${ticket.description}</p>
+                        <p><strong>Fecha:</strong> ${new Date(ticket.date).toLocaleDateString()}</p>
+                        ${ticket.assignedTo ? `<p><strong>Asignado a:</strong> ${ticket.assignedTo}</p>` : ''}
+                        ${ticket.resolvedBy ? `<p><strong>Resuelto por:</strong> ${ticket.resolvedBy}</p>` : ''}
+                        ${ticket.rating ? `<p><strong>Calificación:</strong> ${'⭐'.repeat(ticket.rating)} (${ticket.rating}/5)</p>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load all tickets for teacher
+        function loadAllTicketsForTeacher() {
+            const tickets = window.serviceManager.getAllTickets();
+            const allTicketsList = document.getElementById('allTicketsList');
+
+            if (tickets.length === 0) {
+                allTicketsList.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">No hay tickets registrados</p>';
+                return;
+            }
+
+            allTicketsList.innerHTML = tickets.map(ticket => `
+                <div class="ticket-card ${ticket.status === 'resuelto' || ticket.status === 'completado' ? 'resolved' : ''}">
+                    <div>
+                        <div class="ticket-header">
+                            <span class="ticket-id">${ticket.id}</span>
+                            <span class="status-badge ${ticket.status}">${ticket.status.toUpperCase()}</span>
+                        </div>
+                        <p><strong>Cliente:</strong> ${ticket.studentName}</p>
+                        <p><strong>Email:</strong> ${ticket.studentEmail}</p>
+                        <p><strong>Categoría:</strong> ${ticket.category}</p>
+                        <p><strong>Prioridad:</strong> ${ticket.priority}</p>
+                        <p><strong>Descripción:</strong> ${ticket.description}</p>
+                        <p><strong>Fecha:</strong> ${new Date(ticket.date).toLocaleDateString()}</p>
+                        ${ticket.assignedTo ? `<p><strong>Asignado a:</strong> ${ticket.assignedTo}</p>` : ''}
+                        ${ticket.resolvedBy ? `<p><strong>Resuelto por:</strong> ${ticket.resolvedBy}</p>` : ''}
+                        ${ticket.rating ? `
+                            <p><strong>Calificación del Cliente:</strong> ${'⭐'.repeat(ticket.rating)} (${ticket.rating}/5)</p>
+                            ${ticket.ratingComment ? `<p><strong>Comentario:</strong> ${ticket.ratingComment}</p>` : ''}
+                        ` : ''}
+                    </div>
+                    <div>
+                        ${ticket.status === 'abierto' ? `
+                            <select class="form-select" id="assign-${ticket.id}" style="margin-bottom: 10px;">
+                                <option value="">Asignar a técnico...</option>
+                                ${getTechnicianOptions()}
+                            </select>
+                            <button class="btn-submit" style="width: auto; padding: 10px 20px; font-size: 0.9rem;"
+                                onclick="assignTicket('${ticket.id}')">
+                                <i class="fas fa-user-plus"></i> Asignar
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Get technician options for select
+        function getTechnicianOptions() {
+            const technicians = JSON.parse(localStorage.getItem('technicians') || '[]');
+            return technicians.map(tech => `<option value="${tech.username}">${tech.fullName} (${tech.specialty})</option>`).join('');
+        }
+
+        // Assign ticket to technician
+        function assignTicket(ticketId) {
+            const selectElement = document.getElementById(`assign-${ticketId}`);
+            const techUsername = selectElement.value;
+
+            if (!techUsername) {
+                alert('Por favor selecciona un técnico');
+                return;
+            }
+
+            const tickets = window.serviceManager.getAllTickets();
+            const ticket = tickets.find(t => t.id === ticketId);
+
+            if (ticket) {
+                ticket.assignedTo = techUsername;
+                ticket.status = 'en-progreso';
+                window.serviceManager.updateTicket(ticket);
+
+                alert('✅ Ticket asignado exitosamente');
+                loadAllTicketsForTeacher();
+                loadTickets();
+                updateStats();
+            }
+        }
+
+        // Update Statistics
+        function updateStats() {
+            const tickets = window.serviceManager.getAllTickets();
+            const total = tickets.length;
+            const resolved = tickets.filter(t => t.status === 'resuelto').length;
+            const open = tickets.filter(t => t.status === 'abierto').length;
+            const rate = total > 0 ? Math.round((resolved / total) * 100) : 0;
+
+            document.getElementById('totalTickets').textContent = total;
+            document.getElementById('openTickets').textContent = open;
+            document.getElementById('resolvedTickets').textContent = resolved;
+            document.getElementById('resolutionRate').textContent = rate + '%';
+        }
+
+        // Load Grading Table
+        function loadGradingTable() {
+            const tickets = window.serviceManager.getAllTickets();
+            const technicians = JSON.parse(localStorage.getItem('technicians') || '[]');
+            const tbody = document.getElementById('gradingTableBody');
+
+            if (technicians.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #999;">No hay técnicos registrados</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = technicians.map(tech => {
+                const techTickets = tickets.filter(t => t.resolvedBy === tech.username);
+                const resolvedCount = techTickets.length;
+                const ratedTickets = techTickets.filter(t => t.rating);
+                const avgRating = ratedTickets.length > 0
+                    ? (ratedTickets.reduce((sum, t) => sum + t.rating, 0) / ratedTickets.length).toFixed(1)
+                    : 'N/A';
+
+                const teacherScore = window.serviceManager.getTechScore(tech.username);
+
+                return `
+                    <tr>
+                        <td>${tech.fullName} (${tech.specialty})</td>
+                        <td>${resolvedCount}</td>
+                        <td>${avgRating !== 'N/A' ? '⭐'.repeat(Math.round(avgRating)) + ' ' + avgRating : 'Sin calificaciones'}</td>
+                        <td>
+                            <input type="number" class="score-input" id="score-${tech.username}"
+                                value="${teacherScore}" min="0" max="100">
+                        </td>
+                        <td>
+                            <button class="btn-submit" style="width: auto; padding: 8px 16px; font-size: 0.85rem;"
+                                onclick="saveScore('${tech.username}')">
+                                <i class="fas fa-save"></i> Guardar
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Save Score
+        function saveScore(techUsername) {
+            const scoreInput = document.getElementById(`score-${techUsername}`);
+            const score = parseInt(scoreInput.value);
+
+            if (score < 0 || score > 100) {
+                alert('La puntuación debe estar entre 0 y 100');
+                return;
+            }
+
+            window.serviceManager.saveTechScore(techUsername, score);
+            alert(`✅ Puntuación guardada: ${score}`);
+        }
+
+        // Event Listeners for Filters
+        document.getElementById('filterStatus').addEventListener('change', loadTickets);
+        document.getElementById('filterDate').addEventListener('change', loadTickets);
+        document.getElementById('searchTickets').addEventListener('input', loadTickets);
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            initializeTeacher();
+            loadTickets();
+            updateStats();
+        });
+    </script>
+</body>
+
+</html>

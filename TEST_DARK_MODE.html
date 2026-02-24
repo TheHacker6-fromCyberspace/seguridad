@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Dark Mode - Menú</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dark-mode-fix.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+        .test-info {
+            background: #f0f0f0;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        body.dark-mode .test-info {
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .toggle-btn {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-info">
+        <h1>🧪 Test de Dark Mode - Menú de Navegación</h1>
+        <p>Esta página es para probar el menú en modo oscuro.</p>
+        <button class="toggle-btn" onclick="toggleDarkMode()">🌙 Activar/Desactivar Dark Mode</button>
+    </div>
+
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo-container">
+                <div class="logo-text">
+                    <span class="logo-title">Escuela Superior Vocacional</span>
+                    <span class="logo-subtitle">Pablo Colón Berdecia</span>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#escuela">La escuela</a></li>
+                    <li><a href="#promociones">Promociones</a></li>
+                    <li><a href="#biblioteca">Biblioteca</a></li>
+                    <li><a href="#comedor">Comedor</a></li>
+                    <li class="dropdown">
+                        <a href="#">Servicios Digitales ▼</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#matricula">Matrícula</a></li>
+                            <li><a href="#orientacion">Orientación</a></li>
+                            <li><a href="#enfermeria">Enfermería</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="test-info" style="margin-top: 100px;">
+        <h2>Instrucciones de Prueba:</h2>
+        <ol>
+            <li>Haz clic en el botón "Activar/Desactivar Dark Mode"</li>
+            <li>Pasa el mouse sobre los botones del menú (Inicio, Promociones, Biblioteca, etc.)</li>
+            <li>Verifica que las letras se vean BLANCAS sobre fondo azul</li>
+            <li>Si no se ven, presiona <strong>Ctrl + Shift + R</strong> para limpiar la caché</li>
+        </ol>
+        
+        <h3>Colores esperados en Dark Mode:</h3>
+        <ul>
+            <li>Botón normal: Fondo azul (#38BDF8), Texto blanco</li>
+            <li>Botón hover: Fondo azul claro (#0EA5E9), Texto blanco</li>
+        </ul>
+    </div>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            console.log('Dark mode:', isDark);
+        }
+
+        // Cargar tema guardado
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+</body>
+</html>
+

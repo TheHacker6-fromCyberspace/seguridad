@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transportación Escolar – Escuela Superior Vocacional Pablo Colón Berdecia</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Popup de selección de tema -->
+  <div id="themePopup" class="theme-popup">
+    <div class="theme-popup-content">
+      <h2 data-translate="🎨 Selecciona tu tema preferido">🎨 Selecciona tu tema preferido</h2>
+      <p data-translate="Elige cómo quieres ver el sitio web">Elige cómo quieres ver el sitio web</p>
+      <div class="theme-buttons">
+        <button class="theme-btn theme-btn-light" id="btnLightMode" data-translate="☀️ Modo Claro">
+          ☀️ Modo Claro
+        </button>
+        <button class="theme-btn theme-btn-dark" id="btnDarkMode" data-translate="🌙 Modo Oscuro">
+          🌙 Modo Oscuro
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Script inline para modo claro/oscuro
+    (function() {
+      function hidePopup() {
+        document.getElementById('themePopup').classList.add('hidden');
+      }
+
+      function setLightMode() {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        hidePopup();
+      }
+
+      function setDarkMode() {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        hidePopup();
+      }
+
+      function checkTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          hidePopup();
+        } else if (savedTheme === 'light') {
+          hidePopup();
+        }
+      }
+
+      // Ejecutar inmediatamente
+      checkTheme();
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const btnLight = document.getElementById('btnLightMode');
+        const btnDark = document.getElementById('btnDarkMode');
+
+        if (btnLight) {
+          btnLight.addEventListener('click', setLightMode);
+        }
+        if (btnDark) {
+          btnDark.addEventListener('click', setDarkMode);
+        }
+      });
+    })();
+  </script>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo-area">
+        <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+        <div class="logo-text">
+          <span class="logo-title" data-translate="Escuela Superior Vocacional">Escuela Superior Vocacional</span>
+          <span class="logo-subtitle">Pablo Colón Berdecia</span>
+        </div>
+      </div>
+
+      <!-- Hamburger Menu Button -->
+      <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <button class="menu-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html#inicio" data-translate="Inicio">Inicio</a></li>
+          <li><a href="index.html#servicios" data-translate="Servicios">Servicios</a></li>
+          <li><a href="index.html#contacto" data-translate="Contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3 data-translate="⚙️ Configuración">⚙️ Configuración</h3>
+    </div>
+    <div class="sidebar-content">
+      <!-- Theme Toggle -->
+      <div class="sidebar-option" id="themeToggle">
+        <span data-translate="🎨 Cambiar Tema">🎨 Cambiar Tema</span>
+      </div>
+      <div class="theme-options" id="themeOptions">
+        <div class="theme-option" id="selectLightTheme">
+          <span data-translate="☀️ Modo Claro">☀️ Modo Claro</span>
+        </div>
+        <div class="theme-option" id="selectDarkTheme">
+          <span data-translate="🌙 Modo Oscuro">🌙 Modo Oscuro</span>
+        </div>
+      </div>
+
+      <!-- Language Toggle -->
+      <div class="sidebar-option" id="languageToggle">
+        <span data-translate="🌐 Cambiar Idioma">🌐 Cambiar Idioma</span>
+      </div>
+      <div class="language-options" id="languageOptions">
+        <div class="language-option" id="selectSpanish">
+          <span>🇵🇷 Español</span>
+        </div>
+        <div class="language-option" id="selectEnglish">
+          <span>🇺🇸 English</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Hamburger menu functionality
+    (function() {
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const themeToggle = document.getElementById('themeToggle');
+      const themeOptions = document.getElementById('themeOptions');
+      const languageToggle = document.getElementById('languageToggle');
+      const languageOptions = document.getElementById('languageOptions');
+      const selectLightTheme = document.getElementById('selectLightTheme');
+      const selectDarkTheme = document.getElementById('selectDarkTheme');
+      const selectSpanish = document.getElementById('selectSpanish');
+      const selectEnglish = document.getElementById('selectEnglish');
+
+      function openSidebarMenu() {
+        sidebarMenu.classList.add('active');
+        sidebarOverlay.classList.add('active');
+      }
+
+      function closeSidebarMenu() {
+        sidebarMenu.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+        themeOptions.classList.remove('active');
+        languageOptions.classList.remove('active');
+      }
+
+      if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', openSidebarMenu);
+      }
+
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeSidebarMenu);
+      }
+
+      // Theme toggle
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+          themeOptions.classList.toggle('active');
+          languageOptions.classList.remove('active');
+        });
+      }
+
+      // Language toggle
+      if (languageToggle) {
+        languageToggle.addEventListener('click', function() {
+          languageOptions.classList.toggle('active');
+          themeOptions.classList.remove('active');
+        });
+      }
+
+      // Select Light Theme
+      if (selectLightTheme) {
+        selectLightTheme.addEventListener('click', function() {
+          document.body.classList.remove('dark-mode');
+          localStorage.setItem('theme', 'light');
+          closeSidebarMenu();
+        });
+      }
+
+      // Select Dark Theme
+      if (selectDarkTheme) {
+        selectDarkTheme.addEventListener('click', function() {
+          document.body.classList.add('dark-mode');
+          localStorage.setItem('theme', 'dark');
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma español
+      if (selectSpanish) {
+        selectSpanish.addEventListener('click', function() {
+          localStorage.setItem('language', 'es');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'es');
+          if (typeof translatePage === 'function') {
+            translatePage('es');
+          }
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma inglés
+      if (selectEnglish) {
+        selectEnglish.addEventListener('click', function() {
+          localStorage.setItem('language', 'en');
+            const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'en');
+          if (typeof translatePage === 'function') {
+            translatePage('en');
+          }
+          closeSidebarMenu();
+        });
+      }
+    })();
+  </script>
+
+  
+
+  <!-- Hero -->
+  <section class="hero" style="min-height: 350px; padding: 4rem 0;">
+    <div class="container">
+      <div class="section-header" style="margin-bottom: 0;">
+        <div style="font-size: 5rem; margin-bottom: 1rem;">🚌</div>
+        <h1 style="color: #ffffff; font-size: 3rem; text-shadow: 0 2px 20px rgba(0,0,0,0.5);">Transportación Escolar</h1>
+        <p style="color: rgba(255,255,255,0.95); font-size: 1.2rem; max-width: 800px; margin: 1rem auto;">
+          Rutas escolares para facilitar el acceso a la educación
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contenido principal -->
+  <section class="section">
+    <div class="container">
+      <div class="grid-2">
+        <!-- Información general -->
+        <article class="card">
+          <div class="card-icon">🚍</div>
+          <h3>Acerca del Servicio</h3>
+          <p>
+            La escuela cuenta con rutas escolares asignadas por el sistema de transportación
+            del Departamento de Educación, según zona y disponibilidad.
+          </p>
+          <p>
+            Este servicio facilita el acceso a la educación para estudiantes que residen
+            en áreas alejadas de la escuela, garantizando un transporte seguro y confiable.
+          </p>
+        </article>
+
+        <!-- Elegibilidad -->
+        <article class="card">
+          <div class="card-icon">✅</div>
+          <h3>Elegibilidad</h3>
+          <p><strong>Criterios principales:</strong></p>
+          <ul>
+            <li>Distancia de residencia a la escuela</li>
+            <li>Disponibilidad de rutas en la zona</li>
+            <li>Capacidad del sistema de transportación</li>
+            <li>Verificación de dirección residencial</li>
+          </ul>
+          <p class="note">
+            La elegibilidad se determina según las normas del Departamento de Educación
+          </p>
+        </article>
+
+        <!-- Proceso de solicitud -->
+        <article class="card accent-left">
+          <div class="card-icon">📝</div>
+          <h3>Proceso de Solicitud</h3>
+          <p><strong>Pasos a seguir:</strong></p>
+          <ol style="padding-left: 1.5rem; line-height: 1.8;">
+            <li>Acudir a la oficina de administración de la escuela</li>
+            <li>Completar los documentos requeridos</li>
+            <li>Presentar evidencia de dirección residencial</li>
+            <li>Verificar elegibilidad según la zona</li>
+            <li>Confirmar ruta y horario asignado</li>
+            <li>Recibir información sobre paradas y horarios</li>
+          </ol>
+        </article>
+
+        <!-- Normas de uso -->
+        <article class="card">
+          <div class="card-icon">📋</div>
+          <h3>Normas de Transportación</h3>
+          <ul>
+            <li>Llegar a tiempo a la parada asignada</li>
+            <li>Mantener conducta apropiada durante el trayecto</li>
+            <li>Seguir instrucciones del conductor</li>
+            <li>Permanecer sentado mientras el vehículo está en movimiento</li>
+            <li>Respetar a compañeros y personal</li>
+            <li>No consumir alimentos ni bebidas</li>
+            <li>Cuidar el vehículo y sus instalaciones</li>
+            <li>Reportar cualquier situación irregular</li>
+          </ul>
+        </article>
+      </div>
+
+      <!-- Información importante -->
+      <div class="card" style="margin-top: 2rem;">
+        <h3>⚠️ Información Importante</h3>
+        <p>
+          <strong>Disponibilidad:</strong> La disponibilidad de transportación puede variar según
+          el presupuesto, rutas disponibles y capacidad del sistema. Toda información oficial se
+          comunica mediante cartas y circulares escolares.
+        </p>
+        <p style="margin-top: 1rem;">
+          <strong>Cambios y actualizaciones:</strong> Cualquier cambio en rutas, horarios o paradas
+          será comunicado oportunamente a las familias a través de los canales oficiales de la escuela.
+        </p>
+      </div>
+
+      <!-- Llamado a la acción -->
+      <div class="programs-cta" style="margin-top: 3rem;">
+        <h3 style="font-size: 1.8rem; margin-bottom: 1rem; color: var(--primary-light);">¿Necesitas solicitar transportación?</h3>
+        <p style="margin-bottom: 2rem; color: var(--text-soft);">
+          Visita la oficina administrativa para iniciar el proceso de solicitud
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <a href="index.html#servicios" class="btn btn-primary">Ver otros servicios</a>
+          <a href="index.html#contacto" class="btn btn-secondary">Contactar escuela</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2026 Escuela Superior Vocacional Pablo Colón Berdecia. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
+

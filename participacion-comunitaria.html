@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Participación Comunitaria - PCB</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dark-mode-fix-v2.css?v=2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Fix dark mode */
+        body.dark-mode .event-card,
+        body.dark-mode .card,
+        body.dark-mode .volunteer-form {
+            background: rgba(17, 24, 39, 0.95) !important;
+            border: 1px solid rgba(56, 189, 248, 0.2) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+            color: #E5E7EB !important;
+        }
+
+        body.dark-mode h1,
+        body.dark-mode h2,
+        body.dark-mode h3 {
+            color: #38BDF8 !important;
+        }
+
+        body.dark-mode p,
+        body.dark-mode label {
+            color: #E5E7EB !important;
+        }
+
+        body.dark-mode .futuristic-input,
+        body.dark-mode input,
+        body.dark-mode select,
+        body.dark-mode textarea {
+            background: rgba(0, 0, 0, 0.3) !important;
+            border: 1px solid rgba(56, 189, 248, 0.4) !important;
+            color: #E5E7EB !important;
+        }
+
+        body.dark-mode .futuristic-input:focus,
+        body.dark-mode input:focus,
+        body.dark-mode select:focus,
+        body.dark-mode textarea:focus {
+            border-color: #00d2ff !important;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.4) !important;
+            background: rgba(0, 0, 0, 0.4) !important;
+        }
+
+        body.dark-mode .volunteer-badge {
+            background: rgba(56, 189, 248, 0.2) !important;
+            color: #38BDF8 !important;
+        }
+
+        body.dark-mode .futuristic-btn {
+            background: linear-gradient(45deg, #38BDF8, #0EA5E9) !important;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4) !important;
+        }
+
+        body.dark-mode .futuristic-btn:hover {
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.6) !important;
+            background: linear-gradient(45deg, #0EA5E9, #38BDF8) !important;
+        }
+    </style>
+    <style>
+        .participation-section {
+            margin-bottom: 60px;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .event-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #e67e22;
+        }
+
+        .volunteer-badge {
+            display: inline-block;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Popup de selección de tema -->
+    <div id="themePopup" class="theme-popup">
+        <div class="theme-popup-content">
+            <h2>🎨 Selecciona tu tema preferido</h2>
+            <p>Elige cómo quieres ver el sitio web</p>
+            <div class="theme-buttons">
+                <button class="theme-btn theme-btn-light" id="btnLightMode">☀️ Modo Claro</button>
+                <button class="theme-btn theme-btn-dark" id="btnDarkMode">🌙 Modo Oscuro</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            function hidePopup() { document.getElementById('themePopup').classList.add('hidden'); }
+            function setLightMode() { document.body.classList.remove('dark-mode'); localStorage.setItem('theme', 'light'); hidePopup(); }
+            function setDarkMode() { document.body.classList.add('dark-mode'); localStorage.setItem('theme', 'dark'); hidePopup(); }
+            function checkTheme() {
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'dark') { document.body.classList.add('dark-mode'); hidePopup(); }
+                else if (savedTheme === 'light') { hidePopup(); }
+            }
+            checkTheme();
+            document.addEventListener('DOMContentLoaded', function () {
+                const btnLight = document.getElementById('btnLightMode');
+                const btnDark = document.getElementById('btnDarkMode');
+                if (btnLight) btnLight.addEventListener('click', setLightMode);
+                if (btnDark) btnDark.addEventListener('click', setDarkMode);
+            });
+        })();
+    </script>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="logo-area">
+                <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+                <div class="logo-text">
+                    <span class="logo-title">Escuela Superior Vocacional</span>
+                    <span class="logo-subtitle">Pablo Colón Berdecia</span>
+                </div>
+            </div>
+            <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <button class="menu-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html#inicio">Inicio</a></li>
+                    <li><a href="index.html#servicios">Servicios</a></li>
+                    <li><a href="index.html#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Sidebar Menu -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="sidebar-menu" id="sidebarMenu">
+        <div class="sidebar-header">
+            <h3>⚙️ Configuración</h3>
+        </div>
+        <div class="sidebar-content">
+            <div class="sidebar-option" id="themeToggle"><span>🎨 Cambiar Tema</span></div>
+            <div class="theme-options" id="themeOptions">
+                <div class="theme-option" id="selectLightTheme"><span>☀️ Modo Claro</span></div>
+                <div class="theme-option" id="selectDarkTheme"><span>🌙 Modo Oscuro</span></div>
+            </div>
+            <div class="sidebar-option" id="languageToggle"><span>🌐 Cambiar Idioma</span></div>
+            <div class="language-options" id="languageOptions">
+                <div class="language-option" id="selectSpanish"><span>🇵🇷 Español</span></div>
+                <div class="language-option" id="selectEnglish"><span>🇺🇸 English</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const sidebarMenu = document.getElementById('sidebarMenu');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            const themeToggle = document.getElementById('themeToggle');
+            const themeOptions = document.getElementById('themeOptions');
+            const languageToggle = document.getElementById('languageToggle');
+            const languageOptions = document.getElementById('languageOptions');
+            const selectLightTheme = document.getElementById('selectLightTheme');
+            const selectDarkTheme = document.getElementById('selectDarkTheme');
+
+            function openSidebarMenu() { sidebarMenu.classList.add('active'); sidebarOverlay.classList.add('active'); }
+            function closeSidebarMenu() { sidebarMenu.classList.remove('active'); sidebarOverlay.classList.remove('active'); themeOptions.classList.remove('active'); languageOptions.classList.remove('active'); }
+
+            if (hamburgerBtn) hamburgerBtn.addEventListener('click', openSidebarMenu);
+            if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebarMenu);
+            if (themeToggle) themeToggle.addEventListener('click', function () { themeOptions.classList.toggle('active'); languageOptions.classList.remove('active'); });
+            if (languageToggle) languageToggle.addEventListener('click', function () { languageOptions.classList.toggle('active'); themeOptions.classList.remove('active'); });
+            if (selectLightTheme) selectLightTheme.addEventListener('click', function () { document.body.classList.remove('dark-mode'); localStorage.setItem('theme', 'light'); closeSidebarMenu(); });
+            if (selectDarkTheme) selectDarkTheme.addEventListener('click', function () { document.body.classList.add('dark-mode'); localStorage.setItem('theme', 'dark'); closeSidebarMenu(); });
+        })();
+    </script>
+
+    <div class="container" style="padding: 40px 0;">
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h1 style="font-size: 2.5rem; color: #2c3e50; margin-bottom: 15px;">🤝 Participación Comunitaria</h1>
+            <p style="font-size: 1.2rem; color: #7f8c8d; max-width: 700px; margin: 0 auto;">
+                Únete a nuestra comunidad escolar. Tu participación fortalece el vínculo familia-escuela y enriquece la
+                experiencia educativa de todos.
+            </p>
+        </div>
+
+        <!-- Sección 1: Voluntariado -->
+        <div class="participation-section">
+            <div class="section-header">
+                <div style="font-size: 3rem; margin-bottom: 10px;">🙋‍♀️</div>
+                <h2 style="margin: 0; font-size: 2rem;">Programa de Voluntariado</h2>
+                <p style="margin: 10px 0 0 0; opacity: 0.9;">Ofrece tu tiempo y habilidades para apoyar a nuestra
+                    comunidad escolar</p>
+            </div>
+
+            <div class="form-card">
+                <h3 style="color: #2c3e50; margin-bottom: 20px;"><i class="fas fa-clipboard-list"></i> Inscripción de
+                    Voluntarios</h3>
+                <form id="volunteerForm">
+                    <div class="grid-2" style="gap: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">Nombre Completo</label>
+                            <input type="text" name="name" class="futuristic-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Correo Electrónico</label>
+                            <input type="email" name="email" class="futuristic-input" required>
+                        </div>
+                    </div>
+
+                    <div class="grid-2" style="gap: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">Teléfono</label>
+                            <input type="tel" name="phone" class="futuristic-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Relación con la Escuela</label>
+                            <select name="relation" class="futuristic-input" required>
+                                <option value="">Seleccione...</option>
+                                <option value="padre">Padre/Madre</option>
+                                <option value="exalumno">Exalumno/a</option>
+                                <option value="comunidad">Miembro de la Comunidad</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Áreas de Interés (Selecciona todas las que apliquen)</label>
+                        <div
+                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 10px;">
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" name="areas" value="biblioteca"> Biblioteca
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" name="areas" value="eventos"> Eventos Escolares
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" name="areas" value="mentoria"> Mentoría Estudiantil
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" name="areas" value="mantenimiento"> Mantenimiento
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" name="areas" value="tecnologia"> Apoyo Tecnológico
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" name="areas" value="deportes"> Deportes/Recreación
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Disponibilidad</label>
+                        <textarea name="availability" class="futuristic-input" rows="3"
+                            placeholder="Ej: Lunes y miércoles por la tarde, sábados por la mañana..."></textarea>
+                    </div>
+
+                    <button type="submit" class="futuristic-btn" style="width: 100%;">Inscribirme como
+                        Voluntario</button>
+                </form>
+            </div>
+
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                <h4 style="color: #2c3e50; margin-bottom: 15px;"><i class="fas fa-star"></i> Beneficios del Voluntariado
+                </h4>
+                <ul style="color: #555; line-height: 1.8;">
+                    <li>Certificado de horas de servicio comunitario</li>
+                    <li>Reconocimiento público en eventos escolares</li>
+                    <li>Acceso a talleres exclusivos para voluntarios</li>
+                    <li>Conexión directa con la comunidad educativa</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Sección 2: Charlas Ofrecidas por Padres -->
+        <div class="participation-section" id="charlas">
+            <div class="section-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <div style="font-size: 3rem; margin-bottom: 10px;">🎤</div>
+                <h2 style="margin: 0; font-size: 2rem;">Comparte tu Experiencia</h2>
+                <p style="margin: 10px 0 0 0; opacity: 0.9;">Inspira a nuestros estudiantes compartiendo tu profesión,
+                    hobby o conocimiento</p>
+            </div>
+
+            <div class="form-card">
+                <h3 style="color: #2c3e50; margin-bottom: 20px;"><i class="fas fa-microphone-alt"></i> Propuesta de
+                    Charla</h3>
+                <form id="talkForm">
+                    <div class="grid-2" style="gap: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">Nombre del Presentador</label>
+                            <input type="text" name="presenter" class="futuristic-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Correo Electrónico</label>
+                            <input type="email" name="email" class="futuristic-input" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Título de la Charla</label>
+                        <input type="text" name="title" class="futuristic-input"
+                            placeholder="Ej: Mi Carrera como Ingeniero Civil" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Categoría</label>
+                        <select name="category" class="futuristic-input" required>
+                            <option value="">Seleccione...</option>
+                            <option value="profesion">Profesión/Carrera</option>
+                            <option value="emprendimiento">Emprendimiento</option>
+                            <option value="hobby">Hobby/Pasión</option>
+                            <option value="cultura">Cultura/Tradiciones</option>
+                            <option value="tecnologia">Tecnología</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Descripción de la Charla</label>
+                        <textarea name="description" class="futuristic-input" rows="4"
+                            placeholder="¿De qué tratará tu charla? ¿Qué aprenderán los estudiantes?"
+                            required></textarea>
+                    </div>
+
+                    <div class="grid-2" style="gap: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">Duración Estimada</label>
+                            <select name="duration" class="futuristic-input" required>
+                                <option value="">Seleccione...</option>
+                                <option value="30">30 minutos</option>
+                                <option value="45">45 minutos</option>
+                                <option value="60">1 hora</option>
+                                <option value="90">1.5 horas</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Grado(s) Sugerido(s)</label>
+                            <select name="grade" class="futuristic-input" required>
+                                <option value="">Seleccione...</option>
+                                <option value="9">9no grado</option>
+                                <option value="10">10mo grado</option>
+                                <option value="11">11mo grado</option>
+                                <option value="12">12mo grado</option>
+                                <option value="todos">Todos los grados</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="futuristic-btn" style="width: 100%;">Enviar Propuesta</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Sección 3: Eventos Escolares -->
+        <div class="participation-section" id="eventos">
+            <div class="section-header" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <div style="font-size: 3rem; margin-bottom: 10px;">🎉</div>
+                <h2 style="margin: 0; font-size: 2rem;">Próximos Eventos</h2>
+                <p style="margin: 10px 0 0 0; opacity: 0.9;">Participa y apoya nuestras actividades escolares</p>
+            </div>
+
+            <div class="events-grid">
+                <div class="event-card">
+                    <h3 style="color: #2c3e50; margin-bottom: 10px;">Feria de Ciencias 2026</h3>
+                    <p style="color: #7f8c8d; margin-bottom: 15px;"><i class="fas fa-calendar"></i> 15 de marzo, 2026
+                    </p>
+                    <p style="color: #555; margin-bottom: 15px;">Necesitamos voluntarios para montaje, evaluación de
+                        proyectos y logística.</p>
+                    <span class="volunteer-badge">5 voluntarios necesarios</span>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 15px;"
+                        onclick="registrarEvento('feria-ciencias')">Apoyar Evento</button>
+                </div>
+
+                <div class="event-card">
+                    <h3 style="color: #2c3e50; margin-bottom: 10px;">Día de Limpieza Escolar</h3>
+                    <p style="color: #7f8c8d; margin-bottom: 15px;"><i class="fas fa-calendar"></i> 22 de marzo, 2026
+                    </p>
+                    <p style="color: #555; margin-bottom: 15px;">Jornada de embellecimiento de áreas comunes, jardines y
+                        salones.</p>
+                    <span class="volunteer-badge">15 voluntarios necesarios</span>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 15px;"
+                        onclick="registrarEvento('limpieza')">Apoyar Evento</button>
+                </div>
+
+                <div class="event-card">
+                    <h3 style="color: #2c3e50; margin-bottom: 10px;">Graduación 2026</h3>
+                    <p style="color: #7f8c8d; margin-bottom: 15px;"><i class="fas fa-calendar"></i> 30 de mayo, 2026</p>
+                    <p style="color: #555; margin-bottom: 15px;">Apoyo en decoración, protocolo, fotografía y
+                        coordinación general.</p>
+                    <span class="volunteer-badge">10 voluntarios necesarios</span>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 15px;"
+                        onclick="registrarEvento('graduacion')">Apoyar Evento</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reconocimiento -->
+        <div
+            style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 40px; border-radius: 15px; text-align: center;">
+            <h2 style="color: #2c3e50; margin-bottom: 15px;">🏆 Padre/Madre del Mes</h2>
+            <p style="color: #555; font-size: 1.1rem; margin-bottom: 20px;">
+                Reconocemos a los padres que más han contribuido a nuestra comunidad escolar.
+            </p>
+            <div style="background: white; padding: 20px; border-radius: 10px; max-width: 500px; margin: 0 auto;">
+                <h3 style="color: #2c3e50; margin-bottom: 10px;">María González</h3>
+                <p style="color: #7f8c8d; margin-bottom: 10px;">Febrero 2026</p>
+                <p style="color: #555;">Por su dedicación en el programa de mentoría y apoyo en la biblioteca escolar.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.getElementById('volunteerForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('✅ ¡Gracias por tu interés!\n\nHemos recibido tu inscripción como voluntario.\nNos comunicaremos contigo pronto.');
+            this.reset();
+        });
+
+        document.getElementById('talkForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('✅ ¡Propuesta recibida!\n\nRevisaremos tu propuesta de charla y te contactaremos para coordinar la fecha.');
+            this.reset();
+        });
+
+        function registrarEvento(evento) {
+            const confirmacion = confirm('¿Deseas registrarte como voluntario para este evento?\n\nRecibirás más información por correo.');
+            if (confirmacion) {
+                alert('✅ ¡Registro exitoso!\n\nGracias por apoyar este evento.\nTe enviaremos los detalles pronto.');
+            }
+        }
+    </script>
+
+    </div>
+
+    <!-- PCB AI Assistant Floating Button -->
+    <button class="ai-assistant-btn" onclick="openAIAssistant()" title="PCB AI - Asistente para Padres">
+        <i class="fas fa-robot"></i>
+    </button>
+
+    <script>
+        function openAIAssistant() {
+            alert('🤖 PCB AI - Asistente para Padres\n\n¡Hola! Soy tu asistente virtual.\n\n¿En qué puedo ayudarte hoy?\n\n• Información sobre servicios\n• Talleres y certificaciones\n• Preguntas frecuentes\n• Navegación del portal\n\nPróximamente: Chat en vivo con IA');
+            // Aquí se integraría el chatbot de IA
+        }
+    </script>
+
+    <script src="js/services-manager.js"></script>
+</body>
+
+</html>

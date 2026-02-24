@@ -1,0 +1,140 @@
+╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║     PASOS RÁPIDOS PARA SUBIR A GITHUB                       ║
+║     Sitio Web - Escuela Pablo Colón Berdecia                ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+
+📋 OPCIÓN 1: USANDO EL SCRIPT AUTOMÁTICO (MÁS FÁCIL)
+═══════════════════════════════════════════════════════════════
+
+1. Crea un repositorio en GitHub:
+   - Ve a https://github.com
+   - Haz clic en el botón "+" → "New repository"
+   - Nombre: PCB-Website (o el que prefieras)
+   - Haz clic en "Create repository"
+   - COPIA LA URL que aparece (ej: https://github.com/usuario/PCB-Website.git)
+
+2. Ejecuta el script:
+   - Haz clic derecho en "subir-a-github.ps1"
+   - Selecciona "Ejecutar con PowerShell"
+   - Pega la URL cuando te la pida
+   - ¡Listo!
+
+3. Activa GitHub Pages:
+   - Ve a tu repositorio en GitHub
+   - Settings → Pages
+   - Source: main → / (root) → Save
+   - Espera 1-2 minutos
+   - Tu sitio estará en: https://TU-USUARIO.github.io/PCB-Website/
+
+
+═══════════════════════════════════════════════════════════════
+📋 OPCIÓN 2: USANDO GITHUB DESKTOP (RECOMENDADO PARA PRINCIPIANTES)
+═══════════════════════════════════════════════════════════════
+
+1. Descarga GitHub Desktop:
+   https://desktop.github.com/
+
+2. Instala y abre GitHub Desktop
+
+3. Haz clic en "File" → "Add Local Repository"
+
+4. Selecciona esta carpeta
+
+5. Haz clic en "Publish repository"
+
+6. Desmarca "Keep this code private" si quieres que sea público
+
+7. Haz clic en "Publish Repository"
+
+8. Activa GitHub Pages:
+   - Ve a tu repositorio en GitHub
+   - Settings → Pages
+   - Source: main → / (root) → Save
+
+
+═══════════════════════════════════════════════════════════════
+📋 OPCIÓN 3: USANDO GIT EN LA TERMINAL
+═══════════════════════════════════════════════════════════════
+
+1. Abre PowerShell en esta carpeta
+
+2. Ejecuta estos comandos (uno por uno):
+
+   git init
+   git add .
+   git commit -m "Subida inicial del sitio web"
+   git branch -M main
+   git remote add origin https://github.com/TU-USUARIO/PCB-Website.git
+   git push -u origin main
+
+3. Activa GitHub Pages (ver arriba)
+
+
+═══════════════════════════════════════════════════════════════
+🔄 CÓMO ACTUALIZAR EL CONTENIDO DESPUÉS
+═══════════════════════════════════════════════════════════════
+
+1. Abre admin.html en tu sitio web publicado
+
+2. Haz los cambios que necesites
+
+3. Haz clic en "📥 Exportar Datos"
+
+4. Descarga el archivo content-data.json
+
+5. Reemplaza el archivo en la carpeta "data/"
+
+6. Sube los cambios:
+   
+   OPCIÓN A - GitHub Desktop:
+   - Abre GitHub Desktop
+   - Escribe un mensaje: "Actualización de contenido"
+   - Haz clic en "Commit to main"
+   - Haz clic en "Push origin"
+   
+   OPCIÓN B - Terminal:
+   git add .
+   git commit -m "Actualización de contenido"
+   git push
+
+7. Espera 1-2 minutos y recarga tu sitio web
+
+
+═══════════════════════════════════════════════════════════════
+🔐 CREDENCIALES DEL DASHBOARD
+═══════════════════════════════════════════════════════════════
+
+Usuario: admin
+Contraseña: PCB2026
+
+⚠️ IMPORTANTE: Cambia la contraseña editando el archivo auth.js
+
+
+═══════════════════════════════════════════════════════════════
+📞 ¿NECESITAS AYUDA?
+═══════════════════════════════════════════════════════════════
+
+Consulta la guía completa en: GUIA_GITHUB.md
+
+O contacta al administrador del sistema.
+
+
+═══════════════════════════════════════════════════════════════
+✅ CHECKLIST
+═══════════════════════════════════════════════════════════════
+
+□ Git instalado
+□ Cuenta de GitHub creada
+□ Repositorio creado en GitHub
+□ Archivos subidos al repositorio
+□ GitHub Pages activado
+□ Sitio web funcionando en línea
+□ Dashboard accesible
+□ Bot de avisos configurado
+□ Contraseña cambiada (recomendado)
+
+
+¡Éxito con tu sitio web! 🎉
+

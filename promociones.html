@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="es" id="htmlRoot">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Promociones – Escuela Superior Vocacional Pablo Colón Berdecia</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dark-mode-fix-v2.css?v=2">
+  <link rel="stylesheet" href="image-popup.css">
+  <link rel="stylesheet" href="notification-bot.css">
+  <script src="translations.js"></script>
+  <style>
+    /* Fix inline para hero cards en dark mode */
+    body.dark-mode .hero-card {
+      background: rgba(17, 24, 39, 0.95) !important;
+      backdrop-filter: blur(10px) !important;
+      border: 1px solid rgba(56, 189, 248, 0.3) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    body.dark-mode .hero-card h2 {
+      color: #38BDF8 !important;
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.5) !important;
+    }
+
+    body.dark-mode .hero-card ul {
+      color: #E5E7EB !important;
+    }
+
+    body.dark-mode .hero-card li {
+      color: #E5E7EB !important;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.1) !important;
+    }
+
+    body.dark-mode .hero-card:hover {
+      border-color: #38BDF8 !important;
+      box-shadow: 0 8px 30px rgba(56, 189, 248, 0.4) !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Popup de selección de tema 
+  <div id="themePopup" class="theme-popup">
+    <div class="theme-popup-content">
+      <h2 data-translate="🎨 Selecciona tu tema preferido">🎨 Selecciona tu tema preferido</h2>
+      <p data-translate="Elige cómo quieres ver el sitio web">Elige cómo quieres ver el sitio web</p>
+      <div class="theme-buttons">
+        <button class="theme-btn theme-btn-light" id="btnLightMode" data-translate="☀️ Modo Claro">
+          ☀️ Modo Claro
+        </button>
+        <button class="theme-btn theme-btn-dark" id="btnDarkMode" data-translate="🌙 Modo Oscuro">
+          🌙 Modo Oscuro
+        </button>
+      </div>
+    </div>
+  </div> -->
+
+  <script>
+    // Script inline para modo claro/oscuro
+    (function () {
+      function hidePopup() {
+        document.getElementById('themePopup').classList.add('hidden');
+      }
+
+      function setLightMode() {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        hidePopup();
+      }
+
+      function setDarkMode() {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        hidePopup();
+      }
+
+      function checkTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          hidePopup();
+        } else if (savedTheme === 'light') {
+          hidePopup();
+        }
+      }
+
+      // Ejecutar inmediatamente
+      checkTheme();
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const btnLight = document.getElementById('btnLightMode');
+        const btnDark = document.getElementById('btnDarkMode');
+
+        if (btnLight) {
+          btnLight.addEventListener('click', setLightMode);
+        }
+        if (btnDark) {
+          btnDark.addEventListener('click', setDarkMode);
+        }
+      });
+    })();
+  </script>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo-area">
+        <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+        <div class="logo-text">
+          <span class="logo-title" data-translate="Escuela Superior Vocacional">Escuela Superior Vocacional</span>
+          <span class="logo-subtitle">Pablo Colón Berdecia</span>
+        </div>
+      </div>
+
+      <!-- Hamburger Menu Button -->
+      <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <button class="menu-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html#inicio" data-translate="Inicio">Inicio</a></li>
+          <li><a href="index.html#servicios" data-translate="Servicios">Servicios</a></li>
+          <li><a href="index.html#contacto" data-translate="Contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3 data-translate="⚙️ Configuración">⚙️ Configuración</h3>
+    </div>
+    <div class="sidebar-content">
+      <!-- Theme Toggle -->
+      <div class="sidebar-option" id="themeToggle">
+        <span data-translate="🎨 Cambiar Tema">🎨 Cambiar Tema</span>
+      </div>
+      <div class="theme-options" id="themeOptions">
+        <div class="theme-option" id="selectLightTheme">
+          <span data-translate="☀️ Modo Claro">☀️ Modo Claro</span>
+        </div>
+        <div class="theme-option" id="selectDarkTheme">
+          <span data-translate="🌙 Modo Oscuro">🌙 Modo Oscuro</span>
+        </div>
+      </div>
+
+      <!-- Language Toggle -->
+      <div class="sidebar-option" id="languageToggle">
+        <span data-translate="🌐 Cambiar Idioma">🌐 Cambiar Idioma</span>
+      </div>
+      <div class="language-options" id="languageOptions">
+        <div class="language-option" id="selectSpanish">
+          <span>🇵🇷 Español</span>
+        </div>
+        <div class="language-option" id="selectEnglish">
+          <span>🇺🇸 English</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Hamburger menu functionality
+    (function () {
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const themeToggle = document.getElementById('themeToggle');
+      const themeOptions = document.getElementById('themeOptions');
+      const languageToggle = document.getElementById('languageToggle');
+      const languageOptions = document.getElementById('languageOptions');
+      const selectLightTheme = document.getElementById('selectLightTheme');
+      const selectDarkTheme = document.getElementById('selectDarkTheme');
+      const selectSpanish = document.getElementById('selectSpanish');
+      const selectEnglish = document.getElementById('selectEnglish');
+
+      function openSidebarMenu() {
+        sidebarMenu.classList.add('active');
+        sidebarOverlay.classList.add('active');
+      }
+
+      function closeSidebarMenu() {
+        sidebarMenu.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+        themeOptions.classList.remove('active');
+        languageOptions.classList.remove('active');
+      }
+
+      if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', openSidebarMenu);
+      }
+
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeSidebarMenu);
+      }
+
+      // Theme toggle
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function () {
+          themeOptions.classList.toggle('active');
+          languageOptions.classList.remove('active');
+        });
+      }
+
+      // Language toggle
+      if (languageToggle) {
+        languageToggle.addEventListener('click', function () {
+          languageOptions.classList.toggle('active');
+          themeOptions.classList.remove('active');
+        });
+      }
+
+      // Select Light Theme
+      if (selectLightTheme) {
+        selectLightTheme.addEventListener('click', function () {
+          document.body.classList.remove('dark-mode');
+          localStorage.setItem('theme', 'light');
+          closeSidebarMenu();
+        });
+      }
+
+      // Select Dark Theme
+      if (selectDarkTheme) {
+        selectDarkTheme.addEventListener('click', function () {
+          document.body.classList.add('dark-mode');
+          localStorage.setItem('theme', 'dark');
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma español
+      if (selectSpanish) {
+        selectSpanish.addEventListener('click', function () {
+          localStorage.setItem('language', 'es');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'es');
+          if (typeof translatePage === 'function') {
+            translatePage('es');
+          }
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma inglés
+      if (selectEnglish) {
+        selectEnglish.addEventListener('click', function () {
+          localStorage.setItem('language', 'en');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'en');
+          if (typeof translatePage === 'function') {
+            translatePage('en');
+          }
+          closeSidebarMenu();
+        });
+      }
+    })();
+  </script>
+
+  <!-- Popup de selección de tema -->
+  <div id="themePopup" class="theme-popup">
+    <div class="theme-popup-content">
+      <h2 data-translate="🎨 Selecciona tu tema preferido">🎨 Selecciona tu tema preferido</h2>
+      <p data-translate="Elige cómo quieres ver el sitio web">Elige cómo quieres ver el sitio web</p>
+      <div class="theme-buttons">
+        <button class="theme-btn theme-btn-light" id="btnLightMode" data-translate="☀️ Modo Claro">
+          ☀️ Modo Claro
+        </button>
+        <button class="theme-btn theme-btn-dark" id="btnDarkMode" data-translate="🌙 Modo Oscuro">
+          🌙 Modo Oscuro
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Script inline para modo claro/oscuro y hamburger menu
+    (function () {
+      function hidePopup() {
+        document.getElementById('themePopup').classList.add('hidden');
+      }
+
+      function setLightMode() {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        hidePopup();
+      }
+
+      function setDarkMode() {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        hidePopup();
+      }
+
+      function checkTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          hidePopup();
+        } else if (savedTheme === 'light') {
+          hidePopup();
+        }
+      }
+
+      // Ejecutar inmediatamente
+      checkTheme();
+
+      // Agregar event listeners cuando el DOM esté listo
+      document.addEventListener('DOMContentLoaded', function () {
+        const btnLight = document.getElementById('btnLightMode');
+        const btnDark = document.getElementById('btnDarkMode');
+
+        if (btnLight) {
+          btnLight.addEventListener('click', setLightMode);
+        }
+        if (btnDark) {
+          btnDark.addEventListener('click', setDarkMode);
+        }
+
+        // Hamburger menu functionality
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const closeSidebar = document.getElementById('closeSidebar');
+        const themeToggle = document.getElementById('themeToggle');
+        const themeOptions = document.getElementById('themeOptions');
+        const selectLightMode = document.getElementById('selectLightMode');
+        const selectDarkMode = document.getElementById('selectDarkMode');
+        const languageToggle = document.getElementById('languageToggle');
+        const languageOptions = document.getElementById('languageOptions');
+        const selectSpanish = document.getElementById('selectSpanish');
+        const selectEnglish = document.getElementById('selectEnglish');
+
+        function openSidebarMenu() {
+          if (sidebarMenu) {
+            sidebarMenu.classList.add('active');
+          }
+          if (sidebarOverlay) {
+            sidebarOverlay.classList.add('active');
+          }
+        }
+
+        function closeSidebarMenu() {
+          if (sidebarMenu) {
+            sidebarMenu.classList.remove('active');
+          }
+          if (sidebarOverlay) {
+            sidebarOverlay.classList.remove('active');
+          }
+          // Cerrar opciones de tema e idioma
+          if (themeOptions) {
+            themeOptions.style.display = 'none';
+          }
+          if (languageOptions) {
+            languageOptions.style.display = 'none';
+          }
+        }
+
+        // Abrir sidebar
+        if (hamburgerBtn) {
+          hamburgerBtn.addEventListener('click', openSidebarMenu);
+        }
+
+        // Cerrar sidebar
+        if (closeSidebar) {
+          closeSidebar.addEventListener('click', closeSidebarMenu);
+        }
+
+        // Cerrar sidebar al hacer clic en overlay
+        if (sidebarOverlay) {
+          sidebarOverlay.addEventListener('click', closeSidebarMenu);
+        }
+
+        // Toggle theme options
+        if (themeToggle) {
+          themeToggle.addEventListener('click', function () {
+            if (themeOptions.style.display === 'none') {
+              themeOptions.style.display = 'block';
+            } else {
+              themeOptions.style.display = 'none';
+            }
+          });
+        }
+
+        // Seleccionar modo claro desde sidebar
+        if (selectLightMode) {
+          selectLightMode.addEventListener('click', function () {
+            setLightMode();
+            closeSidebarMenu();
+          });
+        }
+
+        // Seleccionar modo oscuro desde sidebar
+        if (selectDarkMode) {
+          selectDarkMode.addEventListener('click', function () {
+            setDarkMode();
+            closeSidebarMenu();
+          });
+        }
+
+        // Toggle language options
+        if (languageToggle) {
+          languageToggle.addEventListener('click', function () {
+            if (languageOptions.style.display === 'none') {
+              languageOptions.style.display = 'block';
+            } else {
+              languageOptions.style.display = 'none';
+            }
+          });
+        }
+
+        // Seleccionar idioma español
+        if (selectSpanish) {
+          selectSpanish.addEventListener('click', function () {
+            localStorage.setItem('language', 'es');
+            document.getElementById('htmlRoot').setAttribute('lang', 'es');
+            if (typeof translatePage === 'function') {
+              translatePage('es');
+            }
+            closeSidebarMenu();
+          });
+        }
+
+        // Seleccionar idioma inglés
+        if (selectEnglish) {
+          selectEnglish.addEventListener('click', function () {
+            localStorage.setItem('language', 'en');
+            document.getElementById('htmlRoot').setAttribute('lang', 'en');
+            if (typeof translatePage === 'function') {
+              translatePage('en');
+            }
+            closeSidebarMenu();
+          });
+        }
+      });
+    })();
+  </script>
+
+  <!-- HEADER -->
+
+
+  <!-- Menú lateral hamburguesa -->
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3 data-translate="⚙️ Configuración">⚙️ Configuración</h3>
+      <button class="sidebar-close" id="closeSidebar">&times;</button>
+    </div>
+    <div class="sidebar-content">
+      <!-- Cambiar Tema -->
+      <div class="sidebar-item" id="themeToggle">
+        <span class="sidebar-icon">🎨</span>
+        <span class="sidebar-text" data-translate="Cambiar Tema">Cambiar Tema</span>
+        <span class="sidebar-arrow">›</span>
+      </div>
+      <div class="theme-options" id="themeOptions" style="display: none;">
+        <button class="theme-option" id="selectLightMode" data-translate="Modo Claro">
+          <span>☀️</span> Modo Claro
+        </button>
+        <button class="theme-option" id="selectDarkMode" data-translate="Modo Oscuro">
+          <span>🌙</span> Modo Oscuro
+        </button>
+      </div>
+
+      <!-- Cambiar Idioma -->
+      <div class="sidebar-item" id="languageToggle">
+        <span class="sidebar-icon">🌐</span>
+        <span class="sidebar-text" data-translate="Cambiar Idioma">Cambiar Idioma</span>
+        <span class="sidebar-arrow">›</span>
+      </div>
+      <div class="theme-options" id="languageOptions" style="display: none;">
+        <button class="theme-option" id="selectSpanish" data-translate="Español">
+          <span>🇵🇷</span> Español
+        </button>
+        <button class="theme-option" id="selectEnglish" data-translate="English">
+          <span>🇺🇸</span> English
+        </button>
+      </div>
+
+      <!-- Separador -->
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 1rem 0;"></div>
+
+      <!-- Dashboard Administrativo -->
+      <a href="admin.html" class="sidebar-item sidebar-link"
+        style="text-decoration: none; color: inherit; display: flex; align-items: center; padding: 1rem; cursor: pointer; transition: background 0.3s;">
+        <span class="sidebar-icon">⚙️</span>
+        <span class="sidebar-text" data-translate="Dashboard Admin">Dashboard Admin</span>
+        <span class="sidebar-arrow">›</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Overlay para cerrar el menú -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content-centered">
+        <div style="font-size: 5rem; margin-bottom: 1rem;">📢</div>
+        <h1 data-translate="Promociones Recientes">Promociones Recientes</h1>
+        <p data-translate="Conoce las últimas promociones y eventos de nuestra escuela">
+          Conoce las últimas promociones y eventos de nuestra escuela
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contenido principal -->
+  <section class="section">
+    <div class="container">
+      <!-- Galería de promociones -->
+      <div class="promotions-gallery" id="promocionesGallery">
+        <!-- Las promociones se cargarán dinámicamente -->
+      </div>
+
+      <script>
+        // Cargar promociones y avisos desde localStorage
+        (function () {
+          const galleryContainer = document.getElementById('promocionesGallery');
+
+          // Intentar cargar datos del localStorage
+          let contentData = {};
+          try {
+            const savedData = localStorage.getItem('pcb_content_data');
+            if (savedData) {
+              contentData = JSON.parse(savedData);
+              console.log('Datos cargados desde localStorage:', contentData);
+            } else {
+              console.log('No hay datos en localStorage');
+            }
+          } catch (e) {
+            console.error('Error al cargar datos desde localStorage:', e);
+          }
+
+          const promociones = contentData.promociones || [];
+          const avisos = contentData.avisos || [];
+
+          console.log('Promociones encontradas:', promociones.length);
+          console.log('Avisos encontrados:', avisos.length);
+
+          // Combinar promociones y avisos
+          const allItems = [...promociones, ...avisos];
+
+          if (allItems.length > 0) {
+            galleryContainer.innerHTML = allItems.map((item, index) => {
+              // Determinar la fuente de la imagen: URL > base64 > path > image
+              const imageSrc = item.url || item.base64 || item.path || item.image || '';
+              const itemType = index < promociones.length ? '📢 Promoción' : '📋 Aviso';
+
+              return `
+                <div class="promotion-item">
+                  ${imageSrc ? `<img src="${imageSrc}" alt="${item.title || 'Imagen'}" class="promotion-image" onerror="this.style.display='none'">` : ''}
+                  <div class="promotion-caption">
+                    <div style="font-size: 0.9rem; color: var(--primary); margin-bottom: 0.5rem;">${itemType}</div>
+                    <h3>${item.title || 'Sin título'}</h3>
+                    ${item.description ? `<p>${item.description}</p>` : ''}
+                    ${item.date ? `<p style="font-size: 0.85rem; color: var(--text-soft); margin-top: 0.5rem;">📅 ${item.date}</p>` : ''}
+                  </div>
+                </div>
+              `;
+            }).join('');
+
+            // Agregar mensaje al final
+            galleryContainer.innerHTML += `
+              <div class="promotion-placeholder">
+                <div class="placeholder-icon">⚙️</div>
+                <p>Gestiona las promociones y avisos desde el <a href="admin.html" style="color: var(--primary); text-decoration: underline;">panel administrativo</a></p>
+              </div>
+            `;
+          } else {
+            galleryContainer.innerHTML = `
+              <div class="promotion-placeholder" style="grid-column: 1 / -1;">
+                <div class="placeholder-icon">📸</div>
+                <h3 style="color: var(--text); margin-bottom: 1rem;">No hay promociones ni avisos disponibles</h3>
+                <p style="margin-bottom: 1.5rem;">Añade promociones y avisos desde el panel administrativo para que aparezcan aquí.</p>
+                <a href="admin.html" class="btn btn-primary" style="display: inline-block; padding: 0.75rem 1.5rem; background: var(--primary); color: white; text-decoration: none; border-radius: 8px;">
+                  ➕ Ir al Panel Administrativo
+                </a>
+              </div>
+            `;
+          }
+        })();
+      </script>
+
+      <!-- Llamado a la acción -->
+      <div class="programs-cta">
+        <a href="index.html#inicio" class="btn btn-primary">
+          ← <span data-translate="Volver al inicio">Volver al inicio</span>
+        </a>
+        <a href="index.html#contacto" class="btn btn-secondary">
+          📞 <span data-translate="Contactar Escuela">Contactar Escuela</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p data-translate="© 2026 Escuela Superior Vocacional Pablo Colón Berdecia. Todos los derechos reservados.">
+      © 2026 Escuela Superior Vocacional Pablo Colón Berdecia. Todos los derechos reservados.
+    </p>
+  </footer>
+
+  <!-- Popup de Promociones (Pequeño) -->
+  <div id="promoPopup" class="promo-popup" onclick="expandPromo()">
+    <button class="promo-close-btn" onclick="event.stopPropagation(); closePromo()" title="Cerrar">
+      <i class="fas fa-times"></i>
+    </button>
+    <div class="promo-header">
+      <span class="promo-title">📢 ¡Novedades!</span>
+    </div>
+    <div class="promo-content">
+      <p class="promo-preview">¡Ya comenzó la matrícula para el nuevo curso escolar! No te quedes sin tu espacio.</p>
+      <p class="promo-click-hint" style="font-size: 0.85rem; color: #38BDF8; margin-top: 10px; text-align: center;">
+        <i class="fas fa-expand"></i> Haz clic para ver más
+      </p>
+    </div>
+  </div>
+
+  <!-- Popup Expandido de Novedades -->
+  <div id="promoPopupExpanded" class="promo-popup-expanded">
+    <div class="promo-expanded-content">
+      <button class="promo-expanded-close" onclick="closeExpandedPromo()" title="Cerrar">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="promo-expanded-header">
+        <h2 class="promo-expanded-title">📢 ¡Novedades!</h2>
+      </div>
+      <div class="promo-expanded-body">
+        <p class="promo-expanded-message">¡Ya comenzó la matrícula para el nuevo curso escolar! No te quedes sin tu
+          espacio.</p>
+        <img
+          src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+          alt="Estudiantes" class="promo-expanded-img">
+        <div class="promo-expanded-actions">
+          <a href="promociones.html" class="btn btn-primary" style="width: 100%; text-align: center; margin-top: 20px;">
+            <i class="fas fa-gift"></i> Ver Promociones
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Estilos mejorados para el botón de cerrar del popup */
+    .promo-close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(231, 76, 60, 0.1);
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      z-index: 10;
+      color: #e74c3c;
+      font-size: 16px;
+    }
+
+    .promo-close-btn:hover {
+      background: #e74c3c;
+      color: white;
+      transform: rotate(90deg);
+    }
+
+    .promo-popup {
+      position: fixed !important;
+      bottom: 100px !important;
+      right: 30px !important;
+      left: auto !important;
+    }
+
+    body.dark-mode .promo-popup {
+      background: rgba(17, 24, 39, 0.98) !important;
+      border-left-color: #38BDF8 !important;
+    }
+
+    body.dark-mode .promo-title {
+      color: #38BDF8 !important;
+    }
+
+    body.dark-mode .promo-content {
+      color: #E5E7EB !important;
+    }
+
+    body.dark-mode .promo-content p {
+      color: #9CA3AF !important;
+    }
+
+    body.dark-mode .promo-close-btn {
+      background: rgba(56, 189, 248, 0.1) !important;
+      color: #38BDF8 !important;
+    }
+
+    body.dark-mode .promo-close-btn:hover {
+      background: #38BDF8 !important;
+      color: white !important;
+    }
+
+    /* Estilos para popup expandido */
+    .promo-popup-expanded {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .promo-popup-expanded.active {
+      display: flex;
+    }
+
+    .promo-expanded-content {
+      background: white;
+      border-radius: 20px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      animation: scaleIn 0.3s ease;
+    }
+
+    body.dark-mode .promo-expanded-content {
+      background: rgba(17, 24, 39, 0.98);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .promo-expanded-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(231, 76, 60, 0.1);
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      z-index: 10;
+      color: #e74c3c;
+      font-size: 24px;
+    }
+
+    .promo-expanded-close:hover {
+      background: #e74c3c;
+      color: white;
+      transform: rotate(90deg);
+    }
+
+    body.dark-mode .promo-expanded-close {
+      background: rgba(56, 189, 248, 0.1);
+      color: #38BDF8;
+    }
+
+    body.dark-mode .promo-expanded-close:hover {
+      background: #38BDF8;
+      color: white;
+    }
+
+    .promo-expanded-header {
+      padding: 30px 30px 20px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    body.dark-mode .promo-expanded-header {
+      border-bottom-color: rgba(56, 189, 248, 0.2);
+    }
+
+    .promo-expanded-title {
+      margin: 0;
+      font-size: 1.8rem;
+      color: #e67e22;
+    }
+
+    body.dark-mode .promo-expanded-title {
+      color: #38BDF8;
+    }
+
+    .promo-expanded-body {
+      padding: 30px;
+    }
+
+    .promo-expanded-message {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    body.dark-mode .promo-expanded-message {
+      color: #E5E7EB;
+    }
+
+    .promo-expanded-img {
+      width: 100%;
+      border-radius: 12px;
+      margin: 20px 0;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .promo-popup {
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .promo-popup:hover {
+      transform: scale(1.02);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes scaleIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  </style>
+
+  <script src="js/services-manager.js"></script>
+  <script src="script.js"></script>
+  <script src="image-popup.js"></script>
+  <script src="notification-bot.js"></script>
+
+  <script>
+    // Promo Popup Logic
+    window.closePromo = function () {
+      document.getElementById('promoPopup').classList.remove('active');
+    };
+
+    // Expand Promo Popup
+    window.expandPromo = function () {
+      const expandedPopup = document.getElementById('promoPopupExpanded');
+      const smallPopup = document.getElementById('promoPopup');
+
+      // Copy content from small popup to expanded
+      const title = smallPopup.querySelector('.promo-title').textContent;
+      const message = smallPopup.querySelector('.promo-preview').textContent;
+
+      expandedPopup.querySelector('.promo-expanded-title').textContent = title;
+      expandedPopup.querySelector('.promo-expanded-message').textContent = message;
+
+      // Show expanded popup
+      expandedPopup.classList.add('active');
+
+      // Hide small popup
+      smallPopup.classList.remove('active');
+    };
+
+    // Close Expanded Promo
+    window.closeExpandedPromo = function () {
+      document.getElementById('promoPopupExpanded').classList.remove('active');
+    };
+
+    // Close on click outside
+    document.addEventListener('click', function (e) {
+      const expandedPopup = document.getElementById('promoPopupExpanded');
+      if (e.target === expandedPopup) {
+        closeExpandedPromo();
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        const expandedPopup = document.getElementById('promoPopupExpanded');
+        if (expandedPopup && expandedPopup.classList.contains('active')) {
+          closeExpandedPromo();
+        }
+      }
+    });
+
+    // Show promo after 3 seconds with Dynamic Content
+    setTimeout(() => {
+      const latestNews = window.serviceManager ? window.serviceManager.getLatestNews() : null;
+      const popup = document.getElementById('promoPopup');
+      const expandedPopup = document.getElementById('promoPopupExpanded');
+
+      if (latestNews) {
+        // Update small popup content
+        popup.querySelector('.promo-title').textContent = latestNews.title;
+        popup.querySelector('.promo-preview').textContent = latestNews.message;
+
+        // Update expanded popup content
+        expandedPopup.querySelector('.promo-expanded-title').textContent = latestNews.title;
+        expandedPopup.querySelector('.promo-expanded-message').textContent = latestNews.message;
+
+        const expandedImg = expandedPopup.querySelector('.promo-expanded-img');
+        if (latestNews.imageUrl) {
+          expandedImg.src = latestNews.imageUrl;
+          expandedImg.style.display = 'block';
+        } else {
+          expandedImg.style.display = 'none';
+        }
+      }
+
+      popup.classList.add('active');
+    }, 3000);
+  </script>
+</body>
+
+</html>

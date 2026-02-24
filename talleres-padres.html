@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talleres para Padres - PCB</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dark-mode-fix-v2.css?v=2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Fix dark mode */
+        body.dark-mode .workshop-card,
+        body.dark-mode .card {
+            background: rgba(17, 24, 39, 0.95) !important;
+            border: 1px solid rgba(56, 189, 248, 0.2) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+            color: #E5E7EB !important;
+        }
+
+        body.dark-mode h1,
+        body.dark-mode h2,
+        body.dark-mode h3 {
+            color: #38BDF8 !important;
+        }
+
+        body.dark-mode p {
+            color: #9CA3AF !important;
+        }
+
+        body.dark-mode .workshop-badge {
+            background: rgba(56, 189, 248, 0.2) !important;
+            color: #38BDF8 !important;
+        }
+    </style>
+    <style>
+        .workshop-category {
+            margin-bottom: 50px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            color: white;
+        }
+
+        .workshop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .workshop-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+        }
+
+        .workshop-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .workshop-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .badge-presencial {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .badge-virtual {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .badge-grabado {
+            background: #fce4ec;
+            color: #c2185b;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Popup de selección de tema -->
+    <div id="themePopup" class="theme-popup">
+        <div class="theme-popup-content">
+            <h2>🎨 Selecciona tu tema preferido</h2>
+            <p>Elige cómo quieres ver el sitio web</p>
+            <div class="theme-buttons">
+                <button class="theme-btn theme-btn-light" id="btnLightMode">☀️ Modo Claro</button>
+                <button class="theme-btn theme-btn-dark" id="btnDarkMode">🌙 Modo Oscuro</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            function hidePopup() { document.getElementById('themePopup').classList.add('hidden'); }
+            function setLightMode() { document.body.classList.remove('dark-mode'); localStorage.setItem('theme', 'light'); hidePopup(); }
+            function setDarkMode() { document.body.classList.add('dark-mode'); localStorage.setItem('theme', 'dark'); hidePopup(); }
+            function checkTheme() {
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'dark') { document.body.classList.add('dark-mode'); hidePopup(); }
+                else if (savedTheme === 'light') { hidePopup(); }
+            }
+            checkTheme();
+            document.addEventListener('DOMContentLoaded', function () {
+                const btnLight = document.getElementById('btnLightMode');
+                const btnDark = document.getElementById('btnDarkMode');
+                if (btnLight) btnLight.addEventListener('click', setLightMode);
+                if (btnDark) btnDark.addEventListener('click', setDarkMode);
+            });
+        })();
+    </script>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="logo-area">
+                <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+                <div class="logo-text">
+                    <span class="logo-title">Escuela Superior Vocacional</span>
+                    <span class="logo-subtitle">Pablo Colón Berdecia</span>
+                </div>
+            </div>
+            <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <button class="menu-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html#inicio">Inicio</a></li>
+                    <li><a href="index.html#servicios">Servicios</a></li>
+                    <li><a href="index.html#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Sidebar Menu -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="sidebar-menu" id="sidebarMenu">
+        <div class="sidebar-header">
+            <h3>⚙️ Configuración</h3>
+        </div>
+        <div class="sidebar-content">
+            <div class="sidebar-option" id="themeToggle"><span>🎨 Cambiar Tema</span></div>
+            <div class="theme-options" id="themeOptions">
+                <div class="theme-option" id="selectLightTheme"><span>☀️ Modo Claro</span></div>
+                <div class="theme-option" id="selectDarkTheme"><span>🌙 Modo Oscuro</span></div>
+            </div>
+            <div class="sidebar-option" id="languageToggle"><span>🌐 Cambiar Idioma</span></div>
+            <div class="language-options" id="languageOptions">
+                <div class="language-option" id="selectSpanish"><span>🇵🇷 Español</span></div>
+                <div class="language-option" id="selectEnglish"><span>🇺🇸 English</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const sidebarMenu = document.getElementById('sidebarMenu');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            const themeToggle = document.getElementById('themeToggle');
+            const themeOptions = document.getElementById('themeOptions');
+            const languageToggle = document.getElementById('languageToggle');
+            const languageOptions = document.getElementById('languageOptions');
+            const selectLightTheme = document.getElementById('selectLightTheme');
+            const selectDarkTheme = document.getElementById('selectDarkTheme');
+
+            function openSidebarMenu() { sidebarMenu.classList.add('active'); sidebarOverlay.classList.add('active'); }
+            function closeSidebarMenu() { sidebarMenu.classList.remove('active'); sidebarOverlay.classList.remove('active'); themeOptions.classList.remove('active'); languageOptions.classList.remove('active'); }
+
+            if (hamburgerBtn) hamburgerBtn.addEventListener('click', openSidebarMenu);
+            if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebarMenu);
+            if (themeToggle) themeToggle.addEventListener('click', function () { themeOptions.classList.toggle('active'); languageOptions.classList.remove('active'); });
+            if (languageToggle) languageToggle.addEventListener('click', function () { languageOptions.classList.toggle('active'); themeOptions.classList.remove('active'); });
+            if (selectLightTheme) selectLightTheme.addEventListener('click', function () { document.body.classList.remove('dark-mode'); localStorage.setItem('theme', 'light'); closeSidebarMenu(); });
+            if (selectDarkTheme) selectDarkTheme.addEventListener('click', function () { document.body.classList.add('dark-mode'); localStorage.setItem('theme', 'dark'); closeSidebarMenu(); });
+        })();
+    </script>
+
+    <div class="container" style="padding: 40px 0;">
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h1 style="font-size: 2.5rem; color: #2c3e50; margin-bottom: 15px;">🎓 Talleres para Padres</h1>
+            <p style="font-size: 1.2rem; color: #7f8c8d; max-width: 700px; margin: 0 auto;">
+                Fortalece tus habilidades para apoyar mejor a tu hijo/a. Todos los talleres incluyen certificado de
+                participación.
+            </p>
+        </div>
+
+        <!-- Categoría 1: Talleres Tecnológicos -->
+        <div class="workshop-category">
+            <div class="category-header">
+                <div style="font-size: 2.5rem;">💻</div>
+                <div>
+                    <h2 style="margin: 0; font-size: 1.8rem;">Talleres Tecnológicos</h2>
+                    <p style="margin: 5px 0 0 0; opacity: 0.9;">Navega el mundo digital con confianza</p>
+                </div>
+            </div>
+            <div class="workshop-grid">
+                <div class="workshop-card">
+                    <span class="workshop-badge badge-virtual">Virtual</span>
+                    <h3 style="color: #2c3e50; margin-bottom: 10px;">Internet Seguro para Familias</h3>
+                    <p style="color: #7f8c8d; margin-bottom: 15px;">Protege a tu familia de riesgos en línea. Aprende
+                        sobre privacidad, phishing y seguridad digital.</p>
+                    <div style="margin-bottom: 15px;">
+                        <i class="fas fa-calendar"></i> <strong>Próximo:</strong> 15 de marzo, 2026<br>
+                        <i class="fas fa-clock"></i> <strong>Duración:</strong> 2 horas
+                    </div>
+                    <button class="btn btn-primary" onclick="registrarTaller('internet-seguro')">Registrarse</button>
+                </div>
+
+                <div class="workshop-card">
+                    <span class="workshop-badge badge-presencial">Presencial</span>
+                    <h3 style="color: #2c3e50; margin-bottom: 10px;">Control Parental Efectivo</h3>
+                    <p style="color: #7f8c8d; margin-bottom: 15px;">Herramientas y estrategias para supervisar el uso de
+                        dispositivos de tus hijos.</p>
+                    <div style="margin-bottom: 15px;">
+                        <i class="fas fa-calendar"></i> <strong>Próximo:</strong> 22 de marzo, 2026<br>
+                        <i class="fas fa-clock"></i> <strong>Duración:</strong> 3 horas
+                    </div>
+                    <button class="btn btn-primary" onclick="registrarTaller('control-parental')">Registrarse</button>
+                </div>
+
+                <div class="workshop-card">
+                    <span class="workshop-badge badge-grabado">Grabado</span>
+                    <h3 style="color: #2c3e50; margin-bottom: 10px;">Introducción a la IA</h3>
+                    <p style="color: #7f8c8d; margin-bottom: 15px;">ChatGPT, herramientas educativas y cómo la IA puede
+                        ayudar en el aprendizaje.</p>
+                    <div style="margin-bottom: 15px;">
+                        <i class="fas fa-video"></i> <strong>Disponible:</strong> Ahora<br>
+                        <i class="fas fa-clock"></i> <strong>Duración:</strong> 1.5 horas
+                    </div>
+                    <button class="btn btn-primary" onclick="window.open('https://youtube.com', '_blank')">Ver
+                        Ahora</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categoría 2: Talleres Académicos -->
+        <div class="workshop-category">
+            <div class="category-header" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <div style="font-size: 2.5rem;">📚</div>
+                <div>
+                    <h2 style="margin: 0; font-size: 1.8rem;">Talleres Académicos</h2>
+                    <p style="margin: 5px 0 0 0; opacity: 0.9;">Apoya el éxito escolar de tu hijo/a</p>
+                </div>
+            </div>
+            <div class="workshop-grid">
+                <div class="workshop-card">
+                    <span class="workshop-badge badge-presencial">Presencial</span>
+                    <h3 style="color: #2c3e50; margin-bottom: 10px;">Cómo Apoyar el Estudio en Casa</h3>
+                    <p style="color: #7f8c8d; margin-bottom: 15px;">Técnicas de estudio, organización y creación de
+                        rutinas efectivas.</p>
+                    <div style="margin-bottom: 15px;">
+                        <i class="fas fa-calendar"></i> <strong>Próximo:</strong> 5 de abril, 2026<br>
+                        <i class="fas fa-clock"></i> <strong>Duración:</strong> 2 horas
+                    </div>
+                    <button class="btn btn-primary" onclick="registrarTaller('apoyo-estudio')">Registrarse</button>
+                </div>
+
+                <div class="workshop-card">
+                    <span class="workshop-badge badge-virtual">Virtual</span>
+                    <h3 style="color: #2c3e50; margin-bottom: 10px;">Entendiendo el WBL</h3>
+                    <p style="color: #7f8c8d; margin-bottom: 15px;">Work-Based Learning: qué es, cómo funciona y cómo
+                        preparar a tu hijo/a.</p>
+                    <div style="margin-bottom: 15px;">
+                        <i class="fas fa-calendar"></i> <strong>Próximo:</strong> 12 de abril, 2026<br>
+                        <i class="fas fa-clock"></i> <strong>Duración:</strong> 2.5 horas
+                    </div>
+                    <button class="btn btn-primary" onclick="registrarTaller('wbl')">Registrarse</button>
+                </div>
+
+                <div class="workshop-card">
+                    <span class="workshop-badge badge-virtual">Virtual</span>
+                    <h3 style="color: #2c3e50; margin-bottom: 10px;">Preparación para Universidad</h3>
+                    <p style="color: #7f8c8d; margin-bottom: 15px;">College Board, FAFSA, solicitudes y becas. Todo lo
+                        que necesitas saber.</p>
+                    <div style="margin-bottom: 15px;">
+                        <i class="fas fa-calendar"></i> <strong>Próximo:</strong> 19 de abril, 2026<br>
+                        <i class="fas fa-clock"></i> <strong>Duración:</strong> 3 horas
+                    </div>
+                    <button class="btn btn-primary" onclick="registrarTaller('universidad')">Registrarse</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categoría 3: Talleres de Bienestar Familiar -->
+        <div class="workshop-category">
+            <div class="category-header" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <div style="font-size: 2.5rem;">💚</div>
+                <div>
+                    <h2 style="margin: 0; font-size: 1.8rem;">Talleres de Bienestar Familiar</h2>
+                    <p style="margin: 5px 0 0 0; opacity: 0.9;">Cuida tu salud mental y fortalece lazos familiares</p>
+                </div>
+            </div>
+            <div class="workshop-grid">
+                <div class="workshop-card">
+                    <span class="workshop-badge badge-presencial">Presencial</span>
+                    <h3 style="color: #2c3e50; margin-bottom: 10px;">Manejo del Estrés Parental</h3>
+                    <p style="color: #7f8c8d; margin-bottom: 15px;">Técnicas de relajación, mindfulness y autocuidado
+                        para padres ocupados.</p>
+                    <div style="margin-bottom: 15px;">
+                        <i class="fas fa-calendar"></i> <strong>Próximo:</strong> 26 de abril, 2026<br>
+                        <i class="fas fa-clock"></i> <strong>Duración:</strong> 2 horas
+                    </div>
+                    <button class="btn btn-primary" onclick="registrarTaller('estres')">Registrarse</button>
+                </div>
+
+                <div class="workshop-card">
+                    <span class="workshop-badge badge-virtual">Virtual</span>
+                    <h3 style="color: #2c3e50; margin-bottom: 10px;">Comunicación con Adolescentes</h3>
+                    <p style="color: #7f8c8d; margin-bottom: 15px;">Estrategias para mantener diálogo abierto y
+                        constructivo con tus hijos.</p>
+                    <div style="margin-bottom: 15px;">
+                        <i class="fas fa-calendar"></i> <strong>Próximo:</strong> 3 de mayo, 2026<br>
+                        <i class="fas fa-clock"></i> <strong>Duración:</strong> 2 horas
+                    </div>
+                    <button class="btn btn-primary" onclick="registrarTaller('comunicacion')">Registrarse</button>
+                </div>
+
+                <div class="workshop-card">
+                    <span class="workshop-badge badge-grabado">Grabado</span>
+                    <h3 style="color: #2c3e50; margin-bottom: 10px;">Salud Mental Familiar</h3>
+                    <p style="color: #7f8c8d; margin-bottom: 15px;">Reconocer señales de alerta, recursos disponibles y
+                        cómo buscar ayuda.</p>
+                    <div style="margin-bottom: 15px;">
+                        <i class="fas fa-video"></i> <strong>Disponible:</strong> Ahora<br>
+                        <i class="fas fa-clock"></i> <strong>Duración:</strong> 1 hora
+                    </div>
+                    <button class="btn btn-primary" onclick="window.open('https://youtube.com', '_blank')">Ver
+                        Ahora</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function registrarTaller(taller) {
+            // Simulación de registro
+            const confirmacion = confirm(`¿Deseas registrarte para este taller?\n\nRecibirás un correo de confirmación con los detalles.`);
+            if (confirmacion) {
+                alert(`✅ ¡Registro exitoso!\n\nTe hemos enviado un correo de confirmación.\nRecuerda revisar tu bandeja de entrada.`);
+                // Aquí se integraría con el sistema de registro real
+            }
+        }
+    </script>
+
+    <script src="js/services-manager.js"></script>
+</body>
+
+</html>

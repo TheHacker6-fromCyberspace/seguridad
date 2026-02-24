@@ -1,0 +1,858 @@
+const fs = require('fs');
+
+const htmlContent = `<!DOCTYPE html>
+<html lang="es" id="htmlRoot">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Correos Electrónicos de Maestros – Escuela Superior Vocacional Pablo Colón Berdecia</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="translations.js"></script>
+  <style>
+    .email-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 2rem 0;
+      background: white;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    
+    .email-table thead {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+    }
+    
+    .email-table th {
+      padding: 1.2rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    
+    .email-table td {
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--border-soft);
+    }
+    
+    .email-table tbody tr:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .email-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .email-link {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .email-link:hover {
+      color: var(--primary-light);
+      text-decoration: underline;
+    }
+    
+    .search-box {
+      width: 100%;
+      max-width: 500px;
+      padding: 1rem;
+      margin: 2rem auto;
+      border: 2px solid var(--border-soft);
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+    
+    .search-box:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    @media (max-width: 768px) {
+      .email-table {
+        font-size: 0.9rem;
+      }
+
+      .email-table th,
+      .email-table td {
+        padding: 0.8rem;
+      }
+    }
+
+    body.dark-mode .email-table {
+      background: var(--bg-alt);
+    }
+
+    body.dark-mode .email-table tbody tr:hover {
+      background-color: rgba(69, 123, 157, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <!-- Popup de selección de tema -->
+  <div id="themePopup" class="theme-popup">
+    <div class="theme-popup-content">
+      <h2 data-translate="🎨 Selecciona tu tema preferido">🎨 Selecciona tu tema preferido</h2>
+      <p data-translate="Elige cómo quieres ver el sitio web">Elige cómo quieres ver el sitio web</p>
+      <div class="theme-buttons">
+        <button class="theme-btn theme-btn-light" id="btnLightMode" data-translate="☀️ Modo Claro">
+          ☀️ Modo Claro
+        </button>
+        <button class="theme-btn theme-btn-dark" id="btnDarkMode" data-translate="🌙 Modo Oscuro">
+          🌙 Modo Oscuro
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Script inline para modo claro/oscuro
+    (function() {
+      function hidePopup() {
+        document.getElementById('themePopup').classList.add('hidden');
+      }
+
+      function setLightMode() {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        hidePopup();
+      }
+
+      function setDarkMode() {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        hidePopup();
+      }
+
+      function checkTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          hidePopup();
+        } else if (savedTheme === 'light') {
+          hidePopup();
+        }
+      }
+
+      // Ejecutar inmediatamente
+      checkTheme();
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const btnLight = document.getElementById('btnLightMode');
+        const btnDark = document.getElementById('btnDarkMode');
+
+        if (btnLight) {
+          btnLight.addEventListener('click', setLightMode);
+        }
+        if (btnDark) {
+          btnDark.addEventListener('click', setDarkMode);
+        }
+      });
+    })();
+  </script>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo-area">
+        <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+        <div class="logo-text">
+          <span class="logo-title" data-translate="Escuela Superior Vocacional">Escuela Superior Vocacional</span>
+          <span class="logo-subtitle">Pablo Colón Berdecia</span>
+        </div>
+      </div>
+
+      <!-- Hamburger Menu Button -->
+      <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <button class="menu-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html#inicio" data-translate="Inicio">Inicio</a></li>
+          <li><a href="index.html#servicios" data-translate="Servicios">Servicios</a></li>
+          <li><a href="index.html#contacto" data-translate="Contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3 data-translate="⚙️ Configuración">⚙️ Configuración</h3>
+    </div>
+    <div class="sidebar-content">
+      <!-- Theme Toggle -->
+      <div class="sidebar-option" id="themeToggle">
+        <span data-translate="🎨 Cambiar Tema">🎨 Cambiar Tema</span>
+      </div>
+      <div class="theme-options" id="themeOptions">
+        <div class="theme-option" id="selectLightTheme">
+          <span data-translate="☀️ Modo Claro">☀️ Modo Claro</span>
+        </div>
+        <div class="theme-option" id="selectDarkTheme">
+          <span data-translate="🌙 Modo Oscuro">🌙 Modo Oscuro</span>
+        </div>
+      </div>
+
+      <!-- Language Toggle -->
+      <div class="sidebar-option" id="languageToggle">
+        <span data-translate="🌐 Cambiar Idioma">🌐 Cambiar Idioma</span>
+      </div>
+      <div class="language-options" id="languageOptions">
+        <div class="language-option" id="selectSpanish">
+          <span>🇵🇷 Español</span>
+        </div>
+        <div class="language-option" id="selectEnglish">
+          <span>🇺🇸 English</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Hamburger menu functionality
+    (function() {
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const themeToggle = document.getElementById('themeToggle');
+      const themeOptions = document.getElementById('themeOptions');
+      const languageToggle = document.getElementById('languageToggle');
+      const languageOptions = document.getElementById('languageOptions');
+      const selectLightTheme = document.getElementById('selectLightTheme');
+      const selectDarkTheme = document.getElementById('selectDarkTheme');
+      const selectSpanish = document.getElementById('selectSpanish');
+      const selectEnglish = document.getElementById('selectEnglish');
+
+      function openSidebarMenu() {
+        sidebarMenu.classList.add('active');
+        sidebarOverlay.classList.add('active');
+      }
+
+      function closeSidebarMenu() {
+        sidebarMenu.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+        themeOptions.classList.remove('active');
+        languageOptions.classList.remove('active');
+      }
+
+      if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', openSidebarMenu);
+      }
+
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeSidebarMenu);
+      }
+
+      // Theme toggle
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+          themeOptions.classList.toggle('active');
+          languageOptions.classList.remove('active');
+        });
+      }
+
+      // Language toggle
+      if (languageToggle) {
+        languageToggle.addEventListener('click', function() {
+          languageOptions.classList.toggle('active');
+          themeOptions.classList.remove('active');
+        });
+      }
+
+      // Select Light Theme
+      if (selectLightTheme) {
+        selectLightTheme.addEventListener('click', function() {
+          document.body.classList.remove('dark-mode');
+          localStorage.setItem('theme', 'light');
+          closeSidebarMenu();
+        });
+      }
+
+      // Select Dark Theme
+      if (selectDarkTheme) {
+        selectDarkTheme.addEventListener('click', function() {
+          document.body.classList.add('dark-mode');
+          localStorage.setItem('theme', 'dark');
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma español
+      if (selectSpanish) {
+        selectSpanish.addEventListener('click', function() {
+          localStorage.setItem('language', 'es');
+          document.getElementById('htmlRoot').setAttribute('lang', 'es');
+          if (typeof translatePage === 'function') {
+            translatePage('es');
+          }
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma inglés
+      if (selectEnglish) {
+        selectEnglish.addEventListener('click', function() {
+          localStorage.setItem('language', 'en');
+          document.getElementById('htmlRoot').setAttribute('lang', 'en');
+          if (typeof translatePage === 'function') {
+            translatePage('en');
+          }
+          closeSidebarMenu();
+        });
+      }
+    })();
+  </script>
+
+  <!-- Hero -->
+  <section class="hero" style="min-height: 350px; padding: 4rem 0;">
+    <div class="container">
+      <div class="section-header" style="margin-bottom: 0;">
+        <div style="font-size: 5rem; margin-bottom: 1rem;">📧</div>
+        <h1 style="color: #ffffff; font-size: 3rem; text-shadow: 0 2px 20px rgba(0,0,0,0.5);" data-translate="Correos Electrónicos de Maestros">Correos Electrónicos de Maestros</h1>
+        <p style="color: rgba(255,255,255,0.95); font-size: 1.2rem; max-width: 800px; margin: 1rem auto;" data-translate="Directorio completo de correos electrónicos del personal docente">
+          Directorio completo de correos electrónicos del personal docente
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contenido principal -->
+  <section class="section">
+    <div class="container">
+      <!-- Información importante -->
+      <div class="card" style="margin-bottom: 2rem; background: linear-gradient(135deg, var(--primary-light), var(--primary)); color: white;">
+        <h3 style="color: white; margin-bottom: 1rem;" data-translate="Información Importante">📌 Información Importante</h3>
+        <p style="color: rgba(255,255,255,0.95);" data-translate="Para comunicarte con un maestro, puedes enviar un correo electrónico directamente haciendo clic en la dirección de correo. Se recomienda incluir el nombre del estudiante y el asunto claramente en el mensaje.">
+          Para comunicarte con un maestro, puedes enviar un correo electrónico directamente haciendo clic en la dirección de correo. Se recomienda incluir el nombre del estudiante y el asunto claramente en el mensaje.
+        </p>
+      </div>
+
+      <!-- Filtros Avanzados -->
+      <div class="filters-container" style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem; border: 1px solid #e9ecef;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <!-- Buscador -->
+            <div>
+                <label for="searchInput" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #34495e;">Buscar:</label>
+                <input type="text" id="searchInput" class="search-box" placeholder="Nombre o Email..." style="margin: 0; width: 100%;" onkeyup="filterTable()">
+            </div>
+            <!-- Filtro Asignatura -->
+            <div>
+                <label for="subjectFilter" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #34495e;">Asignatura:</label>
+                <select id="subjectFilter" class="search-box" style="margin: 0; width: 100%;" onchange="filterTable()">
+                    <option value="">Todas</option>
+                    <option value="Matemáticas">Matemáticas</option>
+                    <option value="Español">Español</option>
+                    <option value="Inglés">Inglés</option>
+                    <option value="Ciencia">Ciencia</option>
+                    <option value="Historia">Historia</option>
+                    <option value="Vocacional">Vocacional</option>
+                    <option value="Educación Física">Educación Física</option>
+                    <option value="Bellas Artes">Bellas Artes</option>
+                    <option value="Otro">Otro</option>
+                </select>
+            </div>
+            <!-- Filtro Grado -->
+            <div>
+                <label for="gradeFilter" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #34495e;">Grado:</label>
+                <select id="gradeFilter" class="search-box" style="margin: 0; width: 100%;" onchange="filterTable()">
+                    <option value="">Todos</option>
+                    <option value="9">9no</option>
+                    <option value="10">10mo</option>
+                    <option value="11">11mo</option>
+                    <option value="12">12mo</option>
+                </select>
+            </div>
+        </div>
+      </div>
+
+      <!-- Tabla de correos -->
+      <table class="email-table" id="emailTable">
+        <thead>
+          <tr>
+            <th data-translate="Nombre del Maestro">Nombre del Maestro</th>
+            <th data-translate="Correo Electrónico">Correo Electrónico</th>
+            <th data-translate="Asignatura">Asignatura</th>
+            <th data-translate="Horario Capacitación">Horario Capacitación</th>
+            <th data-translate="Grado">Grado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Acosta Meléndez, Vilmarie</td>
+            <td><a href="mailto:de140504@miescuela.pr" class="email-link">de140504@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Aguayo Guzmán, Danny</td>
+            <td><a href="mailto:de109743@miescuela.pr" class="email-link">de109743@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Alicea Nieves, Melanie</td>
+            <td><a href="mailto:de168674@miescuela.pr" class="email-link">de168674@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Alvarado Berríos, Angélica</td>
+            <td><a href="mailto:de151684@miescuela.pr" class="email-link">de151684@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Berrios Colón, Carmen I.</td>
+            <td><a href="mailto:de110258@miescuela.pr" class="email-link">de110258@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Berrios Ortiz, Jesús</td>
+            <td><a href="mailto:de161266@miescuela.pr" class="email-link">de161266@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Berrios Zayas, Janelyz</td>
+            <td><a href="mailto:de167251@miescuela.pr" class="email-link">de167251@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Bonilla Camacho, José L.</td>
+            <td><a href="mailto:de166341@miescuela.pr" class="email-link">de166341@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Camacho Ortiz, Félix</td>
+            <td><a href="mailto:de172428@miescuela.pr" class="email-link">de172428@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Cintrón Ortiz, Nydia I.</td>
+            <td><a href="mailto:de82283@miescuela.pr" class="email-link">de82283@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Collazo Esparra, Brenda E.</td>
+            <td><a href="mailto:de73409@miescuela.pr" class="email-link">de73409@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Colón Aponte, Célida I.</td>
+            <td><a href="mailto:de161775@miescuela.pr" class="email-link">de161775@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Colón Arroyo, Sheyka</td>
+            <td><a href="mailto:bibliotecapcb2@gmail.com" class="email-link">bibliotecapcb2@gmail.com</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Colón Ortiz, Luz C.</td>
+            <td><a href="mailto:de91134@miescuela.pr" class="email-link">de91134@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Colón Torres, Wilnilda</td>
+            <td><a href="mailto:de113974@miescuela.pr" class="email-link">de113974@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Cruz Maldonado, Sonia I.</td>
+            <td><a href="mailto:de58390@miescuela.pr" class="email-link">de58390@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Feliciano Rivera, Eliel</td>
+            <td><a href="mailto:de108786@miescuela.pr" class="email-link">de108786@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Fuentes Berrios, Elsa</td>
+            <td><a href="mailto:de172572@miescuela.pr" class="email-link">de172572@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>García Rivera, Maricarmen</td>
+            <td><a href="mailto:de85494@miescuela.pr" class="email-link">de85494@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Hernández Rosado, Coral</td>
+            <td><a href="mailto:de152598@miescuela.pr" class="email-link">de152598@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Martínez Maldonado, Iris M.</td>
+            <td><a href="mailto:de143365@miescuela.pr" class="email-link">de143365@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Matos Ortiz, Glorimar</td>
+            <td><a href="mailto:de76545@miescuela.pr" class="email-link">de76545@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Nieves Alvarado, Madeline</td>
+            <td><a href="mailto:de131962@miescuela.pr" class="email-link">de131962@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Núñez Green, Mary C.</td>
+            <td><a href="mailto:de140270@miescuela.pr" class="email-link">de140270@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Ortiz Berdecia, Diana C.</td>
+            <td><a href="mailto:de159697@miescuela.pr" class="email-link">de159697@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Ortiz Cartagena, Marta</td>
+            <td><a href="mailto:de155939@miescuela.pr" class="email-link">de155939@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Ortiz Luna, Carelyn I.</td>
+            <td><a href="mailto:de155312@miescuela.pr" class="email-link">de155312@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Ortiz Molina, Louany</td>
+            <td><a href="mailto:de75035@miescuela.pr" class="email-link">de75035@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Ortiz Montesino, Nivia J.</td>
+            <td><a href="mailto:de66472@miescuela.pr" class="email-link">de66472@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Ortiz Rosado, Emma</td>
+            <td><a href="mailto:de82333@miescuela.pr" class="email-link">de82333@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Otero Matos, Carmen G.</td>
+            <td><a href="mailto:de112451@miescuela.pr" class="email-link">de112451@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Palomino Luna, Ivette</td>
+            <td><a href="mailto:de74635@miescuela.pr" class="email-link">de74635@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Pérez Quintana, Justinell</td>
+            <td><a href="mailto:de122233@miescuela.pr" class="email-link">de122233@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Ríos Berrios, Luis</td>
+            <td><a href="mailto:de109026@miescuela.pr" class="email-link">de109026@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Rivas Aponte, Luis E.</td>
+            <td><a href="mailto:de136956@miescuela.pr" class="email-link">de136956@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Rivera Alejandro, Ada J.</td>
+            <td><a href="mailto:de155982@miescuela.pr" class="email-link">de155982@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Rivera Berrios, Ana M.</td>
+            <td><span style="color: #fc0000;">No disponible</span></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Rivera Berrios, Jennyfer</td>
+            <td><a href="mailto:de124019@miescuela.pr" class="email-link">de124019@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Rivera Hernández, Miguel A.</td>
+            <td><a href="mailto:de70109@miescuela.pr" class="email-link">de70109@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Rivera Moreno, Kárem Z.</td>
+            <td><a href="mailto:de156358@miescuela.pr" class="email-link">de156358@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Rivera Pagan, Zulma I.</td>
+            <td><a href="mailto:de142518@miescuela.pr" class="email-link">de142518@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Rivera Yip, Lia</td>
+            <td><a href="mailto:de134439@miescuela.pr" class="email-link">de134439@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Rodríguez Collazo, Yolimar</td>
+            <td><a href="mailto:de83331@miescuela.pr" class="email-link">de83331@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Rodríguez López, Brenda L.</td>
+            <td><a href="mailto:de68899@miescuela.pr" class="email-link">de68899@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Rodríguez Rodríguez, Jelitza</td>
+            <td><a href="mailto:de87668@miescuela.pr" class="email-link">de87668@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Rodríguez Rodríguez, Nilka I.</td>
+            <td><a href="mailto:de141767@miescuela.pr" class="email-link">de141767@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Rosado Alvarado, Jacqueline M.</td>
+            <td><a href="mailto:de69779@miescuela.pr" class="email-link">de69779@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Santiago Cruz, Yarimar</td>
+            <td><a href="mailto:de134628@miescuela.pr" class="email-link">de134628@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Santos Fonseca, Roxana</td>
+            <td><a href="mailto:de138979@miescuela.pr" class="email-link">de138979@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Santos Rodríguez, Kevin O.</td>
+            <td><a href="mailto:de168344@miescuela.pr" class="email-link">de168344@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Soto Pagán, Celimar</td>
+            <td><a href="mailto:de134766@miescuela.pr" class="email-link">de134766@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Torres García, Carmen M.</td>
+            <td><a href="mailto:de119454@miescuela.pr" class="email-link">de119454@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Torres Soto, Miledys</td>
+            <td><a href="mailto:de164402@miescuela.pr" class="email-link">de164402@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Torres Torres, Ana R.</td>
+            <td><a href="mailto:de148943@miescuela.pr" class="email-link">de148943@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Vázquez Maldonado, Mayra</td>
+            <td><a href="mailto:de166884@miescuela.pr" class="email-link">de166884@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Vázquez Vázquez, Roberto</td>
+            <td><a href="mailto:de167766@miescuela.pr" class="email-link">de167766@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Virella Ramos, Desiré</td>
+            <td><a href="mailto:de148839@miescuela.pr" class="email-link">de148839@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+          <tr>
+            <td>Santos Rodríguez, Kevin D.</td>
+            <td><a href="mailto:de168344@miescuela.pr" class="email-link">de168344@miescuela.pr</a></td>
+            <td>---</td>
+            <td>---</td>
+            <td>---</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Llamado a la acción -->
+      <div style="text-align: center; margin-top: 3rem;">
+        <a href="index.html#servicios" class="btn btn-primary" style="padding: 1rem 2.5rem; font-size: 1.1rem;">
+          ← Volver a Servicios
+        </a>
+        <a href="index.html#contacto" class="btn btn-secondary" style="padding: 1rem 2.5rem; font-size: 1.1rem;">
+          📞 Contactar Escuela
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2026 Escuela Superior Vocacional Pablo Colón Berdecia. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    function filterTable() {
+      const searchInput = document.getElementById('searchInput').value.toUpperCase();
+      const subjectFilter = document.getElementById('subjectFilter').value.toUpperCase();
+      const gradeFilter = document.getElementById('gradeFilter').value.toUpperCase();
+      
+      const table = document.getElementById('emailTable');
+      const tr = table.getElementsByTagName('tr');
+
+      for (let i = 1; i < tr.length; i++) {
+        const tds = tr[i].getElementsByTagName('td');
+        if (tds.length > 0) {
+          const name = tds[0].textContent.toUpperCase();
+          const email = tds[1].textContent.toUpperCase();
+          const subject = tds[2].textContent.toUpperCase();
+          const grade = tds[4].textContent.toUpperCase();
+          
+          const nameEmail = name + " " + email;
+
+          const matchesSearch = nameEmail.indexOf(searchInput) > -1;
+          const matchesSubject = subjectFilter === "" || subject.indexOf(subjectFilter) > -1;
+          const matchesGrade = gradeFilter === "" || grade.indexOf(gradeFilter) > -1;
+
+          if (matchesSearch && matchesSubject && matchesGrade) {
+            tr[i].style.display = '';
+          } else {
+            tr[i].style.display = 'none';
+          }
+        }
+      }
+    }
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>`;
+
+fs.writeFileSync('correos-maestros-tabla.html', htmlContent, 'utf8');
+console.log('File restored and updated successfully');

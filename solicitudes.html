@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicitud de Documentos - Ecosistema Escolar Digital</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dark-mode-fix-v2.css?v=2">
+  <link rel="stylesheet" href="dropdown-fix.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* Fix dark mode */
+    body.dark-mode .card,
+    body.dark-mode .service-card,
+    body.dark-mode .form-container {
+      background: rgba(17, 24, 39, 0.95) !important;
+      border: 1px solid rgba(56, 189, 248, 0.2) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+      color: #E5E7EB !important;
+    }
+
+    body.dark-mode h1,
+    body.dark-mode h2,
+    body.dark-mode h3 {
+      color: #38BDF8 !important;
+    }
+
+    body.dark-mode p,
+    body.dark-mode label {
+      color: #9CA3AF !important;
+    }
+
+    body.dark-mode input,
+    body.dark-mode select,
+    body.dark-mode textarea {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border: 1px solid rgba(56, 189, 248, 0.2) !important;
+      color: #E5E7EB !important;
+    }
+
+    body.dark-mode input:focus,
+    body.dark-mode select:focus,
+    body.dark-mode textarea:focus {
+      border-color: #38BDF8 !important;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.2) !important;
+    }
+  </style>
+  <style>
+    /* Estilos específicos para formularios institucionales */
+    .form-container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #f0f0f0;
+      padding-bottom: 20px;
+    }
+
+    .form-header h1 {
+      color: #2c3e50;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .form-header p {
+      color: #7f8c8d;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #34495e;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #bdc3c7;
+      border-radius: 6px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+
+    .form-control:focus {
+      border-color: #3498db;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+
+    .form-text {
+      display: block;
+      margin-top: 5px;
+      font-size: 13px;
+      color: #95a5a6;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background-color: #2ecc71;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn-submit:hover {
+      background-color: #27ae60;
+    }
+
+    .status-tracker {
+      margin-top: 40px;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      display: none;
+      /* Hidden by default */
+    }
+
+    .success-animation {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .success-icon {
+      font-size: 50px;
+      color: #2ecc71;
+      margin-bottom: 20px;
+    }
+
+    .ticket-info {
+      background: #e8f6f3;
+      border: 1px solid #d4efdf;
+      padding: 15px;
+      border-radius: 6px;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .ticket-id {
+      font-family: monospace;
+      font-size: 24px;
+      font-weight: bold;
+      color: #2c3e50;
+      letter-spacing: 2px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Popup de selección de tema -->
+  <div id="themePopup" class="theme-popup">
+    <div class="theme-popup-content">
+      <h2 data-translate="🎨 Selecciona tu tema preferido">🎨 Selecciona tu tema preferido</h2>
+      <p data-translate="Elige cómo quieres ver el sitio web">Elige cómo quieres ver el sitio web</p>
+      <div class="theme-buttons">
+        <button class="theme-btn theme-btn-light" id="btnLightMode" data-translate="☀️ Modo Claro">
+          ☀️ Modo Claro
+        </button>
+        <button class="theme-btn theme-btn-dark" id="btnDarkMode" data-translate="🌙 Modo Oscuro">
+          🌙 Modo Oscuro
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Script inline para modo claro/oscuro
+    (function () {
+      function hidePopup() {
+        document.getElementById('themePopup').classList.add('hidden');
+      }
+
+      function setLightMode() {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        hidePopup();
+      }
+
+      function setDarkMode() {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        hidePopup();
+      }
+
+      function checkTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          hidePopup();
+        } else if (savedTheme === 'light') {
+          hidePopup();
+        }
+      }
+
+      // Ejecutar inmediatamente
+      checkTheme();
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const btnLight = document.getElementById('btnLightMode');
+        const btnDark = document.getElementById('btnDarkMode');
+
+        if (btnLight) {
+          btnLight.addEventListener('click', setLightMode);
+        }
+        if (btnDark) {
+          btnDark.addEventListener('click', setDarkMode);
+        }
+      });
+    })();
+  </script>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo-area">
+        <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+        <div class="logo-text">
+          <span class="logo-title" data-translate="Escuela Superior Vocacional">Escuela Superior Vocacional</span>
+          <span class="logo-subtitle">Pablo Colón Berdecia</span>
+        </div>
+      </div>
+
+      <!-- Hamburger Menu Button -->
+      <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <button class="menu-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html#inicio" data-translate="Inicio">Inicio</a></li>
+          <li><a href="index.html#servicios" data-translate="Servicios">Servicios</a></li>
+          <li><a href="index.html#contacto" data-translate="Contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3 data-translate="⚙️ Configuración">⚙️ Configuración</h3>
+    </div>
+    <div class="sidebar-content">
+      <!-- Theme Toggle -->
+      <div class="sidebar-option" id="themeToggle">
+        <span data-translate="🎨 Cambiar Tema">🎨 Cambiar Tema</span>
+      </div>
+      <div class="theme-options" id="themeOptions">
+        <div class="theme-option" id="selectLightTheme">
+          <span data-translate="☀️ Modo Claro">☀️ Modo Claro</span>
+        </div>
+        <div class="theme-option" id="selectDarkTheme">
+          <span data-translate="🌙 Modo Oscuro">🌙 Modo Oscuro</span>
+        </div>
+      </div>
+
+      <!-- Language Toggle -->
+      <div class="sidebar-option" id="languageToggle">
+        <span data-translate="🌐 Cambiar Idioma">🌐 Cambiar Idioma</span>
+      </div>
+      <div class="language-options" id="languageOptions">
+        <div class="language-option" id="selectSpanish">
+          <span>🇵🇷 Español</span>
+        </div>
+        <div class="language-option" id="selectEnglish">
+          <span>🇺🇸 English</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Hamburger menu functionality
+    (function () {
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const themeToggle = document.getElementById('themeToggle');
+      const themeOptions = document.getElementById('themeOptions');
+      const languageToggle = document.getElementById('languageToggle');
+      const languageOptions = document.getElementById('languageOptions');
+      const selectLightTheme = document.getElementById('selectLightTheme');
+      const selectDarkTheme = document.getElementById('selectDarkTheme');
+      const selectSpanish = document.getElementById('selectSpanish');
+      const selectEnglish = document.getElementById('selectEnglish');
+
+      function openSidebarMenu() {
+        sidebarMenu.classList.add('active');
+        sidebarOverlay.classList.add('active');
+      }
+
+      function closeSidebarMenu() {
+        sidebarMenu.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+        themeOptions.classList.remove('active');
+        languageOptions.classList.remove('active');
+      }
+
+      if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', openSidebarMenu);
+      }
+
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeSidebarMenu);
+      }
+
+      // Theme toggle
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function () {
+          themeOptions.classList.toggle('active');
+          languageOptions.classList.remove('active');
+        });
+      }
+
+      // Language toggle
+      if (languageToggle) {
+        languageToggle.addEventListener('click', function () {
+          languageOptions.classList.toggle('active');
+          themeOptions.classList.remove('active');
+        });
+      }
+
+      // Select Light Theme
+      if (selectLightTheme) {
+        selectLightTheme.addEventListener('click', function () {
+          document.body.classList.remove('dark-mode');
+          localStorage.setItem('theme', 'light');
+          closeSidebarMenu();
+        });
+      }
+
+      // Select Dark Theme
+      if (selectDarkTheme) {
+        selectDarkTheme.addEventListener('click', function () {
+          document.body.classList.add('dark-mode');
+          localStorage.setItem('theme', 'dark');
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma español
+      if (selectSpanish) {
+        selectSpanish.addEventListener('click', function () {
+          localStorage.setItem('language', 'es');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'es');
+          if (typeof translatePage === 'function') {
+            translatePage('es');
+          }
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma inglés
+      if (selectEnglish) {
+        selectEnglish.addEventListener('click', function () {
+          localStorage.setItem('language', 'en');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'en');
+          if (typeof translatePage === 'function') {
+            translatePage('en');
+          }
+          closeSidebarMenu();
+        });
+      }
+    })();
+  </script>
+
+
+  <!-- Navegación Simplificada -->
+
+
+  <div class="container">
+    <div class="form-container" id="requestFormContainer">
+      <div class="form-header">
+        <h1>Solicitud de Documentos Oficiales</h1>
+        <p>Complete el formulario para solicitar certificaciones, transcripciones y otros documentos académicos.</p>
+      </div>
+
+      <form id="documentRequestForm">
+        <div class="form-group">
+          <label class="form-label">Tipo de Documento</label>
+          <select class="form-control" name="type" required>
+            <option value="">Seleccione una opción...</option>
+            <option value="certificacion_estudios">Certificación de Estudios</option>
+            <option value="transcripcion_creditos">Transcripción de Créditos</option>
+            <option value="carta_conducta">Carta de Buena Conducta</option>
+            <option value="carta_graduacion">Constancia de Graduación</option>
+            <option value="certificacion_beca">Certificación para Becas/Ayudas</option>
+            <option value="recomendacion">Carta de Recomendación</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Nombre del Estudiante</label>
+          <input type="text" class="form-control" name="studentName" required placeholder="Nombre completo">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Número de Estudiante (SIE)</label>
+          <input type="text" class="form-control" name="studentId" placeholder="Ej. 12345678" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Grado / Grupo</label>
+          <select class="form-control" name="grade" required>
+            <option value="">Seleccione...</option>
+            <option value="9">9no Grado</option>
+            <option value="10">10mo Grado</option>
+            <option value="11">11mo Grado</option>
+            <option value="12">12mo Grado</option>
+            <option value="graduado">Graduado (Ex-alumno)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Correo Electrónico</label>
+          <input type="email" class="form-control" name="email" required placeholder="Para recibir notificaciones">
+          <small class="form-text">Se enviará el documento o la notificación de recogida a este correo.</small>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Teléfono</label>
+          <input type="tel" class="form-control" name="phone" placeholder="(787) 000-0000">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Detalles Adicionales / Instrucciones</label>
+          <textarea class="form-control" name="details" rows="3"
+            placeholder="Especifique si necesita sello oficial, firma del director, etc."></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Enviar Solicitud</button>
+      </form>
+    </div>
+
+    <!-- Pantalla de Éxito (Oculta inicialmente) -->
+    <div class="form-container" id="successMessage" style="display: none;">
+      <div class="success-animation">
+        <i class="fas fa-check-circle success-icon"></i>
+        <h2>¡Solicitud Recibida!</h2>
+        <p>Hemos procesado su solicitud correctamente.</p>
+
+        <div class="ticket-info">
+          <p>Su número de ticket es:</p>
+          <div class="ticket-id" id="ticketIdDisplay">DOC-2024-001</div>
+          <p><small>Guarde este número para verificar el estatus.</small></p>
+        </div>
+
+        <div style="margin-top: 30px;">
+          <button class="btn-submit" onclick="window.location.reload()" style="background-color: #3498db;">Realizar otra
+            solicitud</button>
+          <br><br>
+          <a href="index.html" style="color: #7f8c8d;">Volver al inicio</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/services-manager.js"></script>
+  <script src="js/solicitudes.js"></script>
+</body>
+
+</html>

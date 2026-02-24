@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal de Padres - Ecosistema Escolar</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dark-mode-fix-v2.css?v=2">
+  <link rel="stylesheet" href="dropdown-fix.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* Fix dark mode para cards */
+    body.dark-mode .action-card,
+    body.dark-mode .card,
+    body.dark-mode .service-card {
+      background: rgba(17, 24, 39, 0.95) !important;
+      border: 1px solid rgba(56, 189, 248, 0.2) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+      color: #E5E7EB !important;
+    }
+
+    body.dark-mode .action-card h3,
+    body.dark-mode .card h3,
+    body.dark-mode .service-card h3 {
+      color: #38BDF8 !important;
+    }
+
+    body.dark-mode .action-card p,
+    body.dark-mode .card p,
+    body.dark-mode .service-card p {
+      color: #9CA3AF !important;
+    }
+
+    body.dark-mode .action-card:hover,
+    body.dark-mode .card:hover,
+    body.dark-mode .service-card:hover {
+      border-color: #38BDF8 !important;
+      box-shadow: 0 8px 30px rgba(56, 189, 248, 0.3) !important;
+      transform: translateY(-5px) !important;
+    }
+
+    body.dark-mode .icon-circle {
+      background: rgba(56, 189, 248, 0.1) !important;
+    }
+  </style>
+  <style>
+    .portal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 40px;
+    }
+
+    .action-card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s;
+      cursor: pointer;
+      border-top: 4px solid transparent;
+    }
+
+    .action-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .action-card.primary {
+      border-top-color: #3498db;
+    }
+
+    .action-card.success {
+      border-top-color: #2ecc71;
+    }
+
+    .action-card.warning {
+      border-top-color: #f1c40f;
+    }
+
+    .action-card.danger {
+      border-top-color: #e74c3c;
+    }
+
+    .icon-circle {
+      width: 70px;
+      height: 70px;
+      background: #f8f9fa;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 30px;
+    }
+
+    .message-box {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      margin-top: 40px;
+      display: none;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .message-box.active {
+      display: block;
+      animation: slideUp 0.5s;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Popup de selección de tema -->
+  <div id="themePopup" class="theme-popup">
+    <div class="theme-popup-content">
+      <h2 data-translate="🎨 Selecciona tu tema preferido">🎨 Selecciona tu tema preferido</h2>
+      <p data-translate="Elige cómo quieres ver el sitio web">Elige cómo quieres ver el sitio web</p>
+      <div class="theme-buttons">
+        <button class="theme-btn theme-btn-light" id="btnLightMode" data-translate="☀️ Modo Claro">
+          ☀️ Modo Claro
+        </button>
+        <button class="theme-btn theme-btn-dark" id="btnDarkMode" data-translate="🌙 Modo Oscuro">
+          🌙 Modo Oscuro
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Script inline para modo claro/oscuro
+    (function () {
+      function hidePopup() {
+        document.getElementById('themePopup').classList.add('hidden');
+      }
+
+      function setLightMode() {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        hidePopup();
+      }
+
+      function setDarkMode() {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        hidePopup();
+      }
+
+      function checkTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          hidePopup();
+        } else if (savedTheme === 'light') {
+          hidePopup();
+        }
+      }
+
+      // Ejecutar inmediatamente
+      checkTheme();
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const btnLight = document.getElementById('btnLightMode');
+        const btnDark = document.getElementById('btnDarkMode');
+
+        if (btnLight) {
+          btnLight.addEventListener('click', setLightMode);
+        }
+        if (btnDark) {
+          btnDark.addEventListener('click', setDarkMode);
+        }
+      });
+    })();
+  </script>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo-area">
+        <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+        <div class="logo-text">
+          <span class="logo-title" data-translate="Escuela Superior Vocacional">Escuela Superior Vocacional</span>
+          <span class="logo-subtitle">Pablo Colón Berdecia</span>
+        </div>
+      </div>
+
+      <!-- Hamburger Menu Button -->
+      <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <button class="menu-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html#inicio" data-translate="Inicio">Inicio</a></li>
+          <li><a href="index.html#servicios" data-translate="Servicios">Servicios</a></li>
+          <li><a href="index.html#contacto" data-translate="Contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3 data-translate="⚙️ Configuración">⚙️ Configuración</h3>
+    </div>
+    <div class="sidebar-content">
+      <!-- Theme Toggle -->
+      <div class="sidebar-option" id="themeToggle">
+        <span data-translate="🎨 Cambiar Tema">🎨 Cambiar Tema</span>
+      </div>
+      <div class="theme-options" id="themeOptions">
+        <div class="theme-option" id="selectLightTheme">
+          <span data-translate="☀️ Modo Claro">☀️ Modo Claro</span>
+        </div>
+        <div class="theme-option" id="selectDarkTheme">
+          <span data-translate="🌙 Modo Oscuro">🌙 Modo Oscuro</span>
+        </div>
+      </div>
+
+      <!-- Language Toggle -->
+      <div class="sidebar-option" id="languageToggle">
+        <span data-translate="🌐 Cambiar Idioma">🌐 Cambiar Idioma</span>
+      </div>
+      <div class="language-options" id="languageOptions">
+        <div class="language-option" id="selectSpanish">
+          <span>🇵🇷 Español</span>
+        </div>
+        <div class="language-option" id="selectEnglish">
+          <span>🇺🇸 English</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Hamburger menu functionality
+    (function () {
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const themeToggle = document.getElementById('themeToggle');
+      const themeOptions = document.getElementById('themeOptions');
+      const languageToggle = document.getElementById('languageToggle');
+      const languageOptions = document.getElementById('languageOptions');
+      const selectLightTheme = document.getElementById('selectLightTheme');
+      const selectDarkTheme = document.getElementById('selectDarkTheme');
+      const selectSpanish = document.getElementById('selectSpanish');
+      const selectEnglish = document.getElementById('selectEnglish');
+
+      function openSidebarMenu() {
+        sidebarMenu.classList.add('active');
+        sidebarOverlay.classList.add('active');
+      }
+
+      function closeSidebarMenu() {
+        sidebarMenu.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+        themeOptions.classList.remove('active');
+        languageOptions.classList.remove('active');
+      }
+
+      if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', openSidebarMenu);
+      }
+
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeSidebarMenu);
+      }
+
+      // Theme toggle
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function () {
+          themeOptions.classList.toggle('active');
+          languageOptions.classList.remove('active');
+        });
+      }
+
+      // Language toggle
+      if (languageToggle) {
+        languageToggle.addEventListener('click', function () {
+          languageOptions.classList.toggle('active');
+          themeOptions.classList.remove('active');
+        });
+      }
+
+      // Select Light Theme
+      if (selectLightTheme) {
+        selectLightTheme.addEventListener('click', function () {
+          document.body.classList.remove('dark-mode');
+          localStorage.setItem('theme', 'light');
+          closeSidebarMenu();
+        });
+      }
+
+      // Select Dark Theme
+      if (selectDarkTheme) {
+        selectDarkTheme.addEventListener('click', function () {
+          document.body.classList.add('dark-mode');
+          localStorage.setItem('theme', 'dark');
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma español
+      if (selectSpanish) {
+        selectSpanish.addEventListener('click', function () {
+          localStorage.setItem('language', 'es');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'es');
+          if (typeof translatePage === 'function') {
+            translatePage('es');
+          }
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma inglés
+      if (selectEnglish) {
+        selectEnglish.addEventListener('click', function () {
+          localStorage.setItem('language', 'en');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'en');
+          if (typeof translatePage === 'function') {
+            translatePage('en');
+          }
+          closeSidebarMenu();
+        });
+      }
+    })();
+  </script>
+
+  <div class="container" style="margin-bottom: 50px;">
+
+    <!-- Mensaje de Bienvenida Humanizado -->
+    <div
+      style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 50px 40px; border-radius: 20px; text-align: center; margin-bottom: 50px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
+      <div style="font-size: 3rem; margin-bottom: 15px;">👨‍👩‍👧‍👦</div>
+      <h1 style="font-size: 2.2rem; margin-bottom: 15px; font-weight: 700;">Bienvenido al Portal de Familias PCB</h1>
+      <p style="font-size: 1.2rem; max-width: 800px; margin: 0 auto 20px; line-height: 1.6; opacity: 0.95;">
+        Este es tu espacio digital para conectar con la escuela, gestionar trámites, acceder a formación y participar en
+        nuestra comunidad educativa.
+      </p>
+      <p style="font-size: 1rem; opacity: 0.9; font-style: italic;">
+        💙 Estamos aquí para apoyarte en cada paso del camino educativo de tu hijo/a
+      </p>
+    </div>
+
+    <!-- Categoría 1: Gestiones Académicas -->
+    <div style="margin-bottom: 50px;">
+      <div
+        style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 3px solid #3498db;">
+        <div style="font-size: 2.5rem; color: #3498db;">📚</div>
+        <div>
+          <h2 style="color: #2c3e50; margin: 0; font-size: 1.8rem;">Gestiones Académicas</h2>
+          <p style="color: #7f8c8d; margin: 5px 0 0 0;">Documentos, matrícula y seguimiento del progreso</p>
+        </div>
+      </div>
+      <div class="portal-grid">
+        <div class="action-card primary" onclick="window.location.href='solicitudes.html'">
+          <div class="icon-circle" style="color: #3498db;"><i class="fas fa-file-alt"></i></div>
+          <h3>Solicitar Documentos</h3>
+          <p>Certificaciones, cartas y transcripciones sin visitar la escuela.</p>
+        </div>
+        <div class="action-card primary" onclick="window.location.href='matricula.html'">
+          <div class="icon-circle" style="color: #3498db;"><i class="fas fa-user-plus"></i></div>
+          <h3>Matrícula en Línea</h3>
+          <p>Proceso de admisión y actualización de datos.</p>
+        </div>
+        <div class="action-card primary" onclick="alert('Próximamente: Dashboard de progreso académico')">
+          <div class="icon-circle" style="color: #3498db;"><i class="fas fa-chart-line"></i></div>
+          <h3>Progreso Académico</h3>
+          <p>Seguimiento general del desempeño de tu hijo/a.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Categoría 2: Comunicación Escuela-Familia -->
+    <div style="margin-bottom: 50px;">
+      <div
+        style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 3px solid #2ecc71;">
+        <div style="font-size: 2.5rem; color: #2ecc71;">💬</div>
+        <div>
+          <h2 style="color: #2c3e50; margin: 0; font-size: 1.8rem;">Comunicación Escuela-Familia</h2>
+          <p style="color: #7f8c8d; margin: 5px 0 0 0;">Mantente conectado con maestros y personal</p>
+        </div>
+      </div>
+      <div class="portal-grid">
+        <div class="action-card success" onclick="toggleMessageBox()">
+          <div class="icon-circle" style="color: #2ecc71;"><i class="fas fa-envelope"></i></div>
+          <h3>Mensaje Directo</h3>
+          <p>Envíe comunicados o justificaciones de ausencia.</p>
+        </div>
+        <div class="action-card success" onclick="window.location.href='orientacion.html'">
+          <div class="icon-circle" style="color: #2ecc71;"><i class="fas fa-calendar-alt"></i></div>
+          <h3>Citas con Personal</h3>
+          <p>Coordine reuniones con maestros, directores u orientadores.</p>
+        </div>
+        <div class="action-card success" onclick="alert('Próximamente: Centro de notificaciones')">
+          <div class="icon-circle" style="color: #2ecc71;"><i class="fas fa-bell"></i></div>
+          <h3>Notificaciones</h3>
+          <p>Avisos importantes y recordatorios escolares.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Categoría 3: Formación y Apoyo -->
+    <div style="margin-bottom: 50px;">
+      <div
+        style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 3px solid #9b59b6;">
+        <div style="font-size: 2.5rem; color: #9b59b6;">🎓</div>
+        <div>
+          <h2 style="color: #2c3e50; margin: 0; font-size: 1.8rem;">Formación y Apoyo</h2>
+          <p style="color: #7f8c8d; margin: 5px 0 0 0;">Talleres, certificaciones y educación continua</p>
+        </div>
+      </div>
+      <div class="portal-grid">
+        <div class="action-card" style="border-top-color: #9b59b6;"
+          onclick="window.location.href='talleres-padres.html'">
+          <div class="icon-circle" style="color: #9b59b6;"><i class="fas fa-chalkboard-teacher"></i></div>
+          <h3>Talleres para Padres</h3>
+          <p>Tecnología, apoyo académico y bienestar familiar.</p>
+        </div>
+        <div class="action-card" style="border-top-color: #9b59b6;"
+          onclick="window.location.href='certificaciones-padres.html'">
+          <div class="icon-circle" style="color: #9b59b6;"><i class="fas fa-certificate"></i></div>
+          <h3>Certificaciones Digitales</h3>
+          <p>Micro-certificaciones verificables con código QR.</p>
+        </div>
+        <div class="action-card" style="border-top-color: #9b59b6;"
+          onclick="window.location.href='educacion-comunitaria.html'">
+          <div class="icon-circle" style="color: #9b59b6;"><i class="fas fa-laptop"></i></div>
+          <h3>Educación Continua</h3>
+          <p>Cursos prácticos: computadoras, resumé, empleo.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Categoría 4: Participación Comunitaria -->
+    <div style="margin-bottom: 50px;">
+      <div
+        style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 3px solid #e67e22;">
+        <div style="font-size: 2.5rem; color: #e67e22;">🤝</div>
+        <div>
+          <h2 style="color: #2c3e50; margin: 0; font-size: 1.8rem;">Participación Comunitaria</h2>
+          <p style="color: #7f8c8d; margin: 5px 0 0 0;">Únete, colabora y fortalece nuestra comunidad</p>
+        </div>
+      </div>
+      <div class="portal-grid">
+        <div class="action-card warning" onclick="window.location.href='participacion-comunitaria.html'">
+          <div class="icon-circle" style="color: #e67e22;"><i class="fas fa-hands-helping"></i></div>
+          <h3>Voluntariado</h3>
+          <p>Ofrece tu tiempo en biblioteca, eventos o mentoría.</p>
+        </div>
+        <div class="action-card warning" onclick="window.location.href='participacion-comunitaria.html#charlas'">
+          <div class="icon-circle" style="color: #e67e22;"><i class="fas fa-microphone"></i></div>
+          <h3>Ofrecer Charlas</h3>
+          <p>Comparte tu profesión, hobby o experiencia.</p>
+        </div>
+        <div class="action-card warning" onclick="window.location.href='participacion-comunitaria.html#eventos'">
+          <div class="icon-circle" style="color: #e67e22;"><i class="fas fa-calendar-check"></i></div>
+          <h3>Eventos Escolares</h3>
+          <p>Apoya y participa en actividades de la escuela.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulario de Mensajería (Expandible) -->
+    <div class="message-box" id="parentMessageBox">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="color: #2c3e50;"><i class="fas fa-paper-plane"></i> Enviar Mensaje a la Escuela</h2>
+        <button class="btn btn-secondary" onclick="toggleMessageBox()" style="padding: 5px 15px;">X</button>
+      </div>
+
+      <form id="parentMessageForm">
+        <div class="grid-2" style="gap: 20px;">
+          <div class="form-group">
+            <label class="form-label">Nombre del Padre/Madre</label>
+            <input type="text" name="parentName" class="futuristic-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nombre del Estudiante</label>
+            <input type="text" name="studentName" class="futuristic-input" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Tipo de Mensaje</label>
+          <select name="type" class="futuristic-input">
+            <option value="ausencia">Justificación de Ausencia</option>
+            <option value="duda">Duda Académica</option>
+            <option value="queja">Queja o Sugerencia</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Mensaje</label>
+          <textarea name="message" class="futuristic-input" rows="4" required></textarea>
+        </div>
+
+        <button type="submit" class="futuristic-btn" style="width: 100%;">Enviar Mensaje</button>
+      </form>
+    </div>
+
+  </div>
+
+  <!-- PCB AI Assistant Floating Button -->
+  <button class="ai-assistant-btn" onclick="openAIAssistant()" title="PCB AI - Asistente para Padres">
+    <i class="fas fa-robot"></i>
+  </button>
+
+  <script>
+    function openAIAssistant() {
+      alert('🤖 PCB AI - Asistente para Padres\n\n¡Hola! Soy tu asistente virtual.\n\n¿En qué puedo ayudarte hoy?\n\n• Información sobre servicios\n• Talleres y certificaciones\n• Preguntas frecuentes\n• Navegación del portal\n\nPróximamente: Chat en vivo con IA');
+      // Aquí se integraría el chatbot de IA
+    }
+  </script>
+
+  <script src="js/services-manager.js"></script>
+  <script src="js/padres.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiénes Somos - Escuela Superior Vocacional Pablo Colón Berdecia</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dark-mode-fix-v2.css?v=2">
+  <link rel="stylesheet" href="image-popup.css">
+  <link rel="stylesheet" href="notification-bot.css">
+  <style>
+    /* Fix dark mode para quienes-somos */
+    body.dark-mode {
+      background: #0B1220 !important;
+      color: #E5E7EB !important;
+    }
+
+    body.dark-mode .section {
+      background: #0B1220 !important;
+    }
+
+    body.dark-mode .section-alt {
+      background: #0F172A !important;
+    }
+
+    body.dark-mode .card,
+    body.dark-mode .team-card,
+    body.dark-mode .value-card {
+      background: rgba(17, 24, 39, 0.95) !important;
+      border: 1px solid rgba(56, 189, 248, 0.2) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+      color: #E5E7EB !important;
+    }
+
+    body.dark-mode .card:hover,
+    body.dark-mode .team-card:hover,
+    body.dark-mode .value-card:hover {
+      border-color: #38BDF8 !important;
+      box-shadow: 0 8px 30px rgba(56, 189, 248, 0.4) !important;
+      transform: translateY(-5px) !important;
+    }
+
+    body.dark-mode h1,
+    body.dark-mode h2,
+    body.dark-mode h3,
+    body.dark-mode h4 {
+      color: #38BDF8 !important;
+    }
+
+    body.dark-mode p,
+    body.dark-mode li {
+      color: #E5E7EB !important;
+    }
+
+    body.dark-mode .team-name {
+      color: #38BDF8 !important;
+    }
+
+    body.dark-mode .team-role {
+      color: #9CA3AF !important;
+    }
+
+    body.dark-mode .value-icon {
+      background: rgba(56, 189, 248, 0.1) !important;
+      color: #38BDF8 !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Popup de selección de tema 
+  <div id="themePopup" class="theme-popup">
+    <div class="theme-popup-content">
+      <h2 data-translate="🎨 Selecciona tu tema preferido">🎨 Selecciona tu tema preferido</h2>
+      <p data-translate="Elige cómo quieres ver el sitio web">Elige cómo quieres ver el sitio web</p>
+      <div class="theme-buttons">
+        <button class="theme-btn theme-btn-light" id="btnLightMode" data-translate="☀️ Modo Claro">
+          ☀️ Modo Claro
+        </button>
+        <button class="theme-btn theme-btn-dark" id="btnDarkMode" data-translate="🌙 Modo Oscuro">
+          🌙 Modo Oscuro
+        </button>
+      </div>
+    </div>
+  </div> -->
+
+  <script>
+    // Script inline para modo claro/oscuro
+    (function () {
+      function hidePopup() {
+        document.getElementById('themePopup').classList.add('hidden');
+      }
+
+      function setLightMode() {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        hidePopup();
+      }
+
+      function setDarkMode() {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        hidePopup();
+      }
+
+      function checkTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          hidePopup();
+        } else if (savedTheme === 'light') {
+          hidePopup();
+        }
+      }
+
+      // Ejecutar inmediatamente
+      checkTheme();
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const btnLight = document.getElementById('btnLightMode');
+        const btnDark = document.getElementById('btnDarkMode');
+
+        if (btnLight) {
+          btnLight.addEventListener('click', setLightMode);
+        }
+        if (btnDark) {
+          btnDark.addEventListener('click', setDarkMode);
+        }
+      });
+    })();
+  </script>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo-area">
+        <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+        <div class="logo-text">
+          <span class="logo-title" data-translate="Escuela Superior Vocacional">Escuela Superior Vocacional</span>
+          <span class="logo-subtitle">Pablo Colón Berdecia</span>
+        </div>
+      </div>
+
+      <!-- Hamburger Menu Button -->
+      <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <button class="menu-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html#inicio" data-translate="Inicio">Inicio</a></li>
+          <li><a href="index.html#servicios" data-translate="Servicios">Servicios</a></li>
+          <li><a href="index.html#contacto" data-translate="Contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3 data-translate="⚙️ Configuración">⚙️ Configuración</h3>
+    </div>
+    <div class="sidebar-content">
+      <!-- Theme Toggle -->
+      <div class="sidebar-option" id="themeToggle">
+        <span data-translate="🎨 Cambiar Tema">🎨 Cambiar Tema</span>
+      </div>
+      <div class="theme-options" id="themeOptions">
+        <div class="theme-option" id="selectLightTheme">
+          <span data-translate="☀️ Modo Claro">☀️ Modo Claro</span>
+        </div>
+        <div class="theme-option" id="selectDarkTheme">
+          <span data-translate="🌙 Modo Oscuro">🌙 Modo Oscuro</span>
+        </div>
+      </div>
+
+      <!-- Language Toggle -->
+      <div class="sidebar-option" id="languageToggle">
+        <span data-translate="🌐 Cambiar Idioma">🌐 Cambiar Idioma</span>
+      </div>
+      <div class="language-options" id="languageOptions">
+        <div class="language-option" id="selectSpanish">
+          <span>🇵🇷 Español</span>
+        </div>
+        <div class="language-option" id="selectEnglish">
+          <span>🇺🇸 English</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Hamburger menu functionality
+    (function () {
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const themeToggle = document.getElementById('themeToggle');
+      const themeOptions = document.getElementById('themeOptions');
+      const languageToggle = document.getElementById('languageToggle');
+      const languageOptions = document.getElementById('languageOptions');
+      const selectLightTheme = document.getElementById('selectLightTheme');
+      const selectDarkTheme = document.getElementById('selectDarkTheme');
+      const selectSpanish = document.getElementById('selectSpanish');
+      const selectEnglish = document.getElementById('selectEnglish');
+
+      function openSidebarMenu() {
+        sidebarMenu.classList.add('active');
+        sidebarOverlay.classList.add('active');
+      }
+
+      function closeSidebarMenu() {
+        sidebarMenu.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+        themeOptions.classList.remove('active');
+        languageOptions.classList.remove('active');
+      }
+
+      if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', openSidebarMenu);
+      }
+
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeSidebarMenu);
+      }
+
+      // Theme toggle
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function () {
+          themeOptions.classList.toggle('active');
+          languageOptions.classList.remove('active');
+        });
+      }
+
+      // Language toggle
+      if (languageToggle) {
+        languageToggle.addEventListener('click', function () {
+          languageOptions.classList.toggle('active');
+          themeOptions.classList.remove('active');
+        });
+      }
+
+      // Select Light Theme
+      if (selectLightTheme) {
+        selectLightTheme.addEventListener('click', function () {
+          document.body.classList.remove('dark-mode');
+          localStorage.setItem('theme', 'light');
+          closeSidebarMenu();
+        });
+      }
+
+      // Select Dark Theme
+      if (selectDarkTheme) {
+        selectDarkTheme.addEventListener('click', function () {
+          document.body.classList.add('dark-mode');
+          localStorage.setItem('theme', 'dark');
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma español
+      if (selectSpanish) {
+        selectSpanish.addEventListener('click', function () {
+          localStorage.setItem('language', 'es');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'es');
+          if (typeof translatePage === 'function') {
+            translatePage('es');
+          }
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma inglés
+      if (selectEnglish) {
+        selectEnglish.addEventListener('click', function () {
+          localStorage.setItem('language', 'en');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'en');
+          if (typeof translatePage === 'function') {
+            translatePage('en');
+          }
+          closeSidebarMenu();
+        });
+      }
+    })();
+  </script>
+
+  <!-- Popup de selección de tema -->
+  <div id="themePopup" class="theme-popup">
+    <div class="theme-popup-content">
+      <h2 data-translate="🎨 Selecciona tu tema preferido">🎨 Selecciona tu tema preferido</h2>
+      <p data-translate="Elige cómo quieres ver el sitio web">Elige cómo quieres ver el sitio web</p>
+      <div class="theme-buttons">
+        <button class="theme-btn theme-btn-light" id="btnLightMode" data-translate="☀️ Modo Claro">
+          ☀️ Modo Claro
+        </button>
+        <button class="theme-btn theme-btn-dark" id="btnDarkMode" data-translate="🌙 Modo Oscuro">
+          🌙 Modo Oscuro
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Script inline para modo claro/oscuro y hamburger menu
+    (function () {
+      function hidePopup() {
+        document.getElementById('themePopup').classList.add('hidden');
+      }
+
+      function setLightMode() {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        hidePopup();
+      }
+
+      function setDarkMode() {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        hidePopup();
+      }
+
+      function checkTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          hidePopup();
+        } else if (savedTheme === 'light') {
+          hidePopup();
+        }
+      }
+
+      // Ejecutar inmediatamente
+      checkTheme();
+
+      // Agregar event listeners cuando el DOM esté listo
+      document.addEventListener('DOMContentLoaded', function () {
+        const btnLight = document.getElementById('btnLightMode');
+        const btnDark = document.getElementById('btnDarkMode');
+
+        if (btnLight) {
+          btnLight.addEventListener('click', setLightMode);
+        }
+        if (btnDark) {
+          btnDark.addEventListener('click', setDarkMode);
+        }
+
+        // Hamburger menu functionality
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const closeSidebar = document.getElementById('closeSidebar');
+        const themeToggle = document.getElementById('themeToggle');
+        const themeOptions = document.getElementById('themeOptions');
+        const selectLightMode = document.getElementById('selectLightMode');
+        const selectDarkMode = document.getElementById('selectDarkMode');
+        const languageToggle = document.getElementById('languageToggle');
+        const languageOptions = document.getElementById('languageOptions');
+        const selectSpanish = document.getElementById('selectSpanish');
+        const selectEnglish = document.getElementById('selectEnglish');
+
+        function openSidebarMenu() {
+          if (sidebarMenu) {
+            sidebarMenu.classList.add('active');
+          }
+          if (sidebarOverlay) {
+            sidebarOverlay.classList.add('active');
+          }
+        }
+
+        function closeSidebarMenu() {
+          if (sidebarMenu) {
+            sidebarMenu.classList.remove('active');
+          }
+          if (sidebarOverlay) {
+            sidebarOverlay.classList.remove('active');
+          }
+          // Cerrar opciones de tema e idioma
+          if (themeOptions) {
+            themeOptions.style.display = 'none';
+          }
+          if (languageOptions) {
+            languageOptions.style.display = 'none';
+          }
+        }
+
+        // Abrir sidebar
+        if (hamburgerBtn) {
+          hamburgerBtn.addEventListener('click', openSidebarMenu);
+        }
+
+        // Cerrar sidebar
+        if (closeSidebar) {
+          closeSidebar.addEventListener('click', closeSidebarMenu);
+        }
+
+        // Cerrar sidebar al hacer clic en overlay
+        if (sidebarOverlay) {
+          sidebarOverlay.addEventListener('click', closeSidebarMenu);
+        }
+
+        // Toggle theme options
+        if (themeToggle) {
+          themeToggle.addEventListener('click', function () {
+            if (themeOptions.style.display === 'none') {
+              themeOptions.style.display = 'block';
+            } else {
+              themeOptions.style.display = 'none';
+            }
+          });
+        }
+
+        // Seleccionar modo claro desde sidebar
+        if (selectLightMode) {
+          selectLightMode.addEventListener('click', function () {
+            setLightMode();
+            closeSidebarMenu();
+          });
+        }
+
+        // Seleccionar modo oscuro desde sidebar
+        if (selectDarkMode) {
+          selectDarkMode.addEventListener('click', function () {
+            setDarkMode();
+            closeSidebarMenu();
+          });
+        }
+
+        // Toggle language options
+        if (languageToggle) {
+          languageToggle.addEventListener('click', function () {
+            if (languageOptions.style.display === 'none') {
+              languageOptions.style.display = 'block';
+            } else {
+              languageOptions.style.display = 'none';
+            }
+          });
+        }
+
+        // Seleccionar idioma español
+        if (selectSpanish) {
+          selectSpanish.addEventListener('click', function () {
+            localStorage.setItem('language', 'es');
+            document.getElementById('htmlRoot').setAttribute('lang', 'es');
+            if (typeof translatePage === 'function') {
+              translatePage('es');
+            }
+            closeSidebarMenu();
+          });
+        }
+
+        // Seleccionar idioma inglés
+        if (selectEnglish) {
+          selectEnglish.addEventListener('click', function () {
+            localStorage.setItem('language', 'en');
+            document.getElementById('htmlRoot').setAttribute('lang', 'en');
+            if (typeof translatePage === 'function') {
+              translatePage('en');
+            }
+            closeSidebarMenu();
+          });
+        }
+      });
+    })();
+  </script>
+
+  <!-- HEADER -->
+
+
+  <!-- Menú lateral hamburguesa -->
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3 data-translate="⚙️ Configuración">⚙️ Configuración</h3>
+      <button class="sidebar-close" id="closeSidebar">&times;</button>
+    </div>
+    <div class="sidebar-content">
+      <!-- Cambiar Tema -->
+      <div class="sidebar-item" id="themeToggle">
+        <span class="sidebar-icon">🎨</span>
+        <span class="sidebar-text" data-translate="Cambiar Tema">Cambiar Tema</span>
+        <span class="sidebar-arrow">›</span>
+      </div>
+      <div class="theme-options" id="themeOptions" style="display: none;">
+        <button class="theme-option" id="selectLightMode" data-translate="Modo Claro">
+          <span>☀️</span> Modo Claro
+        </button>
+        <button class="theme-option" id="selectDarkMode" data-translate="Modo Oscuro">
+          <span>🌙</span> Modo Oscuro
+        </button>
+      </div>
+
+      <!-- Cambiar Idioma -->
+      <div class="sidebar-item" id="languageToggle">
+        <span class="sidebar-icon">🌐</span>
+        <span class="sidebar-text" data-translate="Cambiar Idioma">Cambiar Idioma</span>
+        <span class="sidebar-arrow">›</span>
+      </div>
+      <div class="theme-options" id="languageOptions" style="display: none;">
+        <button class="theme-option" id="selectSpanish" data-translate="Español">
+          <span>🇵🇷</span> Español
+        </button>
+        <button class="theme-option" id="selectEnglish" data-translate="English">
+          <span>🇺🇸</span> English
+        </button>
+      </div>
+
+      <!-- Separador -->
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 1rem 0;"></div>
+
+      <!-- Dashboard Administrativo -->
+      <a href="admin.html" class="sidebar-item sidebar-link"
+        style="text-decoration: none; color: inherit; display: flex; align-items: center; padding: 1rem; cursor: pointer; transition: background 0.3s;">
+        <span class="sidebar-icon">⚙️</span>
+        <span class="sidebar-text" data-translate="Dashboard Admin">Dashboard Admin</span>
+        <span class="sidebar-arrow">›</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Overlay para cerrar el menú -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content-centered">
+        <h1 data-translate="Quiénes Somos">Quiénes Somos</h1>
+        <p data-translate="Conoce nuestra historia, misión y visión">
+          Conoce nuestra historia, misión y visión
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <section class="section">
+    <div class="container">
+
+      <!-- Historia -->
+      <div class="card" style="margin-bottom: 2rem;">
+        <h3 style="color: var(--primary); margin-bottom: 1rem;" data-translate="📚 Nuestra Historia">📚 Nuestra Historia
+        </h3>
+        <p
+          data-translate="La Escuela Superior Vocacional Pablo Colón Berdecia es una institución educativa comprometida con la excelencia académica y la formación integral de nuestros estudiantes. Fundada con el propósito de ofrecer educación vocacional de calidad, nos hemos convertido en un referente en la preparación de jóvenes para el mundo laboral y la educación superior.">
+          La Escuela Superior Vocacional Pablo Colón Berdecia es una institución educativa comprometida con la
+          excelencia académica y la formación integral de nuestros estudiantes. Fundada con el propósito de ofrecer
+          educación vocacional de calidad, nos hemos convertido en un referente en la preparación de jóvenes para el
+          mundo laboral y la educación superior.
+        </p>
+        <p
+          data-translate="Nuestro nombre honra la memoria de Pablo Colón Berdecia, un educador visionario que dedicó su vida a la formación de generaciones de puertorriqueños.">
+          Nuestro nombre honra la memoria de Pablo Colón Berdecia, un educador visionario que dedicó su vida a la
+          formación de generaciones de puertorriqueños.
+        </p>
+      </div>
+
+      <!-- Misión y Visión -->
+      <div class="grid-2" style="margin-bottom: 2rem;">
+        <div class="card">
+          <h3 style="color: var(--primary); margin-bottom: 1rem;" data-translate="🎯 Misión">🎯 Misión</h3>
+          <p
+            data-translate="Proveer una educación vocacional de excelencia que prepare a nuestros estudiantes para enfrentar los retos del siglo XXI, desarrollando competencias académicas, técnicas y socioemocionales que les permitan alcanzar sus metas personales y profesionales.">
+            Proveer una educación vocacional de excelencia que prepare a nuestros estudiantes para enfrentar los retos
+            del siglo XXI, desarrollando competencias académicas, técnicas y socioemocionales que les permitan alcanzar
+            sus metas personales y profesionales.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3 style="color: var(--primary); margin-bottom: 1rem;" data-translate="🌟 Visión">🌟 Visión</h3>
+          <p
+            data-translate="Ser reconocidos como la institución educativa vocacional líder en Puerto Rico, formando ciudadanos íntegros, competentes y comprometidos con el desarrollo de nuestra sociedad.">
+            Ser reconocidos como la institución educativa vocacional líder en Puerto Rico, formando ciudadanos íntegros,
+            competentes y comprometidos con el desarrollo de nuestra sociedad.
+          </p>
+        </div>
+      </div>
+
+      <!-- Valores -->
+      <div class="card" style="margin-bottom: 2rem;">
+        <h3 style="color: var(--primary); margin-bottom: 1rem;" data-translate="💎 Nuestros Valores">💎 Nuestros Valores
+        </h3>
+        <div class="grid-3">
+          <div style="text-align: center; padding: 1rem;">
+            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎓</div>
+            <h4 data-translate="Excelencia">Excelencia</h4>
+            <p data-translate="Compromiso con la calidad en todo lo que hacemos">Compromiso con la calidad en todo lo
+              que hacemos</p>
+          </div>
+          <div style="text-align: center; padding: 1rem;">
+            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🤝</div>
+            <h4 data-translate="Respeto">Respeto</h4>
+            <p data-translate="Valoramos la diversidad y dignidad de cada persona">Valoramos la diversidad y dignidad de
+              cada persona</p>
+          </div>
+          <div style="text-align: center; padding: 1rem;">
+            <div style="font-size: 3rem; margin-bottom: 0.5rem;">💪</div>
+            <h4 data-translate="Responsabilidad">Responsabilidad</h4>
+            <p data-translate="Asumimos nuestros compromisos con seriedad">Asumimos nuestros compromisos con seriedad
+            </p>
+          </div>
+          <div style="text-align: center; padding: 1rem;">
+            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🌱</div>
+            <h4 data-translate="Innovación">Innovación</h4>
+            <p data-translate="Buscamos constantemente nuevas formas de mejorar">Buscamos constantemente nuevas formas
+              de mejorar</p>
+          </div>
+          <div style="text-align: center; padding: 1rem;">
+            <div style="font-size: 3rem; margin-bottom: 0.5rem;">❤️</div>
+            <h4 data-translate="Integridad">Integridad</h4>
+            <p data-translate="Actuamos con honestidad y transparencia">Actuamos con honestidad y transparencia</p>
+          </div>
+          <div style="text-align: center; padding: 1rem;">
+            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🌍</div>
+            <h4 data-translate="Compromiso Social">Compromiso Social</h4>
+            <p data-translate="Contribuimos al desarrollo de nuestra comunidad">Contribuimos al desarrollo de nuestra
+              comunidad</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón de regreso -->
+      <div style="text-align: center; margin-top: 3rem;">
+        <a href="index.html" class="btn btn-primary" data-translate="← Volver al inicio">← Volver al inicio</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Escuela Superior Vocacional Pablo Colón Berdecia. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="translations.js"></script>
+  <script src="image-popup.js"></script>
+  <script src="notification-bot.js"></script>
+</body>
+
+</html>

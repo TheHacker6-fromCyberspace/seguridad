@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Hero Section Dark Mode</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dark-mode-fix.css">
+    <style>
+        .toggle-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 30px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .toggle-btn:hover {
+            background: #0056b3;
+        }
+        .info-box {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            max-width: 300px;
+            z-index: 1000;
+        }
+        body.dark-mode .info-box {
+            background: rgba(17, 24, 39, 0.95);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleDarkMode()">🌙 Toggle Dark Mode</button>
+
+    <div class="info-box">
+        <h3 style="margin-top: 0;">✅ Verificación</h3>
+        <p><strong>Modo Claro:</strong></p>
+        <ul style="margin: 5px 0; padding-left: 20px; font-size: 14px;">
+            <li>Imagen de fondo visible</li>
+            <li>Overlay morado/azul</li>
+        </ul>
+        <p><strong>Modo Oscuro:</strong></p>
+        <ul style="margin: 5px 0; padding-left: 20px; font-size: 14px;">
+            <li>✅ Imagen de fondo VISIBLE</li>
+            <li>✅ Overlay oscuro (azul oscuro)</li>
+            <li>✅ Texto legible</li>
+        </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Escuela Superior Vocacional Pablo Colón Berdecia</h1>
+                    <p>Formando profesionales con excelencia académica y valores desde 1968</p>
+                    <div class="hero-buttons">
+                        <a href="#programas" class="btn btn-primary">Ver Programas Vocacionales</a>
+                        <a href="#promociones" class="btn btn-secondary">Ver Promociones</a>
+                    </div>
+                </div>
+                
+                <div class="hero-cards">
+                    <div class="hero-card">
+                        <h2>🎓 Programas Técnicos</h2>
+                        <ul>
+                            <li>Enfermería Práctica</li>
+                            <li>Cosmetología</li>
+                            <li>Tecnología de Computadoras</li>
+                            <li>Seguridad Pública</li>
+                            <li>Empresarismo</li>
+                        </ul>
+                        <a href="#programas" class="btn btn-primary">Ver los Programas</a>
+                    </div>
+                    
+                    <div class="hero-card">
+                        <h2>📅 Próximos Eventos</h2>
+                        <ul>
+                            <li>Casa Abierta - Marzo 2026</li>
+                            <li>Feria de Universidades</li>
+                            <li>Competencias SkillsUSA</li>
+                            <li>Graduación 2026</li>
+                        </ul>
+                        <a href="#eventos" class="btn btn-primary">Casa Abierta</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="padding: 60px 0;">
+        <div class="container">
+            <h2>Instrucciones de Prueba</h2>
+            <ol>
+                <li>Haz clic en el botón "🌙 Toggle Dark Mode" arriba a la derecha</li>
+                <li>Verifica que la imagen de fondo del Hero Section se vea en ambos modos</li>
+                <li>En modo oscuro, la imagen debe tener un overlay azul oscuro</li>
+                <li>Si no se ve, presiona <strong>Ctrl + Shift + R</strong> para limpiar caché</li>
+            </ol>
+            
+            <h3>Resultado Esperado:</h3>
+            <p><strong>Modo Claro:</strong> Imagen con overlay morado/azul brillante</p>
+            <p><strong>Modo Oscuro:</strong> La MISMA imagen con overlay azul oscuro (#0B1220 / #0F172A)</p>
+        </div>
+    </section>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            console.log('Dark mode:', isDark);
+        }
+
+        // Cargar tema guardado
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+</body>
+</html>
+
