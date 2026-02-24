@@ -1,0 +1,285 @@
+/* =========================================
+   DARK MODE FUTURISTA - ARCHIVO STANDALONE
+   Importar este archivo DESPUÉS de styles.css
+   ========================================= */
+
+/* === PALETA DARK TECH FUTURISTA === */
+body.dark-mode {
+    --primary: #38BDF8 !important;
+    --primary-light: #0EA5E9 !important;
+    --accent: #A855F7 !important;
+    --bg: #0B1220 !important;
+    --bg-alt: #0F172A !important;
+    --card: #111827 !important;
+    --text-main: #E5E7EB !important;
+    --text-soft: #9CA3AF !important;
+    --border-soft: #1F2933 !important;
+    --border: #1F2933 !important;
+    --gradient-1: linear-gradient(135deg, #38BDF8 0%, #A855F7 100%) !important;
+    --gradient-2: linear-gradient(135deg, #A855F7 0%, #EF4444 100%) !important;
+    --gradient-3: linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%) !important;
+    --accent-pink: #A855F7 !important;
+    --accent-cyan: #38BDF8 !important;
+    --success: #22C55E !important;
+    --warning: #FACC15 !important;
+    --danger: #EF4444 !important;
+    background: #0B1220;
+    color: #E5E7EB;
+}
+
+/* === FIX HERO IMAGES === */
+body.dark-mode .hero {
+    background: linear-gradient(135deg, rgba(11, 18, 32, 0.85) 0%, rgba(15, 23, 42, 0.85) 100%),
+        url('images14.jpeg') center center no-repeat !important;
+    background-size: cover !important;
+    background-attachment: scroll !important;
+    background-position: center center !important;
+}
+
+body.dark-mode .hero::before {
+    opacity: 0.2 !important;
+}
+
+body.dark-mode .hero img {
+    opacity: 0.9 !important;
+    filter: brightness(0.95) contrast(1.1) !important;
+    transition: all 0.3s ease;
+}
+
+body.dark-mode .hero img:hover {
+    opacity: 1 !important;
+    filter: brightness(1) contrast(1.15) !important;
+}
+
+/* === HEADER === */
+body.dark-mode .site-header {
+    background: rgba(11, 18, 32, 0.95) !important;
+    border-bottom: 1px solid var(--border-soft) !important;
+    box-shadow: 0 2px 20px rgba(56, 189, 248, 0.1) !important;
+    backdrop-filter: blur(10px);
+}
+
+body.dark-mode .site-header.scrolled {
+    box-shadow: 0 4px 30px rgba(56, 189, 248, 0.15) !important;
+}
+
+body.dark-mode .logo-title,
+body.dark-mode .logo-subtitle {
+    color: var(--text-main) !important;
+}
+
+body.dark-mode .main-nav a {
+    color: #ffffff !important;
+    background: var(--primary) !important;
+}
+
+body.dark-mode .main-nav a:hover {
+    color: #ffffff !important;
+    background: var(--primary-light) !important;
+    text-shadow: none !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Fix específico para asegurar visibilidad */
+body.dark-mode .main-nav ul li a {
+    color: #ffffff !important;
+}
+
+body.dark-mode .main-nav ul li a:hover {
+    color: #ffffff !important;
+    background: var(--primary-light) !important;
+}
+
+/* Dropdown menu en dark mode */
+body.dark-mode .dropdown-menu {
+    background: var(--card) !important;
+    border: 1px solid var(--border-soft) !important;
+}
+
+body.dark-mode .dropdown-menu a {
+    color: var(--text-main) !important;
+    background: transparent !important;
+}
+
+body.dark-mode .dropdown-menu a:hover {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+}
+
+/* === HERO CARDS === */
+body.dark-mode .hero-card {
+    background: rgba(17, 24, 39, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(56, 189, 248, 0.2) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode .hero-card:hover {
+    border-color: var(--primary) !important;
+    box-shadow: 0 8px 30px rgba(56, 189, 248, 0.3) !important;
+    transform: translateY(-5px) !important;
+}
+
+body.dark-mode .hero-card h2 {
+    color: var(--primary) !important;
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+}
+
+body.dark-mode .hero-card ul {
+    color: var(--text-main) !important;
+}
+
+body.dark-mode .hero-card li {
+    color: var(--text-main) !important;
+    border-bottom-color: rgba(56, 189, 248, 0.1) !important;
+}
+
+body.dark-mode .hero-card p {
+    color: var(--text-soft) !important;
+}
+
+body.dark-mode .hero-card .btn {
+    margin-top: 1rem;
+}
+
+/* === BOTONES === */
+body.dark-mode .btn-primary {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3) !important;
+}
+
+body.dark-mode .btn-primary:hover {
+    background: var(--primary-light) !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4) !important;
+    transform: translateY(-2px) !important;
+}
+
+body.dark-mode .btn-secondary {
+    background: transparent !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border-soft) !important;
+}
+
+body.dark-mode .btn-secondary:hover {
+    background: var(--card) !important;
+    border-color: var(--primary) !important;
+    color: var(--primary) !important;
+}
+
+/* === CARDS === */
+body.dark-mode .card,
+body.dark-mode .service-card,
+body.dark-mode .program-card,
+body.dark-mode .resource-card {
+    background: var(--card) !important;
+    border: 1px solid var(--border-soft) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+}
+
+body.dark-mode .card:hover,
+body.dark-mode .service-card:hover,
+body.dark-mode .program-card:hover {
+    border-color: var(--primary) !important;
+    box-shadow: 0 8px 25px rgba(56, 189, 248, 0.15) !important;
+}
+
+body.dark-mode .card h2,
+body.dark-mode .card h3,
+body.dark-mode .service-card h3 {
+    color: var(--text-main) !important;
+}
+
+body.dark-mode .card p,
+body.dark-mode .service-card p {
+    color: var(--text-soft) !important;
+}
+
+/* === INPUTS === */
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--border-soft) !important;
+    color: var(--text-main) !important;
+}
+
+body.dark-mode input:focus,
+body.dark-mode textarea:focus,
+body.dark-mode select:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.2) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+    color: var(--text-soft) !important;
+    opacity: 0.6;
+}
+
+/* === SIDEBAR === */
+body.dark-mode .sidebar-menu {
+    background: var(--bg-alt) !important;
+    border-left: 1px solid var(--border-soft) !important;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode .sidebar-header {
+    background: var(--card) !important;
+    border-bottom: 1px solid var(--border-soft) !important;
+    color: var(--text-main) !important;
+}
+
+body.dark-mode .sidebar-option {
+    color: var(--text-main) !important;
+    border-bottom: 1px solid var(--border-soft) !important;
+}
+
+body.dark-mode .sidebar-option:hover {
+    background: var(--card) !important;
+    color: var(--primary) !important;
+}
+
+/* === AI ASSISTANT BUTTON === */
+body.dark-mode .ai-assistant-btn {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%) !important;
+    box-shadow: 0 6px 25px rgba(168, 85, 247, 0.4) !important;
+}
+
+body.dark-mode .ai-assistant-btn:hover {
+    box-shadow: 0 8px 35px rgba(168, 85, 247, 0.6) !important;
+}
+
+/* === FUTURISTIC INPUTS === */
+body.dark-mode .futuristic-input {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(56, 189, 248, 0.3) !important;
+    color: var(--text-main) !important;
+}
+
+body.dark-mode .futuristic-input:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.3) !important;
+}
+
+/* === FUTURISTIC BUTTONS === */
+body.dark-mode .futuristic-btn {
+    background: linear-gradient(45deg, var(--primary), var(--accent)) !important;
+    box-shadow: 0 4px 20px rgba(56, 189, 248, 0.3) !important;
+}
+
+body.dark-mode .futuristic-btn:hover {
+    box-shadow: 0 6px 30px rgba(56, 189, 248, 0.5) !important;
+}
+
+/* === LINKS === */
+body.dark-mode a {
+    color: var(--primary) !important;
+}
+
+body.dark-mode a:hover {
+    color: var(--primary-light) !important;
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+}

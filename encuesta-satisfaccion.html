@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuesta de Satisfacción - Servicios Técnicos</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .survey-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .survey-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .survey-header h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .ticket-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .rating-stars {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .star {
+            font-size: 3rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .star:hover,
+        .star.active {
+            color: #ffd700;
+            transform: scale(1.2);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            text-align: center;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .success-icon {
+            font-size: 5rem;
+            color: #27ae60;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="survey-container">
+        <div class="survey-header">
+            <h1><i class="fas fa-star"></i> Encuesta de Satisfacción</h1>
+            <p>Tu opinión nos ayuda a mejorar nuestros servicios</p>
+        </div>
+
+        <div id="surveyForm">
+            <div class="ticket-info" id="ticketInfo">
+                <p><strong>Ticket ID:</strong> <span id="ticketId"></span></p>
+                <p><strong>Técnico:</strong> <span id="techName"></span></p>
+                <p><strong>Servicio:</strong> <span id="serviceType"></span></p>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">¿Cómo calificarías el servicio recibido?</label>
+                <div class="rating-stars" id="ratingStars">
+                    <i class="fas fa-star star" data-rating="1"></i>
+                    <i class="fas fa-star star" data-rating="2"></i>
+                    <i class="fas fa-star star" data-rating="3"></i>
+                    <i class="fas fa-star star" data-rating="4"></i>
+                    <i class="fas fa-star star" data-rating="5"></i>
+                </div>
+                <p style="text-align: center; color: #666;" id="ratingText">Selecciona una calificación</p>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Comentarios adicionales (opcional)</label>
+                <textarea id="comments" placeholder="Cuéntanos sobre tu experiencia..."></textarea>
+            </div>
+
+            <button class="btn-submit" id="submitBtn" disabled>
+                <i class="fas fa-paper-plane"></i> Enviar Encuesta
+            </button>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+            <h2>¡Gracias por tu feedback!</h2>
+            <p>Tu opinión ha sido registrada exitosamente.</p>
+        </div>
+    </div>
+
+    <script src="js/services-manager.js"></script>
+    <script>
+        let selectedRating = 0;
+        let ticketId = null;
+
+        // Get ticket ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        ticketId = urlParams.get('ticket');
+
+        if (!ticketId) {
+            document.querySelector('.survey-container').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 4rem; color: #e74c3c; margin-bottom: 20px;"></i>
+                    <h2>Enlace Inválido</h2>
+                    <p>No se encontró el ticket especificado.</p>
+                </div>
+            `;
+        } else {
+            loadTicketInfo();
+        }
+
+        // Load ticket information
+        function loadTicketInfo() {
+            const tickets = window.serviceManager.getAllTickets();
+            const ticket = tickets.find(t => t.id === ticketId);
+
+            if (!ticket) {
+                document.querySelector('.survey-container').innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 4rem; color: #e74c3c; margin-bottom: 20px;"></i>
+                        <h2>Ticket No Encontrado</h2>
+                        <p>El ticket especificado no existe.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            if (ticket.rating) {
+                document.querySelector('.survey-container').innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <i class="fas fa-check-circle" style="font-size: 4rem; color: #27ae60; margin-bottom: 20px;"></i>
+                        <h2>Ya Calificado</h2>
+                        <p>Este ticket ya ha sido calificado.</p>
+                        <p><strong>Calificación:</strong> ${'⭐'.repeat(ticket.rating)} (${ticket.rating}/5)</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Display ticket info
+            document.getElementById('ticketId').textContent = ticket.id;
+            document.getElementById('techName').textContent = ticket.resolvedBy || 'N/A';
+            document.getElementById('serviceType').textContent = ticket.category;
+        }
+
+        // Rating stars functionality
+        const stars = document.querySelectorAll('.star');
+        const ratingText = document.getElementById('ratingText');
+        const submitBtn = document.getElementById('submitBtn');
+
+        const ratingLabels = {
+            1: 'Muy Insatisfecho',
+            2: 'Insatisfecho',
+            3: 'Neutral',
+            4: 'Satisfecho',
+            5: 'Muy Satisfecho'
+        };
+
+        stars.forEach(star => {
+            star.addEventListener('click', function () {
+                selectedRating = parseInt(this.dataset.rating);
+
+                // Update stars
+                stars.forEach(s => {
+                    const rating = parseInt(s.dataset.rating);
+                    if (rating <= selectedRating) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+
+                // Update text
+                ratingText.textContent = ratingLabels[selectedRating];
+                ratingText.style.color = '#667eea';
+                ratingText.style.fontWeight = 'bold';
+
+                // Enable submit button
+                submitBtn.disabled = false;
+            });
+
+            star.addEventListener('mouseenter', function () {
+                const rating = parseInt(this.dataset.rating);
+                stars.forEach(s => {
+                    if (parseInt(s.dataset.rating) <= rating) {
+                        s.style.color = '#ffd700';
+                    } else {
+                        s.style.color = '#ddd';
+                    }
+                });
+            });
+        });
+
+        document.getElementById('ratingStars').addEventListener('mouseleave', function () {
+            stars.forEach(s => {
+                const rating = parseInt(s.dataset.rating);
+                if (rating <= selectedRating) {
+                    s.style.color = '#ffd700';
+                } else {
+                    s.style.color = '#ddd';
+                }
+            });
+        });
+
+        // Submit survey
+        submitBtn.addEventListener('click', function () {
+            if (selectedRating === 0) {
+                alert('Por favor selecciona una calificación');
+                return;
+            }
+
+            const comments = document.getElementById('comments').value;
+
+            // Update ticket with rating
+            const tickets = window.serviceManager.getAllTickets();
+            const ticket = tickets.find(t => t.id === ticketId);
+
+            if (ticket) {
+                ticket.rating = selectedRating;
+                ticket.ratingComment = comments;
+                ticket.status = 'completado';
+                ticket.completedDate = new Date().toISOString();
+                window.serviceManager.updateTicket(ticket);
+
+                // Show success message
+                document.getElementById('surveyForm').style.display = 'none';
+                document.getElementById('successMessage').classList.add('show');
+
+                // Redirect after 3 seconds
+                setTimeout(() => {
+                    window.location.href = 'servicios-tecnicos.html';
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+
+</html>

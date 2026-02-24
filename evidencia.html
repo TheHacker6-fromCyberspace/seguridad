@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Evidencia y Transparencia - PCB</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dark-mode-fix-v2.css?v=2">
+    <link rel="stylesheet" href="dropdown-fix.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="translations.js"></script>
+    <style>
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #3498db;
+            margin: 10px 0;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode .stat-card {
+            background: rgba(30, 41, 59, 0.95) !important;
+            border: 2px solid rgba(56, 189, 248, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        body.dark-mode .stat-card:hover {
+            border-color: #38bdf8;
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.3);
+        }
+
+        body.dark-mode .stat-number {
+            color: #38bdf8 !important;
+        }
+
+        body.dark-mode .stat-card p {
+            color: #9ca3af !important;
+        }
+
+        body.dark-mode .stat-card i {
+            opacity: 0.8;
+        }
+
+        body.dark-mode .chart-container {
+            background: rgba(30, 41, 59, 0.95) !important;
+            border: 2px solid rgba(56, 189, 248, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        body.dark-mode .chart-container h3 {
+            color: #e5e7eb !important;
+        }
+
+        body.dark-mode .chart-container p {
+            color: #9ca3af !important;
+        }
+
+        body.dark-mode #activityLog {
+            color: #e5e7eb !important;
+        }
+
+        body.dark-mode #activityLog li {
+            color: #9ca3af !important;
+            border-bottom: 1px solid #334155 !important;
+        }
+
+        body.dark-mode #newsForm input {
+            background: rgba(15, 23, 42, 0.8) !important;
+            color: #e5e7eb !important;
+            border-color: #334155 !important;
+        }
+
+        body.dark-mode #newsForm input:focus {
+            border-color: #38bdf8 !important;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2) !important;
+        }
+
+        body.dark-mode #newsForm label {
+            color: #e5e7eb !important;
+        }
+
+        body.dark-mode #newsList li {
+            background: rgba(15, 23, 42, 0.6) !important;
+            border-color: #334155 !important;
+            color: #e5e7eb !important;
+        }
+
+        body.dark-mode header h1 {
+            color: #e5e7eb !important;
+        }
+
+        body.dark-mode header p {
+            color: #9ca3af !important;
+        }
+
+        /* Animations */
+        .stat-card {
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .chart-container {
+            transition: all 0.3s ease;
+        }
+
+        /* Sidebar arrow rotation */
+        .sidebar-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        /* Sidebar links styling */
+        .sidebar-item.sidebar-link {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .sidebar-item.sidebar-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .sidebar-item.sidebar-link:hover {
+            background: rgba(56, 189, 248, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header Standard -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="logo-area">
+                <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+                <div class="logo-text">
+                    <span class="logo-title" data-translate="Escuela Superior Vocacional">Escuela Superior
+                        Vocacional</span>
+                    <span class="logo-subtitle" data-translate="Pablo Colón Berdecia">Pablo Colón Berdecia</span>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html" data-translate="Inicio">Inicio</a></li>
+                        <li><a href="quienes-somos.html" data-translate="La escuela">La escuela</a></li>
+                        <li class="dropdown">
+                            <a href="#" style="pointer-events: none;">Servicios Digitales <i
+                                    class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="matricula.html">📝 Matrícula Online</a></li>
+                                <li><a href="solicitudes.html">📄 Solicitud de Documentos</a></li>
+                                <li><a href="servicios-tecnicos.html">🔧 Servicios Técnicos</a></li>
+                                <li><a href="enfermeria.html">⚕️ Enfermería</a></li>
+                                <li><a href="orientacion.html">🧠 Orientación</a></li>
+                                <li><a href="biblioteca.html">📚 Biblioteca</a></li>
+                                <li><a href="comedor.html">🍽️ Comedor</a></li>
+                                <li><a href="padres.html">👨‍👩‍👧 Portal de Padres</a></li>
+                                <li><a href="seguridad.html">🛡️ Seguridad</a></li>
+                                <li><a href="evidencia.html">📊 Dashboard Evidencia</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="participacion-comunitaria.html" data-translate="Vida estudiantil">Vida
+                                estudiantil</a></li>
+                        <li><a href="#contacto" data-translate="Contacto">Contacto</a></li>
+                    </ul>
+                </nav>
+                <button class="hamburger-menu" id="hamburgerBtn" aria-label="Abrir menú">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Menú lateral hamburguesa -->
+    <div class="sidebar-menu" id="sidebarMenu">
+        <div class="sidebar-header">
+            <h3 data-translate="Menú">Menú</h3>
+            <button class="sidebar-close" id="closeSidebar">&times;</button>
+        </div>
+        <div class="sidebar-content">
+            <!-- Navegación Principal -->
+            <a href="index.html" class="sidebar-item sidebar-link">
+                <span class="sidebar-icon">🏠</span>
+                <span class="sidebar-text" data-translate="Inicio">Inicio</span>
+                <span class="sidebar-arrow">›</span>
+            </a>
+
+            <a href="quienes-somos.html" class="sidebar-item sidebar-link">
+                <span class="sidebar-icon">🏫</span>
+                <span class="sidebar-text" data-translate="Quiénes Somos">Quiénes Somos</span>
+                <span class="sidebar-arrow">›</span>
+            </a>
+
+            <!-- Servicios Digitales (Expandible) -->
+            <div class="sidebar-item" id="servicesToggle">
+                <span class="sidebar-icon">💻</span>
+                <span class="sidebar-text" data-translate="Servicios Digitales">Servicios Digitales</span>
+                <span class="sidebar-arrow">›</span>
+            </div>
+            <div class="theme-options" id="servicesOptions" style="display: none;">
+                <a href="matricula.html" class="theme-option">
+                    <span>📝</span> Matrícula Online
+                </a>
+                <a href="solicitudes.html" class="theme-option">
+                    <span>📄</span> Solicitud de Documentos
+                </a>
+                <a href="servicios-tecnicos.html" class="theme-option">
+                    <span>🔧</span> Servicios Técnicos
+                </a>
+                <a href="enfermeria.html" class="theme-option">
+                    <span>⚕️</span> Enfermería
+                </a>
+                <a href="orientacion.html" class="theme-option">
+                    <span>🧠</span> Orientación
+                </a>
+                <a href="biblioteca.html" class="theme-option">
+                    <span>📚</span> Biblioteca
+                </a>
+                <a href="comedor.html" class="theme-option">
+                    <span>🍽️</span> Comedor
+                </a>
+                <a href="padres.html" class="theme-option">
+                    <span>👨‍👩‍👧</span> Portal de Padres
+                </a>
+                <a href="seguridad.html" class="theme-option">
+                    <span>🛡️</span> Seguridad
+                </a>
+                <a href="evidencia.html" class="theme-option">
+                    <span>📊</span> Dashboard Evidencia
+                </a>
+            </div>
+
+            <a href="participacion-comunitaria.html" class="sidebar-item sidebar-link">
+                <span class="sidebar-icon">🎓</span>
+                <span class="sidebar-text" data-translate="Vida Estudiantil">Vida Estudiantil</span>
+                <span class="sidebar-arrow">›</span>
+            </a>
+
+            <a href="normas-reglamentos.html" class="sidebar-item sidebar-link">
+                <span class="sidebar-icon">📋</span>
+                <span class="sidebar-text" data-translate="Normas">Normas</span>
+                <span class="sidebar-arrow">›</span>
+            </a>
+
+            <!-- Separador -->
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 1rem 0;"></div>
+
+            <!-- Cambiar Tema -->
+            <div class="sidebar-item" id="themeToggle">
+                <span class="sidebar-icon">🎨</span>
+                <span class="sidebar-text" data-translate="Cambiar Tema">Cambiar Tema</span>
+                <span class="sidebar-arrow">›</span>
+            </div>
+            <div class="theme-options" id="themeOptions" style="display: none;">
+                <button class="theme-option" id="selectLightMode" data-translate="Modo Claro">
+                    <span>☀️</span> Modo Claro
+                </button>
+                <button class="theme-option" id="selectDarkMode" data-translate="Modo Oscuro">
+                    <span>🌙</span> Modo Oscuro
+                </button>
+            </div>
+
+            <!-- Cambiar Idioma -->
+            <div class="sidebar-item" id="languageToggle">
+                <span class="sidebar-icon">🌐</span>
+                <span class="sidebar-text" data-translate="Cambiar Idioma">Cambiar Idioma</span>
+                <span class="sidebar-arrow">›</span>
+            </div>
+            <div class="theme-options" id="languageOptions" style="display: none;">
+                <button class="theme-option" id="selectSpanish" data-translate="Español">
+                    <span>🇵🇷</span> Español
+                </button>
+                <button class="theme-option" id="selectEnglish" data-translate="English">
+                    <span>🇺🇸</span> English
+                </button>
+            </div>
+
+            <!-- Separador -->
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 1rem 0;"></div>
+
+            <!-- Dashboard Administrativo -->
+            <a href="admin.html" class="sidebar-item sidebar-link">
+                <span class="sidebar-icon">⚙️</span>
+                <span class="sidebar-text" data-translate="Dashboard Admin">Dashboard Admin</span>
+                <span class="sidebar-arrow">›</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Overlay para cerrar el menú -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Script inline para el toggle de servicios digitales -->
+    <script>
+        (function () {
+            // Esperar a que el DOM esté listo
+            function initServicesToggle() {
+                const servicesToggle = document.getElementById('servicesToggle');
+                const servicesOptions = document.getElementById('servicesOptions');
+
+                if (servicesToggle && servicesOptions) {
+                    console.log('Servicios toggle encontrado en evidencia.html');
+
+                    servicesToggle.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        console.log('Click en servicios toggle');
+
+                        const isHidden = servicesOptions.style.display === 'none' || servicesOptions.style.display === '';
+                        const arrow = this.querySelector('.sidebar-arrow');
+
+                        if (isHidden) {
+                            console.log('Mostrando submenu');
+                            servicesOptions.style.display = 'block';
+                            if (arrow) {
+                                arrow.style.transform = 'rotate(90deg)';
+                            }
+                            this.classList.add('active');
+                        } else {
+                            console.log('Ocultando submenu');
+                            servicesOptions.style.display = 'none';
+                            if (arrow) {
+                                arrow.style.transform = 'rotate(0deg)';
+                            }
+                            this.classList.remove('active');
+                        }
+                    });
+                } else {
+                    console.log('No se encontró servicesToggle o servicesOptions');
+                }
+            }
+
+            // Ejecutar cuando el DOM esté listo
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initServicesToggle);
+            } else {
+                initServicesToggle();
+            }
+        })();
+    </script>
+
+    <!-- Theme Selection Popup -->
+    <div id="themePopup" class="theme-popup">
+        <div class="theme-popup-content">
+            <h3>Selecciona tu tema preferido</h3>
+            <p>Elige cómo quieres ver el sitio web</p>
+            <div class="theme-buttons">
+                <button class="theme-btn theme-btn-light" id="btnLightMode">
+                    ☀️ Modo Claro
+                </button>
+                <button class="theme-btn theme-btn-dark" id="btnDarkMode">
+                    🌙 Modo Oscuro
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <div class="container" style="padding: 40px 0;">
+        <header style="text-align: center; margin-bottom: 40px;">
+            <h1>Dashboard de Impacto y Servicios</h1>
+            <p>Visualización en tiempo real del ecosistema digital escolar.</p>
+        </header>
+
+        <!-- KPI Cards -->
+        <div class="dashboard-grid">
+            <div class="stat-card">
+                <i class="fas fa-file-alt fa-2x" style="color: #3498db;"></i>
+                <div class="stat-number" id="totalRequests">0</div>
+                <p>Solicitudes Procesadas</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-user-graduate fa-2x" style="color: #2ecc71;"></i>
+                <div class="stat-number" id="totalEnrollments">0</div>
+                <p>Nuevas Matrículas</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-tools fa-2x" style="color: #e67e22;"></i>
+                <div class="stat-number" id="totalTickets">0</div>
+                <p>Tickets Técnicos</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-book fa-2x" style="color: #9b59b6;"></i>
+                <div class="stat-number" id="totalLoans">0</div>
+                <p>Préstamos Biblioteca</p>
+            </div>
+        </div>
+
+        <!-- Charts Row 1 -->
+        <div class="grid-2">
+            <div class="chart-container">
+                <h3>Distribución de Solicitudes</h3>
+                <canvas id="servicesChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>Incidentes y Seguridad</h3>
+                <canvas id="securityChart"></canvas>
+            </div>
+        </div>
+
+        <!-- WBL Evidence -->
+        <div class="chart-container">
+            <h3>Evidencia WBL: Horas por Estudiante Técnico</h3>
+            <canvas id="wblChart"></canvas>
+        </div>
+
+        <!-- Recent Activity Log -->
+        <div class="chart-container">
+            <h3>📋 Última Actividad del Sistema</h3>
+            <ul id="activityLog" style="list-style: none; padding: 0; max-height: 200px; overflow-y: auto;">
+                <!-- Filled by JS -->
+            </ul>
+        </div>
+
+        <!-- News Management Section -->
+        <div class="chart-container">
+            <h3>📢 Gestión de Novedades (Popup)</h3>
+            <p>La noticia más reciente aparecerá automáticamente en el Popup de la página principal.</p>
+
+            <form id="newsForm"
+                style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-end;">
+                <div style="flex: 1; min-width: 200px;">
+                    <label>Título</label>
+                    <input type="text" id="newsTitle" placeholder="Ej: ¡Matrícula Abierta!"
+                        style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;" required>
+                </div>
+                <div style="flex: 2; min-width: 300px;">
+                    <label>Mensaje</label>
+                    <input type="text" id="newsMessage" placeholder="Detalles de la noticia..."
+                        style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;" required>
+                </div>
+                <div style="flex: 1; min-width: 200px;">
+                    <label>URL Imagen (Opcional)</label>
+                    <input type="text" id="newsImage" placeholder="https://..."
+                        style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                <button type="submit" class="btn"
+                    style="background: #2ecc71; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">Publicar</button>
+            </form>
+
+            <ul id="newsList" style="list-style: none; padding: 0;">
+                <!-- News Items -->
+            </ul>
+        </div>
+    </div>
+
+    <script src="js/services-manager.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const data = window.serviceManager.data;
+
+            // 1. Calculate KPIs
+            const requests = (data.solicitudes_documentos || []).length;
+            const enrollments = (data.matriculas || []).length;
+            const tickets = (data.tickets_soporte || []).length;
+            // Count library items (reservations for now)
+            const loans = (data.reservas_biblioteca || []).length;
+
+            // Nurse visits + Counseling appts
+            const otherServices = (data.visitas_enfermeria || []).length + (data.citas_orientacion || []).length;
+
+            document.getElementById('totalRequests').textContent = requests;
+            document.getElementById('totalEnrollments').textContent = enrollments;
+            document.getElementById('totalTickets').textContent = tickets;
+            document.getElementById('totalLoans').textContent = loans;
+
+            // 2. Charts
+
+            // Services Distribution
+            new Chart(document.getElementById('servicesChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Documentos', 'Enfermería', 'Consejería', 'Técnico'],
+                    datasets: [{
+                        data: [requests, (data.visitas_enfermeria || []).length, (data.citas_orientacion || []).length, tickets],
+                        backgroundColor: ['#3498db', '#e74c3c', '#f1c40f', '#e67e22']
+                    }]
+                }
+            });
+
+            // Security Incidents
+            const incidents = data.seguridad_incidentes || [];
+            const incidentTypes = {};
+            incidents.forEach(i => incidentTypes[i.type] = (incidentTypes[i.type] || 0) + 1);
+
+            new Chart(document.getElementById('securityChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(incidentTypes).length ? Object.keys(incidentTypes) : ['Sin incidentes'],
+                    datasets: [{
+                        label: 'Reportes',
+                        data: Object.values(incidentTypes).length ? Object.values(incidentTypes) : [0],
+                        backgroundColor: '#c0392b'
+                    }]
+                }
+            });
+
+            // WBL Hours (Simulated aggregation)
+            const wblData = {};
+            (data.tickets_soporte || []).forEach(t => {
+                if (t.logs) {
+                    t.logs.forEach(l => {
+                        wblData[l.studentName] = (wblData[l.studentName] || 0) + l.hours;
+                    });
+                }
+            });
+
+            new Chart(document.getElementById('wblChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(wblData),
+                    datasets: [{
+                        label: 'Horas Trabajadas',
+                        data: Object.values(wblData),
+                        backgroundColor: '#2ecc71'
+                    }]
+                },
+                options: { indexAxis: 'y' }
+            });
+
+            // 3. Activity Log (Simulation)
+            const logList = document.getElementById('activityLog');
+            const recentActivities = [
+                ... (data.solicitudes_documentos || []).map(i => `📄 Nueva solicitud de documento (${i.id})`),
+                ... (data.matriculas || []).map(i => `🎓 Nueva matrícula: ${i.fullName}`),
+                ... (data.tickets_soporte || []).map(i => `🔧 Ticket técnico: ${i.type}`),
+                ... (data.seguridad_visitas || []).map(i => `🛡️ Visita registrada: ${i.name}`)
+            ].slice(-10).reverse();
+
+            if (recentActivities.length === 0) {
+                logList.innerHTML = '<li style="color: #999; padding: 10px;">No hay actividad reciente.</li>';
+            } else {
+                logList.innerHTML = recentActivities.map(a => `<li style="padding: 8px; border-bottom: 1px solid #eee;">${a}</li>`).join('');
+            }
+
+            // 4. News Management Logic
+            const newsForm = document.getElementById('newsForm');
+            const newsList = document.getElementById('newsList');
+
+            function renderNews() {
+                const allNews = window.serviceManager.getAllNews();
+                if (allNews.length === 0) {
+                    newsList.innerHTML = '<li style="color: #999; padding: 10px;">No hay noticias activas.</li>';
+                    return;
+                }
+
+                // Sort by date desc
+                const sortedNews = [...allNews].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                newsList.innerHTML = sortedNews.map((news, index) => `
+                    <li style="padding: 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: ${index === 0 ? '#f0f9ff' : 'transparent'};">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            ${news.imageUrl ? `<img src="${news.imageUrl}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">` : '<div style="width: 50px; height: 50px; background: #eee; border-radius: 4px; display: flex; align-items: center; justify-content: center;">📷</div>'}
+                            <div>
+                                <strong style="color: #2c3e50;">${news.title}</strong> ${index === 0 ? '<span style="background: #2ecc71; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; margin-left: 5px;">ACTIVA</span>' : ''}
+                                <p style="margin: 0; color: #7f8c8d; font-size: 0.9rem;">${news.message}</p>
+                                <small style="color: #95a5a6;">${new Date(news.date).toLocaleDateString()} ${new Date(news.date).toLocaleTimeString()}</small>
+                            </div>
+                        </div>
+                        <button onclick="deleteNews('${news.id}')" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </li>
+                `).join('');
+            }
+
+            newsForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const title = document.getElementById('newsTitle').value;
+                const message = document.getElementById('newsMessage').value;
+                const imageUrl = document.getElementById('newsImage').value;
+
+                window.serviceManager.addNews({ title, message, imageUrl });
+                newsForm.reset();
+                renderNews();
+                alert('Noticia publicada. Esta será la que se muestre en el popup de inicio.');
+            });
+
+            window.deleteNews = (id) => {
+                if (confirm('¿Seguro que deseas eliminar esta noticia?')) {
+                    window.serviceManager.deleteNews(id);
+                    renderNews();
+                }
+            };
+
+            // Initial render
+            renderNews();
+
+            // Mobile Menu Logic
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mainNav = document.querySelector('.main-nav');
+
+            if (hamburgerBtn && mainNav) {
+                hamburgerBtn.addEventListener('click', function () {
+                    hamburgerBtn.classList.toggle('active');
+                    mainNav.classList.toggle('active');
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

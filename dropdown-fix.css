@@ -1,0 +1,149 @@
+/**
+ * Dropdown Fix CSS - Arregla todos los dropdowns en modo claro y oscuro
+ * Aplica a todos los select, form-select, form-control en el proyecto
+ */
+
+/* ========================================
+   DROPDOWNS EN MODO CLARO
+   ======================================== */
+
+.form-select,
+.form-control select,
+select.form-control,
+select.form-select,
+select,
+.futuristic-input select {
+    background-color: #ffffff !important;
+    color: #2c3e50 !important;
+    border: 2px solid #e0e0e0 !important;
+    padding: 12px 40px 12px 12px !important;
+    border-radius: 10px !important;
+    font-size: 1rem !important;
+    width: 100% !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%232c3e50' d='M8 11L3 6h10z'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 10px center !important;
+    background-size: 16px 16px !important;
+}
+
+.form-select:hover,
+.form-control select:hover,
+select.form-control:hover,
+select.form-select:hover,
+select:hover,
+.futuristic-input select:hover {
+    border-color: #3498db;
+}
+
+.form-select:focus,
+.form-control select:focus,
+select.form-control:focus,
+select.form-select:focus,
+select:focus,
+.futuristic-input select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.form-select option,
+.form-control option,
+select.form-control option,
+select.form-select option,
+select option,
+.futuristic-input option {
+    background-color: #ffffff;
+    color: #2c3e50;
+    padding: 10px;
+}
+
+/* ========================================
+   DROPDOWNS EN MODO OSCURO
+   ======================================== */
+
+body.dark-mode .form-select,
+body.dark-mode .form-control select,
+body.dark-mode select.form-control,
+body.dark-mode select.form-select,
+body.dark-mode select,
+body.dark-mode .futuristic-input select {
+    background-color: #1e293b !important;
+    color: #e5e7eb !important;
+    border: 2px solid #334155 !important;
+    padding: 12px 40px 12px 12px !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%2338bdf8' d='M8 11L3 6h10z'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 10px center !important;
+    background-size: 16px 16px !important;
+}
+
+body.dark-mode .form-select:hover,
+body.dark-mode .form-control select:hover,
+body.dark-mode select.form-control:hover,
+body.dark-mode select.form-select:hover,
+body.dark-mode select:hover,
+body.dark-mode .futuristic-input select:hover {
+    border-color: #38bdf8 !important;
+}
+
+body.dark-mode .form-select:focus,
+body.dark-mode .form-control select:focus,
+body.dark-mode select.form-control:focus,
+body.dark-mode select.form-select:focus,
+body.dark-mode select:focus,
+body.dark-mode .futuristic-input select:focus {
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2) !important;
+}
+
+body.dark-mode .form-select option,
+body.dark-mode .form-control option,
+body.dark-mode select.form-control option,
+body.dark-mode select.form-select option,
+body.dark-mode select option,
+body.dark-mode .futuristic-input option {
+    background-color: #1e293b !important;
+    color: #e5e7eb !important;
+}
+
+/* ========================================
+   INPUTS EN MODO OSCURO
+   ======================================== */
+
+body.dark-mode .form-control,
+body.dark-mode input.form-control,
+body.dark-mode textarea.form-control,
+body.dark-mode .futuristic-input {
+    background-color: #1e293b !important;
+    color: #e5e7eb !important;
+    border: 2px solid #334155 !important;
+}
+
+body.dark-mode .form-control:focus,
+body.dark-mode input.form-control:focus,
+body.dark-mode textarea.form-control:focus,
+body.dark-mode .futuristic-input:focus {
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2) !important;
+}
+
+body.dark-mode .form-control::placeholder,
+body.dark-mode input.form-control::placeholder,
+body.dark-mode textarea.form-control::placeholder,
+body.dark-mode .futuristic-input::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* ========================================
+   LABELS EN MODO OSCURO
+   ======================================== */
+
+body.dark-mode .form-label,
+body.dark-mode label {
+    color: #e5e7eb !important;
+}

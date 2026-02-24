@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificaciones Digitales - PCB</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dark-mode-fix-v2.css?v=2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Fix dark mode */
+        body.dark-mode .cert-card,
+        body.dark-mode .card {
+            background: rgba(17, 24, 39, 0.95) !important;
+            border: 1px solid rgba(56, 189, 248, 0.2) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+            color: #E5E7EB !important;
+        }
+
+        body.dark-mode h1,
+        body.dark-mode h2,
+        body.dark-mode h3 {
+            color: #38BDF8 !important;
+        }
+
+        body.dark-mode p {
+            color: #9CA3AF !important;
+        }
+
+        body.dark-mode .cert-badge {
+            background: rgba(56, 189, 248, 0.2) !important;
+            color: #38BDF8 !important;
+        }
+    </style>
+    <style>
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .cert-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            border-top: 5px solid #9b59b6;
+            transition: transform 0.3s;
+        }
+
+        .cert-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .cert-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .cert-preview {
+            background: #f8f9fa;
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Popup de selección de tema -->
+    <div id="themePopup" class="theme-popup">
+        <div class="theme-popup-content">
+            <h2>🎨 Selecciona tu tema preferido</h2>
+            <p>Elige cómo quieres ver el sitio web</p>
+            <div class="theme-buttons">
+                <button class="theme-btn theme-btn-light" id="btnLightMode">☀️ Modo Claro</button>
+                <button class="theme-btn theme-btn-dark" id="btnDarkMode">🌙 Modo Oscuro</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            function hidePopup() { document.getElementById('themePopup').classList.add('hidden'); }
+            function setLightMode() { document.body.classList.remove('dark-mode'); localStorage.setItem('theme', 'light'); hidePopup(); }
+            function setDarkMode() { document.body.classList.add('dark-mode'); localStorage.setItem('theme', 'dark'); hidePopup(); }
+            function checkTheme() {
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'dark') { document.body.classList.add('dark-mode'); hidePopup(); }
+                else if (savedTheme === 'light') { hidePopup(); }
+            }
+            checkTheme();
+            document.addEventListener('DOMContentLoaded', function () {
+                const btnLight = document.getElementById('btnLightMode');
+                const btnDark = document.getElementById('btnDarkMode');
+                if (btnLight) btnLight.addEventListener('click', setLightMode);
+                if (btnDark) btnDark.addEventListener('click', setDarkMode);
+            });
+        })();
+    </script>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="logo-area">
+                <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+                <div class="logo-text">
+                    <span class="logo-title">Escuela Superior Vocacional</span>
+                    <span class="logo-subtitle">Pablo Colón Berdecia</span>
+                </div>
+            </div>
+            <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <button class="menu-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html#inicio">Inicio</a></li>
+                    <li><a href="index.html#servicios">Servicios</a></li>
+                    <li><a href="index.html#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Sidebar Menu -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="sidebar-menu" id="sidebarMenu">
+        <div class="sidebar-header">
+            <h3>⚙️ Configuración</h3>
+        </div>
+        <div class="sidebar-content">
+            <div class="sidebar-option" id="themeToggle"><span>🎨 Cambiar Tema</span></div>
+            <div class="theme-options" id="themeOptions">
+                <div class="theme-option" id="selectLightTheme"><span>☀️ Modo Claro</span></div>
+                <div class="theme-option" id="selectDarkTheme"><span>🌙 Modo Oscuro</span></div>
+            </div>
+            <div class="sidebar-option" id="languageToggle"><span>🌐 Cambiar Idioma</span></div>
+            <div class="language-options" id="languageOptions">
+                <div class="language-option" id="selectSpanish"><span>🇵🇷 Español</span></div>
+                <div class="language-option" id="selectEnglish"><span>🇺🇸 English</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const sidebarMenu = document.getElementById('sidebarMenu');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            const themeToggle = document.getElementById('themeToggle');
+            const themeOptions = document.getElementById('themeOptions');
+            const languageToggle = document.getElementById('languageToggle');
+            const languageOptions = document.getElementById('languageOptions');
+            const selectLightTheme = document.getElementById('selectLightTheme');
+            const selectDarkTheme = document.getElementById('selectDarkTheme');
+
+            function openSidebarMenu() { sidebarMenu.classList.add('active'); sidebarOverlay.classList.add('active'); }
+            function closeSidebarMenu() { sidebarMenu.classList.remove('active'); sidebarOverlay.classList.remove('active'); themeOptions.classList.remove('active'); languageOptions.classList.remove('active'); }
+
+            if (hamburgerBtn) hamburgerBtn.addEventListener('click', openSidebarMenu);
+            if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebarMenu);
+            if (themeToggle) themeToggle.addEventListener('click', function () { themeOptions.classList.toggle('active'); languageOptions.classList.remove('active'); });
+            if (languageToggle) languageToggle.addEventListener('click', function () { languageOptions.classList.toggle('active'); themeOptions.classList.remove('active'); });
+            if (selectLightTheme) selectLightTheme.addEventListener('click', function () { document.body.classList.remove('dark-mode'); localStorage.setItem('theme', 'light'); closeSidebarMenu(); });
+            if (selectDarkTheme) selectDarkTheme.addEventListener('click', function () { document.body.classList.add('dark-mode'); localStorage.setItem('theme', 'dark'); closeSidebarMenu(); });
+        })();
+    </script>
+
+    <div class="container" style="padding: 40px 0;">
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h1 style="font-size: 2.5rem; color: #2c3e50; margin-bottom: 15px;">🏆 Certificaciones Digitales para Padres
+            </h1>
+            <p style="font-size: 1.2rem; color: #7f8c8d; max-width: 800px; margin: 0 auto;">
+                Obtén micro-certificaciones verificables que demuestran tu compromiso con la educación digital y el
+                apoyo académico.
+            </p>
+        </div>
+
+        <!-- Cómo Funciona -->
+        <div
+            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 15px; margin-bottom: 50px;">
+            <h2 style="text-align: center; margin-bottom: 30px; font-size: 2rem;">📋 ¿Cómo Funciona?</h2>
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; text-align: center;">
+                <div>
+                    <div style="font-size: 3rem; margin-bottom: 10px;">1️⃣</div>
+                    <h3 style="margin-bottom: 10px;">Completa Módulos</h3>
+                    <p style="opacity: 0.9;">Estudia el contenido a tu ritmo</p>
+                </div>
+                <div>
+                    <div style="font-size: 3rem; margin-bottom: 10px;">2️⃣</div>
+                    <h3 style="margin-bottom: 10px;">Evaluación Corta</h3>
+                    <p style="opacity: 0.9;">Demuestra lo aprendido</p>
+                </div>
+                <div>
+                    <div style="font-size: 3rem; margin-bottom: 10px;">3️⃣</div>
+                    <h3 style="margin-bottom: 10px;">Recibe Certificado</h3>
+                    <p style="opacity: 0.9;">PDF con código QR verificable</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certificaciones Disponibles -->
+        <h2 style="text-align: center; color: #2c3e50; margin-bottom: 40px; font-size: 2rem;">Certificaciones
+            Disponibles</h2>
+
+        <div class="cert-grid">
+            <!-- Certificación 1 -->
+            <div class="cert-card">
+                <span class="cert-badge">4 horas</span>
+                <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.5rem;">💻 Alfabetización Digital Básica
+                </h3>
+                <p style="color: #7f8c8d; margin-bottom: 20px; line-height: 1.6;">
+                    Domina las habilidades digitales esenciales: navegación web, correo electrónico, seguridad en línea
+                    y herramientas básicas.
+                </p>
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #2c3e50; margin-bottom: 10px;">Módulos:</h4>
+                    <ul style="color: #555; line-height: 1.8;">
+                        <li>Navegación segura en internet</li>
+                        <li>Gestión de correo electrónico</li>
+                        <li>Privacidad y contraseñas</li>
+                        <li>Identificación de fraudes</li>
+                    </ul>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;"
+                    onclick="iniciarCertificacion('alfabetizacion')">Comenzar Certificación</button>
+            </div>
+
+            <!-- Certificación 2 -->
+            <div class="cert-card">
+                <span class="cert-badge">3 horas</span>
+                <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.5rem;">🛡️ Uso Responsable de Tecnología
+                </h3>
+                <p style="color: #7f8c8d; margin-bottom: 20px; line-height: 1.6;">
+                    Aprende a guiar a tus hijos en el uso saludable y responsable de dispositivos digitales.
+                </p>
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #2c3e50; margin-bottom: 10px;">Módulos:</h4>
+                    <ul style="color: #555; line-height: 1.8;">
+                        <li>Tiempo de pantalla saludable</li>
+                        <li>Contenido apropiado por edad</li>
+                        <li>Redes sociales y privacidad</li>
+                        <li>Balance digital-vida real</li>
+                    </ul>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;"
+                    onclick="iniciarCertificacion('uso-responsable')">Comenzar Certificación</button>
+            </div>
+
+            <!-- Certificación 3 -->
+            <div class="cert-card">
+                <span class="cert-badge">3 horas</span>
+                <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.5rem;">🔒 Seguridad en Línea para Familias
+                </h3>
+                <p style="color: #7f8c8d; margin-bottom: 20px; line-height: 1.6;">
+                    Protege a tu familia de amenazas digitales: ciberacoso, phishing, robo de identidad y más.
+                </p>
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #2c3e50; margin-bottom: 10px;">Módulos:</h4>
+                    <ul style="color: #555; line-height: 1.8;">
+                        <li>Prevención de ciberacoso</li>
+                        <li>Detección de estafas</li>
+                        <li>Protección de datos personales</li>
+                        <li>Configuración de privacidad</li>
+                    </ul>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;"
+                    onclick="iniciarCertificacion('seguridad')">Comenzar Certificación</button>
+            </div>
+
+            <!-- Certificación 4 -->
+            <div class="cert-card">
+                <span class="cert-badge">5 horas</span>
+                <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.5rem;">📚 Apoyo Académico en el Hogar</h3>
+                <p style="color: #7f8c8d; margin-bottom: 20px; line-height: 1.6;">
+                    Estrategias efectivas para apoyar el aprendizaje de tus hijos en casa.
+                </p>
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #2c3e50; margin-bottom: 10px;">Módulos:</h4>
+                    <ul style="color: #555; line-height: 1.8;">
+                        <li>Técnicas de estudio efectivas</li>
+                        <li>Creación de rutinas</li>
+                        <li>Motivación y disciplina</li>
+                        <li>Comunicación con maestros</li>
+                    </ul>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;"
+                    onclick="iniciarCertificacion('apoyo-academico')">Comenzar Certificación</button>
+            </div>
+        </div>
+
+        <!-- Vista Previa del Certificado -->
+        <div class="cert-preview">
+            <h3 style="color: #2c3e50; margin-bottom: 20px;">📜 Vista Previa del Certificado</h3>
+            <div
+                style="border: 3px solid #9b59b6; padding: 40px; background: white; max-width: 600px; margin: 0 auto; border-radius: 10px;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <img src="LOGO6.png" alt="Logo PCB" style="width: 80px; margin-bottom: 10px;">
+                    <h4 style="color: #2c3e50; margin: 10px 0;">Escuela Superior Vocacional Pablo Colón Berdecia</h4>
+                    <p style="color: #7f8c8d; font-size: 0.9rem;">Departamento de Educación de Puerto Rico</p>
+                </div>
+                <div style="border-top: 2px solid #ddd; border-bottom: 2px solid #ddd; padding: 20px; margin: 20px 0;">
+                    <h2 style="color: #9b59b6; text-align: center; margin-bottom: 15px;">CERTIFICADO DE LOGRO</h2>
+                    <p style="text-align: center; color: #555; margin-bottom: 10px;">Se certifica que</p>
+                    <h3 style="text-align: center; color: #2c3e50; margin-bottom: 10px;">[Nombre del Padre/Madre]</h3>
+                    <p style="text-align: center; color: #555; margin-bottom: 10px;">ha completado exitosamente</p>
+                    <h4 style="text-align: center; color: #9b59b6; margin-bottom: 15px;">[Nombre de la Certificación]
+                    </h4>
+                    <p style="text-align: center; color: #7f8c8d; font-size: 0.9rem;">Fecha: [DD/MM/AAAA]</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="display: inline-block; border: 2px solid #ddd; padding: 10px; border-radius: 8px;">
+                        <i class="fas fa-qrcode" style="font-size: 60px; color: #9b59b6;"></i>
+                        <p style="font-size: 0.8rem; color: #7f8c8d; margin-top: 5px;">Código QR Verificable</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Beneficios -->
+        <div style="background: #f8f9fa; padding: 40px; border-radius: 15px; margin-top: 50px;">
+            <h2 style="text-align: center; color: #2c3e50; margin-bottom: 30px;">✨ Beneficios de las Certificaciones
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px;">
+                <div style="text-align: center;">
+                    <i class="fas fa-certificate" style="font-size: 2.5rem; color: #9b59b6; margin-bottom: 15px;"></i>
+                    <h4 style="color: #2c3e50; margin-bottom: 10px;">Reconocimiento Oficial</h4>
+                    <p style="color: #7f8c8d;">Certificado avalado por el DEPR</p>
+                </div>
+                <div style="text-align: center;">
+                    <i class="fas fa-qrcode" style="font-size: 2.5rem; color: #9b59b6; margin-bottom: 15px;"></i>
+                    <h4 style="color: #2c3e50; margin-bottom: 10px;">Verificación Digital</h4>
+                    <p style="color: #7f8c8d;">Código QR para validación instantánea</p>
+                </div>
+                <div style="text-align: center;">
+                    <i class="fas fa-database" style="font-size: 2.5rem; color: #9b59b6; margin-bottom: 15px;"></i>
+                    <h4 style="color: #2c3e50; margin-bottom: 10px;">Registro Institucional</h4>
+                    <p style="color: #7f8c8d;">Evidencia permanente en el sistema</p>
+                </div>
+                <div style="text-align: center;">
+                    <i class="fas fa-users" style="font-size: 2.5rem; color: #9b59b6; margin-bottom: 15px;"></i>
+                    <h4 style="color: #2c3e50; margin-bottom: 10px;">Comunidad de Padres</h4>
+                    <p style="color: #7f8c8d;">Acceso a grupo exclusivo de certificados</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function iniciarCertificacion(tipo) {
+            alert(`🎓 Iniciando Certificación\n\nSerás redirigido a la plataforma de aprendizaje.\n\nRecuerda:\n• Completa todos los módulos\n• Aprueba la evaluación final (70% mínimo)\n• Descarga tu certificado digital`);
+            // Aquí se integraría con la plataforma de e-learning
+        }
+    </script>
+
+    <script src="js/services-manager.js"></script>
+</body>
+
+</html>

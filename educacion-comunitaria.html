@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educación Continua Comunitaria - PCB</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dark-mode-fix-v2.css?v=2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Fix dark mode */
+        body.dark-mode .course-card,
+        body.dark-mode .card {
+            background: rgba(17, 24, 39, 0.95) !important;
+            border: 1px solid rgba(56, 189, 248, 0.2) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+            color: #E5E7EB !important;
+        }
+
+        body.dark-mode h1,
+        body.dark-mode h2,
+        body.dark-mode h3 {
+            color: #38BDF8 !important;
+        }
+
+        body.dark-mode p,
+        body.dark-mode label {
+            color: #9CA3AF !important;
+        }
+
+        body.dark-mode input,
+        body.dark-mode select,
+        body.dark-mode textarea {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(56, 189, 248, 0.2) !important;
+            color: #E5E7EB !important;
+        }
+    </style>
+    <style>
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+            border-left: 5px solid #3498db;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .course-duration {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .schedule-badge {
+            background: #fff3e0;
+            color: #e65100;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Popup de selección de tema -->
+    <div id="themePopup" class="theme-popup">
+        <div class="theme-popup-content">
+            <h2>🎨 Selecciona tu tema preferido</h2>
+            <p>Elige cómo quieres ver el sitio web</p>
+            <div class="theme-buttons">
+                <button class="theme-btn theme-btn-light" id="btnLightMode">☀️ Modo Claro</button>
+                <button class="theme-btn theme-btn-dark" id="btnDarkMode">🌙 Modo Oscuro</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            function hidePopup() { document.getElementById('themePopup').classList.add('hidden'); }
+            function setLightMode() { document.body.classList.remove('dark-mode'); localStorage.setItem('theme', 'light'); hidePopup(); }
+            function setDarkMode() { document.body.classList.add('dark-mode'); localStorage.setItem('theme', 'dark'); hidePopup(); }
+            function checkTheme() {
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'dark') { document.body.classList.add('dark-mode'); hidePopup(); }
+                else if (savedTheme === 'light') { hidePopup(); }
+            }
+            checkTheme();
+            document.addEventListener('DOMContentLoaded', function () {
+                const btnLight = document.getElementById('btnLightMode');
+                const btnDark = document.getElementById('btnDarkMode');
+                if (btnLight) btnLight.addEventListener('click', setLightMode);
+                if (btnDark) btnDark.addEventListener('click', setDarkMode);
+            });
+        })();
+    </script>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="logo-area">
+                <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+                <div class="logo-text">
+                    <span class="logo-title">Escuela Superior Vocacional</span>
+                    <span class="logo-subtitle">Pablo Colón Berdecia</span>
+                </div>
+            </div>
+            <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <button class="menu-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html#inicio">Inicio</a></li>
+                    <li><a href="index.html#servicios">Servicios</a></li>
+                    <li><a href="index.html#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Sidebar Menu -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="sidebar-menu" id="sidebarMenu">
+        <div class="sidebar-header">
+            <h3>⚙️ Configuración</h3>
+        </div>
+        <div class="sidebar-content">
+            <div class="sidebar-option" id="themeToggle"><span>🎨 Cambiar Tema</span></div>
+            <div class="theme-options" id="themeOptions">
+                <div class="theme-option" id="selectLightTheme"><span>☀️ Modo Claro</span></div>
+                <div class="theme-option" id="selectDarkTheme"><span>🌙 Modo Oscuro</span></div>
+            </div>
+            <div class="sidebar-option" id="languageToggle"><span>🌐 Cambiar Idioma</span></div>
+            <div class="language-options" id="languageOptions">
+                <div class="language-option" id="selectSpanish"><span>🇵🇷 Español</span></div>
+                <div class="language-option" id="selectEnglish"><span>🇺🇸 English</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const sidebarMenu = document.getElementById('sidebarMenu');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            const themeToggle = document.getElementById('themeToggle');
+            const themeOptions = document.getElementById('themeOptions');
+            const languageToggle = document.getElementById('languageToggle');
+            const languageOptions = document.getElementById('languageOptions');
+            const selectLightTheme = document.getElementById('selectLightTheme');
+            const selectDarkTheme = document.getElementById('selectDarkTheme');
+
+            function openSidebarMenu() { sidebarMenu.classList.add('active'); sidebarOverlay.classList.add('active'); }
+            function closeSidebarMenu() { sidebarMenu.classList.remove('active'); sidebarOverlay.classList.remove('active'); themeOptions.classList.remove('active'); languageOptions.classList.remove('active'); }
+
+            if (hamburgerBtn) hamburgerBtn.addEventListener('click', openSidebarMenu);
+            if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebarMenu);
+            if (themeToggle) themeToggle.addEventListener('click', function () { themeOptions.classList.toggle('active'); languageOptions.classList.remove('active'); });
+            if (languageToggle) languageToggle.addEventListener('click', function () { languageOptions.classList.toggle('active'); themeOptions.classList.remove('active'); });
+            if (selectLightTheme) selectLightTheme.addEventListener('click', function () { document.body.classList.remove('dark-mode'); localStorage.setItem('theme', 'light'); closeSidebarMenu(); });
+            if (selectDarkTheme) selectDarkTheme.addEventListener('click', function () { document.body.classList.add('dark-mode'); localStorage.setItem('theme', 'dark'); closeSidebarMenu(); });
+        })();
+    </script>
+
+    <div class="container" style="padding: 40px 0;">
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h1 style="font-size: 2.5rem; color: #2c3e50; margin-bottom: 15px;">📚 Educación Continua Comunitaria</h1>
+            <p style="font-size: 1.2rem; color: #7f8c8d; max-width: 800px; margin: 0 auto;">
+                Cursos prácticos y gratuitos para padres y la comunidad. Aprende habilidades digitales esenciales para
+                el mundo laboral.
+            </p>
+        </div>
+
+        <!-- Información Importante -->
+        <div
+            style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 30px; border-radius: 15px; margin-bottom: 50px;">
+            <h2 style="text-align: center; margin-bottom: 20px; font-size: 1.8rem;">ℹ️ Información Importante</h2>
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; text-align: center;">
+                <div>
+                    <i class="fas fa-gift" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                    <h4 style="margin-bottom: 5px;">100% Gratuito</h4>
+                    <p style="opacity: 0.9; font-size: 0.9rem;">Sin costo alguno</p>
+                </div>
+                <div>
+                    <i class="fas fa-users" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                    <h4 style="margin-bottom: 5px;">Abierto a Comunidad</h4>
+                    <p style="opacity: 0.9; font-size: 0.9rem;">No solo para padres</p>
+                </div>
+                <div>
+                    <i class="fas fa-laptop" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                    <h4 style="margin-bottom: 5px;">Laboratorio Escolar</h4>
+                    <p style="opacity: 0.9; font-size: 0.9rem;">Equipos disponibles</p>
+                </div>
+                <div>
+                    <i class="fas fa-certificate" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                    <h4 style="margin-bottom: 5px;">Certificado</h4>
+                    <p style="opacity: 0.9; font-size: 0.9rem;">Al completar el curso</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cursos Disponibles -->
+        <h2 style="text-align: center; color: #2c3e50; margin-bottom: 40px; font-size: 2rem;">Cursos Disponibles</h2>
+
+        <div class="course-grid">
+            <!-- Curso 1 -->
+            <div class="course-card">
+                <span class="course-duration">2 semanas</span>
+                <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.4rem;">💻 Uso Básico de Computadoras</h3>
+                <p style="color: #7f8c8d; margin-bottom: 20px; line-height: 1.6;">
+                    Aprende desde cero: encender/apagar, uso del mouse, teclado, archivos y carpetas.
+                </p>
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #2c3e50; margin-bottom: 10px; font-size: 1rem;">Contenido:</h4>
+                    <ul style="color: #555; line-height: 1.8; font-size: 0.9rem;">
+                        <li>Partes de la computadora</li>
+                        <li>Sistema operativo Windows</li>
+                        <li>Gestión de archivos</li>
+                        <li>Navegación en internet</li>
+                    </ul>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <span class="schedule-badge">Martes y Jueves</span>
+                    <span class="schedule-badge">6:00 PM - 8:00 PM</span>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;"
+                    onclick="inscribirCurso('computadoras-basico')">Inscribirse</button>
+            </div>
+
+            <!-- Curso 2 -->
+            <div class="course-card" style="border-left-color: #2ecc71;">
+                <span class="course-duration">3 semanas</span>
+                <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.4rem;">📝 Google Docs / Microsoft Word</h3>
+                <p style="color: #7f8c8d; margin-bottom: 20px; line-height: 1.6;">
+                    Crea documentos profesionales, cartas, informes y más.
+                </p>
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #2c3e50; margin-bottom: 10px; font-size: 1rem;">Contenido:</h4>
+                    <ul style="color: #555; line-height: 1.8; font-size: 0.9rem;">
+                        <li>Formato de texto y párrafos</li>
+                        <li>Insertar imágenes y tablas</li>
+                        <li>Plantillas profesionales</li>
+                        <li>Compartir y colaborar</li>
+                    </ul>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <span class="schedule-badge">Lunes y Miércoles</span>
+                    <span class="schedule-badge">6:00 PM - 8:00 PM</span>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;"
+                    onclick="inscribirCurso('word-docs')">Inscribirse</button>
+            </div>
+
+            <!-- Curso 3 -->
+            <div class="course-card" style="border-left-color: #e74c3c;">
+                <span class="course-duration">2 semanas</span>
+                <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.4rem;">📧 Correo Electrónico Profesional
+                </h3>
+                <p style="color: #7f8c8d; margin-bottom: 20px; line-height: 1.6;">
+                    Crea y gestiona tu correo electrónico de manera profesional.
+                </p>
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #2c3e50; margin-bottom: 10px; font-size: 1rem;">Contenido:</h4>
+                    <ul style="color: #555; line-height: 1.8; font-size: 0.9rem;">
+                        <li>Crear cuenta de Gmail</li>
+                        <li>Redacción profesional</li>
+                        <li>Adjuntar archivos</li>
+                        <li>Organización de correos</li>
+                    </ul>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <span class="schedule-badge">Sábados</span>
+                    <span class="schedule-badge">9:00 AM - 12:00 PM</span>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;"
+                    onclick="inscribirCurso('correo')">Inscribirse</button>
+            </div>
+
+            <!-- Curso 4 -->
+            <div class="course-card" style="border-left-color: #9b59b6;">
+                <span class="course-duration">4 semanas</span>
+                <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.4rem;">📄 Creación de Resumé</h3>
+                <p style="color: #7f8c8d; margin-bottom: 20px; line-height: 1.6;">
+                    Diseña un currículum profesional que destaque tus fortalezas.
+                </p>
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #2c3e50; margin-bottom: 10px; font-size: 1rem;">Contenido:</h4>
+                    <ul style="color: #555; line-height: 1.8; font-size: 0.9rem;">
+                        <li>Estructura de un resumé</li>
+                        <li>Redacción de experiencia</li>
+                        <li>Habilidades y logros</li>
+                        <li>Plantillas modernas</li>
+                    </ul>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <span class="schedule-badge">Martes y Jueves</span>
+                    <span class="schedule-badge">6:00 PM - 8:00 PM</span>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;"
+                    onclick="inscribirCurso('resume')">Inscribirse</button>
+            </div>
+
+            <!-- Curso 5 -->
+            <div class="course-card" style="border-left-color: #f39c12;">
+                <span class="course-duration">3 semanas</span>
+                <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.4rem;">🔍 Búsqueda de Empleo en Línea</h3>
+                <p style="color: #7f8c8d; margin-bottom: 20px; line-height: 1.6;">
+                    Navega portales de empleo y aplica efectivamente a ofertas laborales.
+                </p>
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #2c3e50; margin-bottom: 10px; font-size: 1rem;">Contenido:</h4>
+                    <ul style="color: #555; line-height: 1.8; font-size: 0.9rem;">
+                        <li>Portales de empleo (Indeed, LinkedIn)</li>
+                        <li>Crear perfil profesional</li>
+                        <li>Aplicar a ofertas</li>
+                        <li>Preparación para entrevistas</li>
+                    </ul>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <span class="schedule-badge">Lunes y Miércoles</span>
+                    <span class="schedule-badge">6:00 PM - 8:00 PM</span>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;"
+                    onclick="inscribirCurso('busqueda-empleo')">Inscribirse</button>
+            </div>
+
+            <!-- Curso 6 -->
+            <div class="course-card" style="border-left-color: #1abc9c;">
+                <span class="course-duration">4 semanas</span>
+                <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.4rem;">💼 LinkedIn para Principiantes</h3>
+                <p style="color: #7f8c8d; margin-bottom: 20px; line-height: 1.6;">
+                    Construye tu red profesional y aumenta tus oportunidades laborales.
+                </p>
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #2c3e50; margin-bottom: 10px; font-size: 1rem;">Contenido:</h4>
+                    <ul style="color: #555; line-height: 1.8; font-size: 0.9rem;">
+                        <li>Crear perfil atractivo</li>
+                        <li>Networking efectivo</li>
+                        <li>Publicar contenido</li>
+                        <li>Buscar oportunidades</li>
+                    </ul>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <span class="schedule-badge">Sábados</span>
+                    <span class="schedule-badge">9:00 AM - 12:00 PM</span>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;"
+                    onclick="inscribirCurso('linkedin')">Inscribirse</button>
+            </div>
+        </div>
+
+        <!-- Requisitos -->
+        <div style="background: #f8f9fa; padding: 40px; border-radius: 15px; margin-top: 50px;">
+            <h2 style="text-align: center; color: #2c3e50; margin-bottom: 30px;">📋 Requisitos</h2>
+            <div style="max-width: 700px; margin: 0 auto;">
+                <ul style="color: #555; line-height: 2; font-size: 1.1rem;">
+                    <li>✅ Mayor de 18 años</li>
+                    <li>✅ Compromiso de asistencia (80% mínimo)</li>
+                    <li>✅ No se requiere experiencia previa</li>
+                    <li>✅ Computadoras disponibles en el laboratorio</li>
+                    <li>✅ Materiales incluidos (USB, manuales)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Testimonios -->
+        <div style="margin-top: 50px;">
+            <h2 style="text-align: center; color: #2c3e50; margin-bottom: 40px;">💬 Testimonios</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
+                <div
+                    style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
+                    <p style="color: #555; font-style: italic; margin-bottom: 15px;">
+                        "Nunca había usado una computadora. Ahora puedo enviar correos y crear documentos. ¡Gracias!"
+                    </p>
+                    <p style="color: #2c3e50; font-weight: 600;">- Carmen R., Madre de estudiante</p>
+                </div>
+                <div
+                    style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
+                    <p style="color: #555; font-style: italic; margin-bottom: 15px;">
+                        "El curso de LinkedIn me ayudó a conseguir mi primer empleo en 15 años. Increíble."
+                    </p>
+                    <p style="color: #2c3e50; font-weight: 600;">- José M., Miembro de la comunidad</p>
+                </div>
+                <div
+                    style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
+                    <p style="color: #555; font-style: italic; margin-bottom: 15px;">
+                        "Los instructores son muy pacientes. Aprendí a mi ritmo y ahora me siento más segura."
+                    </p>
+                    <p style="color: #2c3e50; font-weight: 600;">- Ana L., Abuela de estudiante</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function inscribirCurso(curso) {
+            alert(`📝 Inscripción al Curso\n\nSerás redirigido al formulario de inscripción.\n\nRecibirás:\n• Confirmación por correo\n• Horario detallado\n• Lista de materiales\n• Ubicación del laboratorio`);
+            // Aquí se integraría con el sistema de inscripción
+        }
+    </script>
+
+    <script src="js/services-manager.js"></script>
+</body>
+
+</html>

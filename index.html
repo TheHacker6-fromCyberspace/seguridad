@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="es" id="htmlRoot">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escuela Superior Vocacional Pablo Colón Berdecia</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dark-mode-fix-v2.css?v=2">
+  <link rel="stylesheet" href="dropdown-fix.css">
+  <link rel="stylesheet" href="image-popup.css">
+  <!-- <link rel="stylesheet" href="notification-bot.css"> -->
+  <script src="translations.js"></script>
+  <style>
+    /* Fix inline para hero cards en dark mode - fuerza los estilos */
+    body.dark-mode .hero-card {
+      background: rgba(17, 24, 39, 0.95) !important;
+      backdrop-filter: blur(10px) !important;
+      border: 1px solid rgba(56, 189, 248, 0.3) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    body.dark-mode .hero-card h2 {
+      color: #38BDF8 !important;
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.5) !important;
+      font-weight: 700 !important;
+    }
+
+    body.dark-mode .hero-card ul {
+      color: #E5E7EB !important;
+    }
+
+    body.dark-mode .hero-card li {
+      color: #E5E7EB !important;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.1) !important;
+    }
+
+    body.dark-mode .hero-card p {
+      color: #9CA3AF !important;
+    }
+
+    body.dark-mode .hero-card:hover {
+      border-color: #38BDF8 !important;
+      box-shadow: 0 8px 30px rgba(56, 189, 248, 0.4) !important;
+      transform: translateY(-5px) !important;
+    }
+
+    /* Fix dark mode para sección de eventos */
+    body.dark-mode .event-list {
+      color: #E5E7EB !important;
+    }
+
+    body.dark-mode .event-list li {
+      color: #E5E7EB !important;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.1) !important;
+    }
+
+    body.dark-mode .event-list strong {
+      color: #38BDF8 !important;
+    }
+
+    body.dark-mode .section-alt {
+      background: #0F172A !important;
+    }
+
+    body.dark-mode .news-grid .card {
+      background: rgba(17, 24, 39, 0.95) !important;
+      border: 1px solid rgba(56, 189, 248, 0.2) !important;
+    }
+
+    body.dark-mode .news-grid .card h4 {
+      color: #38BDF8 !important;
+    }
+
+    body.dark-mode .news-grid .card p {
+      color: #9CA3AF !important;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Popup de selección de tema -->
+  <div id="themePopup" class="theme-popup">
+    <div class="theme-popup-content">
+      <h2 data-translate="🎨 Selecciona tu tema preferido">🎨 Selecciona tu tema preferido</h2>
+      <p data-translate="Elige cómo quieres ver el sitio web">Elige cómo quieres ver el sitio web</p>
+      <div class="theme-buttons">
+        <button class="theme-btn theme-btn-light" id="btnLightMode" data-translate="☀️ Modo Claro">
+          ☀️ Modo Claro
+        </button>
+        <button class="theme-btn theme-btn-dark" id="btnDarkMode" data-translate="🌙 Modo Oscuro">
+          🌙 Modo Oscuro
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Script inline para modo claro/oscuro y hamburger menu
+    (function () {
+      function hidePopup() {
+        document.getElementById('themePopup').classList.add('hidden');
+      }
+
+      function setLightMode() {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        hidePopup();
+      }
+
+      function setDarkMode() {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        hidePopup();
+      }
+
+      function checkTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          hidePopup();
+        } else if (savedTheme === 'light') {
+          hidePopup();
+        }
+      }
+
+      // Ejecutar inmediatamente
+      checkTheme();
+
+      // Agregar event listeners cuando el DOM esté listo
+      document.addEventListener('DOMContentLoaded', function () {
+        const btnLight = document.getElementById('btnLightMode');
+        const btnDark = document.getElementById('btnDarkMode');
+
+        if (btnLight) {
+          btnLight.addEventListener('click', setLightMode);
+        }
+        if (btnDark) {
+          btnDark.addEventListener('click', setDarkMode);
+        }
+
+        // Hamburger menu functionality
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const closeSidebar = document.getElementById('closeSidebar');
+        const themeToggle = document.getElementById('themeToggle');
+        const themeOptions = document.getElementById('themeOptions');
+        const selectLightMode = document.getElementById('selectLightMode');
+        const selectDarkMode = document.getElementById('selectDarkMode');
+        const languageToggle = document.getElementById('languageToggle');
+        const languageOptions = document.getElementById('languageOptions');
+        const selectSpanish = document.getElementById('selectSpanish');
+        const selectEnglish = document.getElementById('selectEnglish');
+
+        // Abrir sidebar
+        if (hamburgerBtn) {
+          hamburgerBtn.addEventListener('click', function () {
+            sidebarMenu.classList.add('active');
+            sidebarOverlay.classList.add('active');
+          });
+        }
+
+        // Cerrar sidebar
+        function closeSidebarMenu() {
+          sidebarMenu.classList.remove('active');
+          sidebarOverlay.classList.remove('active');
+          themeOptions.style.display = 'none';
+          languageOptions.style.display = 'none';
+        }
+
+        if (closeSidebar) {
+          closeSidebar.addEventListener('click', closeSidebarMenu);
+        }
+
+        if (sidebarOverlay) {
+          sidebarOverlay.addEventListener('click', closeSidebarMenu);
+        }
+
+        // Toggle theme options
+        if (themeToggle) {
+          themeToggle.addEventListener('click', function () {
+            if (themeOptions.style.display === 'none') {
+              themeOptions.style.display = 'block';
+            } else {
+              themeOptions.style.display = 'none';
+            }
+          });
+        }
+
+        // Seleccionar modo claro desde sidebar
+        if (selectLightMode) {
+          selectLightMode.addEventListener('click', function () {
+            setLightMode();
+            closeSidebarMenu();
+          });
+        }
+
+        // Seleccionar modo oscuro desde sidebar
+        if (selectDarkMode) {
+          selectDarkMode.addEventListener('click', function () {
+            setDarkMode();
+            closeSidebarMenu();
+          });
+        }
+
+        // Toggle language options
+        if (languageToggle) {
+          languageToggle.addEventListener('click', function () {
+            if (languageOptions.style.display === 'none') {
+              languageOptions.style.display = 'block';
+            } else {
+              languageOptions.style.display = 'none';
+            }
+          });
+        }
+
+        // Seleccionar idioma español
+        if (selectSpanish) {
+          selectSpanish.addEventListener('click', function () {
+            localStorage.setItem('language', 'es');
+            document.getElementById('htmlRoot').setAttribute('lang', 'es');
+            if (typeof translatePage === 'function') {
+              translatePage('es');
+            }
+            closeSidebarMenu();
+          });
+        }
+
+        // Seleccionar idioma inglés
+        if (selectEnglish) {
+          selectEnglish.addEventListener('click', function () {
+            localStorage.setItem('language', 'en');
+            document.getElementById('htmlRoot').setAttribute('lang', 'en');
+            if (typeof translatePage === 'function') {
+              translatePage('en');
+            }
+            closeSidebarMenu();
+          });
+        }
+      });
+    })();
+  </script>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo-area">
+        <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+        <div class="logo-text">
+          <span class="logo-title" data-translate="Escuela Superior Vocacional">Escuela Superior Vocacional</span>
+          <span class="logo-subtitle" data-translate="Pablo Colón Berdecia">Pablo Colón Berdecia</span>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <nav class="main-nav">
+          <ul>
+            <li><a href="#inicio" data-translate="Inicio">Inicio</a></li>
+            <li><a href="#escuela" data-translate="La escuela">La escuela</a></li>
+            <li class="dropdown">
+              <a href="#" style="pointer-events: none;">Servicios Digitales <i class="fas fa-chevron-down"></i></a>
+              <ul class="dropdown-menu">
+                <li><a href="matricula.html">📝 Matrícula Online</a></li>
+                <li><a href="solicitudes.html">📄 Solicitud de Documentos</a></li>
+                <li><a href="servicios-tecnicos.html">🔧 Servicios Técnicos</a></li>
+                <li><a href="enfermeria.html">⚕️ Enfermería</a></li>
+                <li><a href="orientacion.html">🧠 Orientación</a></li>
+                <li><a href="biblioteca.html">📚 Biblioteca</a></li>
+                <li><a href="comedor.html">🍽️ Comedor</a></li>
+                <li><a href="padres.html">👨‍👩‍👧 Portal de Padres</a></li>
+                <li><a href="seguridad.html">🛡️ Seguridad</a></li>
+                <li><a href="evidencia.html">📊 Dashboard Evidencia</a></li>
+              </ul>
+            </li>
+            <li><a href="#vida" data-translate="Vida estudiantil">Vida estudiantil</a></li>
+            <li><a href="sports.html">⚽ Deportes</a></li>
+            <li><a href="#contacto" data-translate="Contacto">Contacto</a></li>
+          </ul>
+        </nav>
+        <button class="hamburger-menu" id="hamburgerBtn" aria-label="Abrir menú">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Quick links -->
+  <div class="container" style="padding:12px 18px; background:linear-gradient(90deg,#eef6ff,#f7fbff);border-bottom:1px solid #e6f0fb;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+    <a href="sports.html" style="display:inline-block;padding:10px 14px;border-radius:8px;background:#0b66c3;color:white;text-decoration:none;font-weight:600;">⚽ Ver Deportes — Scores & Schedule</a>
+    <a href="security.html" style="display:inline-block;padding:10px 14px;border-radius:8px;background:#0b8c63;color:white;text-decoration:none;font-weight:600;">🛡️ Ver Seguridad — Registro de Entrada/Salida</a>
+    <span style="margin-left:6px;color:#084a86">Visita las páginas para ver y administrar deportes y seguridad (admin requerida para cambios).</span>
+  </div>
+
+  <!-- Menú lateral hamburguesa -->
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3 data-translate="Menú">Menú</h3>
+      <button class="sidebar-close" id="closeSidebar">&times;</button>
+    </div>
+    <div class="sidebar-content">
+      <!-- Navegación Principal -->
+      <a href="index.html" class="sidebar-item sidebar-link">
+        <span class="sidebar-icon">🏠</span>
+        <span class="sidebar-text" data-translate="Inicio">Inicio</span>
+        <span class="sidebar-arrow">›</span>
+      </a>
+
+      <a href="quienes-somos.html" class="sidebar-item sidebar-link">
+        <span class="sidebar-icon">🏫</span>
+        <span class="sidebar-text" data-translate="Quiénes Somos">Quiénes Somos</span>
+        <span class="sidebar-arrow">›</span>
+      </a>
+
+      <!-- Servicios Digitales (Expandible) -->
+      <div class="sidebar-item" id="servicesToggle">
+        <span class="sidebar-icon">💻</span>
+        <span class="sidebar-text" data-translate="Servicios Digitales">Servicios Digitales</span>
+        <span class="sidebar-arrow">›</span>
+      </div>
+      <div class="theme-options" id="servicesOptions" style="display: none;">
+        <a href="matricula.html" class="theme-option">
+          <span>📝</span> Matrícula Online
+        </a>
+        <a href="solicitudes.html" class="theme-option">
+          <span>📄</span> Solicitud de Documentos
+        </a>
+        <a href="servicios-tecnicos.html" class="theme-option">
+          <span>🔧</span> Servicios Técnicos
+        </a>
+        <a href="enfermeria.html" class="theme-option">
+          <span>⚕️</span> Enfermería
+        </a>
+        <a href="orientacion.html" class="theme-option">
+          <span>🧠</span> Orientación
+        </a>
+        <a href="biblioteca.html" class="theme-option">
+          <span>📚</span> Biblioteca
+        </a>
+        <a href="comedor.html" class="theme-option">
+          <span>🍽️</span> Comedor
+        </a>
+        <a href="padres.html" class="theme-option">
+          <span>👨‍👩‍👧</span> Portal de Padres
+        </a>
+        <a href="seguridad.html" class="theme-option">
+          <span>🛡️</span> Seguridad
+        </a>
+        <a href="evidencia.html" class="theme-option">
+          <span>📊</span> Dashboard Evidencia
+        </a>
+      </div>
+
+      <a href="participacion-comunitaria.html" class="sidebar-item sidebar-link">
+        <span class="sidebar-icon">🎓</span>
+        <span class="sidebar-text" data-translate="Vida Estudiantil">Vida Estudiantil</span>
+        <span class="sidebar-arrow">›</span>
+      </a>
+
+      <a href="sports.html" class="sidebar-item sidebar-link">
+        <span class="sidebar-icon">⚽</span>
+        <span class="sidebar-text">Deportes</span>
+        <span class="sidebar-arrow">›</span>
+      </a>
+
+      <a href="normas-reglamentos.html" class="sidebar-item sidebar-link">
+        <span class="sidebar-icon">📋</span>
+        <span class="sidebar-text" data-translate="Normas">Normas</span>
+        <span class="sidebar-arrow">›</span>
+      </a>
+
+      <!-- Separador -->
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 1rem 0;"></div>
+
+      <!-- Cambiar Tema -->
+      <div class="sidebar-item" id="themeToggle">
+        <span class="sidebar-icon">🎨</span>
+        <span class="sidebar-text" data-translate="Cambiar Tema">Cambiar Tema</span>
+        <span class="sidebar-arrow">›</span>
+      </div>
+      <div class="theme-options" id="themeOptions" style="display: none;">
+        <button class="theme-option" id="selectLightMode" data-translate="Modo Claro">
+          <span>☀️</span> Modo Claro
+        </button>
+        <button class="theme-option" id="selectDarkMode" data-translate="Modo Oscuro">
+          <span>🌙</span> Modo Oscuro
+        </button>
+      </div>
+
+      <!-- Cambiar Idioma -->
+      <div class="sidebar-item" id="languageToggle">
+        <span class="sidebar-icon">🌐</span>
+        <span class="sidebar-text" data-translate="Cambiar Idioma">Cambiar Idioma</span>
+        <span class="sidebar-arrow">›</span>
+      </div>
+      <div class="theme-options" id="languageOptions" style="display: none;">
+        <button class="theme-option" id="selectSpanish" data-translate="Español">
+          <span>🇵🇷</span> Español
+        </button>
+        <button class="theme-option" id="selectEnglish" data-translate="English">
+          <span>🇺🇸</span> English
+        </button>
+      </div>
+
+      <!-- Separador -->
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 1rem 0;"></div>
+
+      <!-- Dashboard Administrativo -->
+      <a href="admin.html" class="sidebar-item sidebar-link">
+        <span class="sidebar-icon">⚙️</span>
+        <span class="sidebar-text" data-translate="Dashboard Admin">Dashboard Admin</span>
+        <span class="sidebar-arrow">›</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Overlay para cerrar el menú -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Script para el toggle de servicios digitales -->
+  <script>
+
+  <!-- Floating quick-access button to Sports page -->
+  <a href="sports.html" id="sports-fab" title="Ver Deportes" style="position:fixed;right:18px;bottom:18px;background:#0b66c3;color:#fff;border-radius:999px;padding:12px 16px;box-shadow:0 6px 18px rgba(11,102,195,.25);text-decoration:none;font-weight:700;z-index:9999">⚽ Deportes</a>
+    (function () {
+      // Esperar a que el DOM esté listo
+      function initServicesToggle() {
+        const servicesToggle = document.getElementById('servicesToggle');
+        const servicesOptions = document.getElementById('servicesOptions');
+
+        if (servicesToggle && servicesOptions) {
+          console.log('Servicios toggle encontrado');
+
+          servicesToggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            console.log('Click en servicios toggle');
+
+            const isHidden = servicesOptions.style.display === 'none' || servicesOptions.style.display === '';
+            const arrow = this.querySelector('.sidebar-arrow');
+
+            if (isHidden) {
+              console.log('Mostrando submenu');
+              servicesOptions.style.display = 'block';
+              if (arrow) {
+                arrow.style.transform = 'rotate(90deg)';
+              }
+              this.classList.add('active');
+            } else {
+              console.log('Ocultando submenu');
+              servicesOptions.style.display = 'none';
+              if (arrow) {
+                arrow.style.transform = 'rotate(0deg)';
+              }
+              this.classList.remove('active');
+            }
+          });
+        } else {
+          console.log('No se encontró servicesToggle o servicesOptions');
+        }
+      }
+
+      // Ejecutar cuando el DOM esté listo
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initServicesToggle);
+      } else {
+        initServicesToggle();
+      }
+    })();
+  </script>
+
+  <!-- HERO / INICIO -->
+  <section id="inicio" class="hero">
+    <div class="container">
+      <div class="hero-content-centered">
+        <h1 data-translate="Formación vocacional con visión de futuro">Formación vocacional con visión de futuro</h1>
+        <p
+          data-translate="Escuela Superior Vocacional que prepara estudiantes con bases académicas y técnicas para continuar estudios o entrar al mundo laboral.">
+          Escuela Superior Vocacional que prepara estudiantes con bases académicas y técnicas
+          para continuar estudios o entrar al mundo laboral.
+        </p>
+        <div class="hero-actions">
+          <a href="#programas" class="btn btn-primary" data-translate="🎓 Ver programas vocacionales">🎓 Ver programas
+            vocacionales</a>
+          <a href="#escuela" class="btn btn-secondary" data-translate="🏫 Conocer la escuela">🏫 Conocer la escuela</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LA ESCUELA (Acerca, Admisiones, Normas, Apoyo) -->
+  <section id="escuela" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-translate="La escuela">La escuela</h2>
+        <p data-translate="Información básica sobre la institución, matrícula, normas y apoyo a estudiantes.">
+          Información básica sobre la institución, matrícula, normas y apoyo a estudiantes.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <!-- Quiénes somos -->
+        <article class="card">
+          <div class="card-icon">🏫</div>
+          <h3 data-translate="Quiénes somos">Quiénes somos</h3>
+          <p
+            data-translate="Superior Vocacional Pablo Colón Berdecia es una institución educativa comprometida con la formación académica técnica y vocacional de sus estudiantes. Nuestro enfoque combina el desarrollo de conocimiento, destrezas prácticas y valores, preparando a los jóvenes para continuar estudios postsecundarios, integrarse al mundo laboral y contribuir positivamente en la sociedad.S">
+            Superior Vocacional Pablo Colón Berdecia es una institución educativa comprometida con la formación
+            académica técnica y vocacional de sus estudiantes. Nuestro enfoque combina el desarrollo de conocimiento,
+            destrezas prácticas y valores, preparando a los jóvenes para continuar estudios postsecundarios, integrarse
+            al mundo laboral y contribuir positivamente en la sociedad.
+          </p>
+          <a href="quienes-somos.html" class="btn btn-secondary btn-small" data-translate="Conoce más sobre nosotros">
+            Conoce más sobre nosotros
+          </a>
+        </article>
+
+        <!-- Admisiones -->
+        <article class="card">
+          <div class="card-icon">📝</div>
+          <h3 data-translate="Admisiones / Matrícula">Admisiones / Matrícula</h3>
+          <p data-translate="Requisitos generales de matrícula:">Requisitos generales de matrícula:</p>
+          <ul>
+            <li data-translate="Formulario de solicitud completado">Formulario de solicitud completado</li>
+            <li data-translate="Récord de notas y documentos oficiales">Récord de notas y documentos oficiales</li>
+            <li data-translate="Identificación del padre, madre o encargado">Identificación del padre, madre o encargado
+            </li>
+          </ul>
+          <p class="note"
+            data-translate="Fechas y detalles se informan por la oficina escolar y comunicados oficiales.">
+            Fechas y detalles se informan por la oficina escolar y comunicados oficiales.
+          </p>
+          <a href="https://de.pr.gov/MATRICULA//" class="btn btn-secondary btn-small" target="_blank" rel="noopener"
+            data-translate="Ver página de Matrícula">
+            Ver página de Matrícula
+          </a>
+        </article>
+      </div>
+
+      <div class="grid-2 section-gap">
+        <!-- Normas -->
+        <article class="card">
+          <div class="card-icon">📋</div>
+          <h3 data-translate="Normas y reglamentos">Normas y reglamentos</h3>
+          <p data-translate="Normas básicas de convivencia y seguridad:">Normas básicas de convivencia y seguridad:</p>
+          <ul>
+            <li data-translate="Respeto entre toda la comunidad escolar.">Respeto entre toda la comunidad escolar.</li>
+            <li data-translate="Uso correcto del uniforme y equipos de seguridad.">Uso correcto del uniforme y equipos
+              de seguridad.</li>
+            <li data-translate="Puntualidad, asistencia y cuidado de las instalaciones.">Puntualidad, asistencia y
+              cuidado de las instalaciones.</li>
+          </ul>
+          <p class="note">
+            <span data-translate="Detalles en el">Detalles en el</span> <strong
+              data-translate="Manual del Estudiante">Manual del Estudiante</strong> <span data-translate="y el">y
+              el</span> <strong data-translate="Reglamento Escolar">Reglamento Escolar</strong>.
+          </p>
+          <a href="normas-reglamentos.html" class="btn btn-secondary btn-small"
+            data-translate="Ver reglamento completo">
+            Ver reglamento completo
+          </a>
+        </article>
+
+        <!-- Apoyo socioemocional -->
+        <article class="card">
+          <div class="card-icon">💚</div>
+          <h3 data-translate="Apoyo socioemocional">Apoyo socioemocional</h3>
+          <p
+            data-translate="Servicio de consejería, trabajo social y apoyo psicológico para el bienestar del estudiantado.">
+            Servicio de consejería, trabajo social y apoyo psicológico para el bienestar del estudiantado.
+          </p>
+          <a href="https://hackerpcb1.github.io/Apoyo-Socioemocional-PCB/" class="btn btn-secondary btn-small"
+            target="_blank" rel="noopener" data-translate="Ver página de apoyo socioemocional">
+            Ver página de apoyo socioemocional
+          </a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRAMAS VOCACIONALES (SLIDESHOW) -->
+  <section id="programas" class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-translate="Programas y talleres vocacionales">Programas y talleres vocacionales</h2>
+        <p data-translate="Oferta vocacional disponible para los estudiantes de la escuela.">
+          Oferta vocacional disponible para los estudiantes de la escuela.
+        </p>
+      </div>
+
+      <!-- Slideshow Container -->
+      <div class="slideshow-container">
+        <div class="slideshow-wrapper">
+          <!-- Slides -->
+          <div class="slide fade active">
+            <a href="https://hackerpcb1.github.io/Casa-Abierta/" target="_blank" rel="noopener">
+              <img src="galeriaslideshow/pcbsystemlogo1.png" alt="Elaboración de Productos Agricolas">
+              <div class="slide-overlay">
+                <div class="slide-text">
+                  <h3 data-translate="Creado por estudiantes. Diseñado para el mundo.">Creado por estudiantes. Diseñado
+                    para el mundo.</h3>
+                  <p data-translate="No es un proyecto escolar. Es un legado al futuro de la educación.">No es un
+                    proyecto escolar. Es un legado al futuro de la educación.</p>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="slide fade">
+            <a href="https://hackerpcb1.github.io/Casa-Abierta/" target="_blank" rel="noopener">
+              <img src="galeriaslideshow/epaFFA.jpeg" alt="Elaboración de Productos Agricolas">
+              <div class="slide-overlay">
+                <div class="slide-text">
+                  <h3 data-translate="Procesamiento y Desarrollo de Productos Agrícolas">Sin agricultores no hay comida,
+                    sin comida no hay vida</h3>
+                  <p data-translate="Haz clic para ver más">Haz clic para ver más</p>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="slide fade">
+            <a href="https://hackerpcb1.github.io/Casa-Abierta/" target="_blank" rel="noopener">
+              <img src="galeriaslideshow/acfccla.jpeg" alt="Artes Culinarias">
+              <div class="slide-overlay">
+                <div class="slide-text">
+                  <h3 data-translate="Cocina Profesional y Gestión Gastronómica">El arte de la buena cocina</h3>
+                  <p data-translate="Haz clic para ver más">Haz clic para ver más</p>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="slide fade">
+            <a href="https://hackerpcb1.github.io/Casa-Abierta/" target="_blank" rel="noopener">
+              <img src="galeriaslideshow/computecskillsusa.jpeg" alt="Computec">
+              <div class="slide-overlay">
+                <div class="slide-text">
+                  <h3 data-translate="Formación práctica y tecnológica">Formación práctica y tecnológica</h3>
+                  <p data-translate="Haz clic para ver más">Haz clic para ver más</p>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="slide fade">
+            <a href="https://hackerpcb1.github.io/Casa-Abierta/" target="_blank" rel="noopener">
+              <img src="galeriaslideshow/cosmetologiaskillsusa.jpeg" alt="Cosmetología">
+              <div class="slide-overlay">
+                <div class="slide-text">
+                  <h3 data-translate="Belleza y Cuidado Personal Profesional">Belleza y Cuidado Personal Profesional
+                  </h3>
+                  <p data-translate="Haz clic para ver más">Haz clic para ver más</p>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="slide fade">
+            <a href="https://hackerpcb1.github.io/Casa-Abierta/" target="_blank" rel="noopener">
+              <img src="galeriaslideshow/enfermeriahosa.jpg" alt="Enfermería">
+              <div class="slide-overlay">
+                <div class="slide-text">
+                  <h3 data-translate="Cuidado Integral de la Salud">Cuidado Integral de la Salud</h3>
+                  <p data-translate="Haz clic para ver más">Haz clic para ver más</p>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="slide fade">
+            <a href="https://hackerpcb1.github.io/Casa-Abierta/" target="_blank" rel="noopener">
+              <img src="galeriaslideshow/decaempresarismo.jpg" alt="Representante de Ventas y Servicios Empresariales">
+              <div class="slide-overlay">
+                <div class="slide-text">
+                  <h3 data-translate="Representante de Ventas y Servicios Empresariales">Representante de Ventas y
+                    Servicios Empresariales</h3>
+                  <p data-translate="Haz clic para ver más">Haz clic para ver más</p>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="slide fade">
+            <a href="https://hackerpcb1.github.io/Casa-Abierta/" target="_blank" rel="noopener">
+              <img src="galeriaslideshow/seguridadpublica.jpg" alt="Seguridad Publica">
+              <div class="slide-overlay">
+                <div class="slide-text">
+                  <h3 data-translate="Seguridad Publica">Servicio de Seguridad Publica</h3>
+                  <p data-translate="Haz clic para ver más">Haz clic para ver más</p>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <!-- Navigation Arrows -->
+          <button class="slide-prev" onclick="changeSlide(-1)" aria-label="Anterior">❮</button>
+          <button class="slide-next" onclick="changeSlide(1)" aria-label="Siguiente">❯</button>
+        </div>
+
+        <!-- Dots/Indicators -->
+        <div class="slide-dots">
+          <span class="dot active" onclick="currentSlide(1)"></span>
+          <span class="dot" onclick="currentSlide(2)"></span>
+          <span class="dot" onclick="currentSlide(3)"></span>
+          <span class="dot" onclick="currentSlide(4)"></span>
+          <span class="dot" onclick="currentSlide(5)"></span>
+          <span class="dot" onclick="currentSlide(6)"></span>
+          <span class="dot" onclick="currentSlide(7)"></span>
+          <span class="dot" onclick="currentSlide(8)"></span>
+          <span class="dot" onclick="currentSlide(9)"></span>
+        </div>
+
+        <!-- CTA Button -->
+        <div class="programs-cta" style="margin-top: 2rem;">
+          <a href="https://hackerpcb1.github.io/Casa-Abierta/" class="btn btn-primary" target="_blank" rel="noopener"
+            data-translate="Ver todos los programas y Casa Abierta">
+            Ver todos los programas y Casa Abierta
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICIOS AL ESTUDIANTE -->
+  <section id="servicios" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-translate="Servicios al estudiante">Servicios al estudiante</h2>
+        <p data-translate="Servicios de apoyo que la escuela ofrece a su población estudiantil.">
+          Servicios de apoyo que la escuela ofrece a su población estudiantil.
+        </p>
+      </div>
+
+      <div class="grid-3">
+        <!-- Servicios Técnicos -->
+        <article class="card service-card">
+          <div class="service-icon">🔧</div>
+          <h3 data-translate="Servicios Técnicos">Servicios Técnicos</h3>
+          <p data-translate="Soporte técnico y mantenimiento de equipos escolares.">Soporte técnico y mantenimiento de
+            equipos escolares.</p>
+          <a href="https://hackerpcb1.github.io/Servicio-Tecnico/" class="btn btn-secondary btn-small" target="_blank"
+            rel="noopener" data-translate="Acceder al servicio">
+            Acceder al servicio
+          </a>
+        </article>
+        <!-- Biblioteca -->
+        <article class="card service-card">
+          <div class="service-icon">📚</div>
+          <h3 data-translate="Biblioteca">Biblioteca</h3>
+          <p data-translate="Espacio de lectura, consulta y estudio.">Espacio de lectura, consulta y estudio.</p>
+          <a href="biblioteca.html" class="btn btn-secondary btn-small" data-translate="Ver detalles">
+            Ver detalles
+          </a>
+        </article>
+
+        <!-- Comedor escolar -->
+        <article class="card service-card">
+          <div class="service-icon">🍽️</div>
+          <h3 data-translate="Comedor escolar">Comedor escolar</h3>
+          <p data-translate="Servicio de alimentación escolar.">Servicio de alimentación escolar.</p>
+          <a href="comedor.html" class="btn btn-secondary btn-small" data-translate="Ver detalles">
+            Ver detalles
+          </a>
+        </article>
+
+        <!-- Correos Electrónicos de Maestros -->
+        <article class="card service-card">
+          <div class="service-icon">📧</div>
+          <h3 data-translate="Correos Electrónicos">Correos Electrónicos</h3>
+          <p data-translate="Listado completo de correos de maestros.">Listado completo de correos de maestros.</p>
+          <a href="correos-maestros-tabla.html" class="btn btn-secondary btn-small" data-translate="Ver listado">
+            Ver listado
+          </a>
+        </article>
+
+        <!-- Microsoft Teams -->
+        <article class="card service-card">
+          <div class="service-icon">📱</div>
+          <h3 data-translate="Microsoft Teams">Microsoft Teams</h3>
+          <p data-translate="Acceso a clases virtuales y colaboración en línea.">Acceso a clases virtuales y
+            colaboración en línea.</p>
+          <a href="https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=5e3ce6c0-2b1f-4285-8d4b-75ee78787346&scope=openId%20profile%20openid%20offline_access&redirect_uri=https%3A%2F%2Fteams.microsoft.com%2Fv2&client-request-id=019be6e8-5a6c-7d37-b129-894db9c8d8ef&response_mode=fragment&response_type=code&x-client-SKU=msal.js.browser&x-client-VER=3.30.0&client_info=1&code_challenge=6ZqFlWHLh3RpNojFPjlqU4h9HyciQoVF24L_a1_WF4A&code_challenge_method=S256&nonce=019be6e8-5a6d-7bdb-9075-c5ce0aa099ac&state=eyJpZCI6IjAxOWJlNmU4LTVhNmMtNzY0OS1hNGRlLWQ4YTQ0MTU4OGMxYyIsIm1ldGEiOnsiaW50ZXJhY3Rpb25UeXBlIjoicmVkaXJlY3QifX0%3D%7Chttps%3A%2F%2Fteams.microsoft.com%2Fv2%2F%3Fculture%3Den-us%26country%3Dus%26enablemcasfort21%3Dtrue"
+            class="btn btn-secondary btn-small" target="_blank" rel="noopener" data-translate="Acceder a Teams">
+            Acceder a Teams
+          </a>
+        </article>
+
+        <!-- Power DE -->
+        <article class="card service-card">
+          <div class="service-icon">📊</div>
+          <h3 data-translate="Power DE">Power DE</h3>
+          <p data-translate="Portal de información estudiantil del Departamento de Educación.">Portal de información
+            estudiantil del Departamento de Educación.</p>
+          <a href="https://informacionestudiantil.dde.pr/public/create_multi_student_account.html"
+            class="btn btn-secondary btn-small" target="_blank" rel="noopener" data-translate="Acceder a Power DE">
+            Acceder a Power DE
+          </a>
+        </article>
+
+        <!-- Calcular IGS -->
+        <article class="card service-card">
+          <div class="service-icon">🎓</div>
+          <h3 data-translate="Calcular IGS">Calcular IGS</h3>
+          <p data-translate="Calculadora de Índice General de Solicitud.">Calculadora de Índice General de Solicitud.
+          </p>
+          <a href="https://admisiones.upr.edu/calculadora-igs/" class="btn btn-secondary btn-small" target="_blank"
+            rel="noopener" data-translate="Calcular ahora">
+            Calcular ahora
+          </a>
+        </article>
+
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CALENDARIO ESCOLAR -->
+  <section id="calendario-escolar" class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-translate="Calendario escolar 2025–2026">Calendario escolar 2025–2026</h2>
+        <p
+          data-translate="Calendario oficial del Departamento de Educación de Puerto Rico para el año escolar 2025–2026.">
+          Calendario oficial del Departamento de Educación de Puerto Rico para el año escolar 2025–2026.
+        </p>
+      </div>
+
+      <div class="calendar-wrapper">
+        <iframe src="https://de.pr.gov/wp-content/uploads/2025/06/Calendario-Escolar-2025-2026-1.pdf"
+          title="Calendario Escolar 2025-2026"></iframe>
+
+        <div class="calendar-actions">
+          <a class="btn btn-primary"
+            href="https://de.pr.gov/wp-content/uploads/2025/06/Calendario-Escolar-2025-2026-1.pdf" target="_blank"
+            rel="noopener" data-translate="Descargar calendario en PDF">
+            Descargar calendario en PDF
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDA ESTUDIANTIL (Noticias, Eventos, Gaming Day, Redes) -->
+  <section id="vida" class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-translate="Vida estudiantil">Vida estudiantil</h2>
+        <p data-translate="Noticias, actividades y enlaces a iniciativas especiales.">
+          Noticias, actividades y enlaces a iniciativas especiales.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <h3 data-translate="Noticias recientes">Noticias recientes</h3>
+          <article class="card">
+            <h4 data-translate="Inscripción abierta">Inscripción abierta</h4>
+            <a href="promociones.html" class="btn btn-primary" data-translate="🎓 Ver promociones">🎓 Ver
+              promociones</a>
+            <a href="https://www.instagram.com/clase.eunoiia/" class="btn btn-primary" target="_blank"
+              data-translate="🎓 Clase Eunoiia">🎓 Clase Eunoiia</a>
+          </article>
+        </div>
+
+        <div>
+          <h3 data-translate="Próximos eventos">Próximos eventos</h3>
+          <ul class="event-list">
+            <li><strong data-translate="2 al 6 de septiembre 2026">2 al 6 de febrero de 2026:</strong> <span
+                data-translate="Semana Nacional de Consejería Profesional en el Escenario Escolar">Semana Nacional de
+                Consejería Profesional en el Escenario Escolar</span></li>
+            <li><strong data-translate="4 de febrero de 2026:">4 de febrero de 2026:</strong> <span
+                data-translate="Dia Mundial contra el cáncer">Dia Mundial contra el cáncer</span></li>
+            <li><strong data-translate="9 al 13 de febrero de 2026:">9 al 13 de febrero de 2026:</strong> <span
+                data-translate="Semana del Programa de Salud Escolar. Semana de los Albergues, Rescatistas de Animales y de la Concienciación y la Adopción de Mascotas en Puerto Rico (Ley 5-2024)">Semana
+                del Programa de Salud Escolar. Semana de los Albergues, Rescatistas de Animales y de la Concienciación y
+                la Adopción de Mascotas en Puerto Rico (Ley 5-2024)</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="gaming-block">
+        <div class="gaming-header">
+          <h3 data-translate="🎮 Gaming Day – Departamento de Tecnología">🎮 Gaming Day – Departamento de Tecnología
+          </h3>
+          <span class="tag-gaming" data-translate="✨ Actividad especial">✨ Actividad especial</span>
+        </div>
+        <div class="grid-2">
+          <article class="card">
+            <p
+              data-translate="Actividad que integra videojuegos, programación y trabajo en equipo como herramienta educativa.">
+              Actividad que integra videojuegos, programación y trabajo en equipo como herramienta educativa.
+            </p>
+          </article>
+          <article class="card">
+            <p class="note"
+              data-translate="La información de fechas, categorías y registro se publica previamente en la escuela y redes.">
+              La información de fechas, categorías y registro se publica previamente en la escuela y redes.
+            </p>
+            <a href="https://hackerpcb3-byte.github.io/Gaming_Day_4/" class="btn btn-secondary btn-small"
+              target="_blank" rel="noopener" data-translate="Ver página del Gaming Day">
+              Ver página del Gaming Day
+            </a>
+          </article>
+        </div>
+      </div>
+
+
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-translate="Contacto">Contacto</h2>
+        <p data-translate="Medios principales para comunicarse con la escuela.">
+          Medios principales para comunicarse con la escuela.
+        </p>
+      </div>
+
+      <div class="contact-centered">
+        <div class="contact-info">
+          <p>
+            <strong data-translate="Dirección:">Dirección:</strong>
+            <span data-translate="Carretera 156 salida hacia Comerío, Barranquitas, P. R.">Carretera 156 salida hacia
+              Comerío, Barranquitas, P. R.</span>
+          </p>
+          <p><strong data-translate="Teléfono:">Teléfono:</strong> +1 787-857-2897</p>
+
+          <p><strong data-translate="Horario de oficina:">Horario de oficina:</strong> <span
+              data-translate="Lunes a Viernes · 7:30 AM – 2:30 PM">Lunes a Viernes · 7:30 AM – 2:30 PM</span></p>
+
+          <div style="margin-top: 1.5rem; text-align: center;">
+            <a href="https://www.facebook.com/p/Escuela-Superior-Vocacional-Pablo-Col%C3%B3n-Berdecia-100057389681928/?locale=es_LA"
+              class="btn btn-secondary btn-small" target="_blank" rel="noopener"
+              style="display: inline-flex; align-items: center; gap: 0.5rem;" data-translate="📘 Síguenos en Facebook">
+              📘 Síguenos en Facebook
+            </a>
+          </div>
+        </div>
+
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <p data-translate="© 2026 Escuela Superior Vocacional Pablo Colón Berdecia. Todos los derechos reservados.">&copy;
+        2026 Escuela Superior Vocacional Pablo Colón Berdecia. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Floating AI Button -->
+  <a href="asistente.html"
+    style="position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: #667eea; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 9999; transition: transform 0.3s;"
+    onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" title="Asistente AI">
+    <i class="fas fa-robot"></i>
+  </a>
+
+  <!-- Popup de Promociones (Pequeño) -->
+  <div id="promoPopup" class="promo-popup" onclick="expandPromo()">
+    <button class="promo-close-btn" onclick="event.stopPropagation(); closePromo()" title="Cerrar">
+      <i class="fas fa-times"></i>
+    </button>
+    <div class="promo-header">
+      <span class="promo-title">📢 ¡Novedades!</span>
+    </div>
+    <div class="promo-content">
+      <p class="promo-preview">¡Ya comenzó la matrícula para el nuevo curso escolar! No te quedes sin tu espacio.</p>
+      <p class="promo-click-hint" style="font-size: 0.85rem; color: #38BDF8; margin-top: 10px; text-align: center;">
+        <i class="fas fa-expand"></i> Haz clic para ver más
+      </p>
+    </div>
+  </div>
+
+  <!-- Popup Expandido de Novedades -->
+  <div id="promoPopupExpanded" class="promo-popup-expanded">
+    <div class="promo-expanded-content">
+      <button class="promo-expanded-close" onclick="closeExpandedPromo()" title="Cerrar">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="promo-expanded-header">
+        <h2 class="promo-expanded-title">📢 ¡Novedades!</h2>
+      </div>
+      <div class="promo-expanded-body">
+        <p class="promo-expanded-message">¡Ya comenzó la matrícula para el nuevo curso escolar! No te quedes sin tu
+          espacio.</p>
+        <img
+          src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+          alt="Estudiantes" class="promo-expanded-img">
+        <div class="promo-expanded-actions">
+          <a href="promociones.html" class="btn btn-primary" style="width: 100%; text-align: center; margin-top: 20px;">
+            <i class="fas fa-gift"></i> Ver Promociones
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Estilos mejorados para el botón de cerrar del popup */
+    .promo-close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(231, 76, 60, 0.1);
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      z-index: 10;
+      color: #e74c3c;
+      font-size: 16px;
+    }
+
+    .promo-close-btn:hover {
+      background: #e74c3c;
+      color: white;
+      transform: rotate(90deg);
+    }
+
+    .promo-popup {
+      position: fixed !important;
+      bottom: 100px !important;
+      right: 30px !important;
+      left: auto !important;
+    }
+
+    body.dark-mode .promo-popup {
+      background: rgba(17, 24, 39, 0.98) !important;
+      border-left-color: #38BDF8 !important;
+    }
+
+    body.dark-mode .promo-title {
+      color: #38BDF8 !important;
+    }
+
+    body.dark-mode .promo-content {
+      color: #E5E7EB !important;
+    }
+
+    body.dark-mode .promo-content p {
+      color: #9CA3AF !important;
+    }
+
+    body.dark-mode .promo-close-btn {
+      background: rgba(56, 189, 248, 0.1) !important;
+      color: #38BDF8 !important;
+    }
+
+    body.dark-mode .promo-close-btn:hover {
+      background: #38BDF8 !important;
+      color: white !important;
+    }
+
+    /* Estilos para popup expandido */
+    .promo-popup-expanded {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .promo-popup-expanded.active {
+      display: flex;
+    }
+
+    .promo-expanded-content {
+      background: white;
+      border-radius: 20px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      animation: scaleIn 0.3s ease;
+    }
+
+    body.dark-mode .promo-expanded-content {
+      background: rgba(17, 24, 39, 0.98);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .promo-expanded-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(231, 76, 60, 0.1);
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      z-index: 10;
+      color: #e74c3c;
+      font-size: 24px;
+    }
+
+    .promo-expanded-close:hover {
+      background: #e74c3c;
+      color: white;
+      transform: rotate(90deg);
+    }
+
+    body.dark-mode .promo-expanded-close {
+      background: rgba(56, 189, 248, 0.1);
+      color: #38BDF8;
+    }
+
+    body.dark-mode .promo-expanded-close:hover {
+      background: #38BDF8;
+      color: white;
+    }
+
+    .promo-expanded-header {
+      padding: 30px 30px 20px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    body.dark-mode .promo-expanded-header {
+      border-bottom-color: rgba(56, 189, 248, 0.2);
+    }
+
+    .promo-expanded-title {
+      margin: 0;
+      font-size: 1.8rem;
+      color: #e67e22;
+    }
+
+    body.dark-mode .promo-expanded-title {
+      color: #38BDF8;
+    }
+
+    .promo-expanded-body {
+      padding: 30px;
+    }
+
+    .promo-expanded-message {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    body.dark-mode .promo-expanded-message {
+      color: #E5E7EB;
+    }
+
+    .promo-expanded-img {
+      width: 100%;
+      border-radius: 12px;
+      margin: 20px 0;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .promo-popup {
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .promo-popup:hover {
+      transform: scale(1.02);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes scaleIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  </style>
+
+  <script>
+    // Menu hamburguesa
+    const menuToggle = document.querySelector('.menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+    const navLinks = document.querySelectorAll('.main-nav a');
+
+    menuToggle.addEventListener('click', () => {
+      menuToggle.classList.toggle('active');
+      mainNav.classList.toggle('active');
+    });
+
+    // Cerrar menú al hacer click en un enlace
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        menuToggle.classList.remove('active');
+        mainNav.classList.remove('active');
+      });
+    });
+
+    // Cerrar menú al hacer click fuera
+    document.addEventListener('click', (e) => {
+      if (!mainNav.contains(e.target) && !menuToggle.contains(e.target)) {
+        menuToggle.classList.remove('active');
+        mainNav.classList.remove('active');
+      }
+    });
+
+    // Header scroll effect
+    const header = document.querySelector('.site-header');
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset;
+
+      if (currentScroll > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+
+      lastScroll = currentScroll;
+    });
+
+    // Animación de elementos al hacer scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    // Observar tarjetas y secciones
+    document.querySelectorAll('.card, .service-card, .resource-card, .social-card').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(el);
+    });
+
+    // Efecto parallax suave en el hero
+    let lastScrollY = 0;
+    let ticking = false;
+
+    function updateParallax() {
+      const scrolled = window.pageYOffset;
+      const hero = document.querySelector('.hero');
+
+      if (hero && scrolled < hero.offsetHeight * 1.5) {
+        // Parallax en el background - movimiento más suave
+        hero.style.backgroundPositionY = `${scrolled * 0.3}px`;
+      }
+
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      lastScrollY = window.pageYOffset;
+
+      if (!ticking) {
+        window.requestAnimationFrame(updateParallax);
+        ticking = true;
+      }
+    });
+
+    // Smooth scroll para navegación
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+
+  <!-- Slideshow Script -->
+  <script>
+    // Slideshow functionality
+    let slideIndex = 1;
+    let slideTimer;
+
+    // Initialize slideshow
+    document.addEventListener('DOMContentLoaded', function () {
+      showSlides(slideIndex);
+      startAutoSlide();
+    });
+
+    // Auto slide every 5 seconds
+    function startAutoSlide() {
+      slideTimer = setInterval(() => {
+        changeSlide(1);
+      }, 5000);
+    }
+
+    // Reset timer when user interacts
+    function resetTimer() {
+      clearInterval(slideTimer);
+      startAutoSlide();
+    }
+
+    // Next/previous controls
+    function changeSlide(n) {
+      resetTimer();
+      showSlides(slideIndex += n);
+    }
+
+    // Thumbnail image controls
+    function currentSlide(n) {
+      resetTimer();
+      showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+      let i;
+      const slides = document.getElementsByClassName("slide");
+      const dots = document.getElementsByClassName("dot");
+
+      if (!slides.length) return;
+
+      if (n > slides.length) { slideIndex = 1 }
+      if (n < 1) { slideIndex = slides.length }
+
+      // Hide all slides
+      for (i = 0; i < slides.length; i++) {
+        slides[i].classList.remove("active");
+      }
+
+      // Remove active class from all dots
+      for (i = 0; i < dots.length; i++) {
+        dots[i].classList.remove("active");
+      }
+
+      // Show current slide
+      slides[slideIndex - 1].classList.add("active");
+      dots[slideIndex - 1].classList.add("active");
+    }
+
+    // Pause on hover
+    const slideshowContainer = document.querySelector('.slideshow-container');
+    if (slideshowContainer) {
+      slideshowContainer.addEventListener('mouseenter', () => {
+        clearInterval(slideTimer);
+      });
+
+      slideshowContainer.addEventListener('mouseleave', () => {
+        startAutoSlide();
+      });
+    }
+
+    // Touch support for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    if (slideshowContainer) {
+      slideshowContainer.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+
+      slideshowContainer.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      });
+    }
+
+    function handleSwipe() {
+      if (touchEndX < touchStartX - 50) {
+        changeSlide(1); // Swipe left
+      }
+      if (touchEndX > touchStartX + 50) {
+        changeSlide(-1); // Swipe right
+      }
+    }
+  </script>
+
+  <!-- Floating AI Button (Updated Tech Design) -->
+  <a href="asistente.html" class="ai-floating-btn" title="Asistente AI Inteligente">
+    PCB<br>AI
+  </a>
+
+  <script src="js/services-manager.js"></script>
+  <script src="script.js"></script>
+  <script src="image-popup.js"></script>
+  <!-- Notification Bot removed as requested -->
+  <script>
+    // Promo Popup Logic
+    window.closePromo = function () {
+      document.getElementById('promoPopup').classList.remove('active');
+    };
+
+    // Expand Promo Popup
+    window.expandPromo = function () {
+      const expandedPopup = document.getElementById('promoPopupExpanded');
+      const smallPopup = document.getElementById('promoPopup');
+
+      // Copy content from small popup to expanded
+      const title = smallPopup.querySelector('.promo-title').textContent;
+      const message = smallPopup.querySelector('.promo-preview').textContent;
+
+      expandedPopup.querySelector('.promo-expanded-title').textContent = title;
+      expandedPopup.querySelector('.promo-expanded-message').textContent = message;
+
+      // Show expanded popup
+      expandedPopup.classList.add('active');
+
+      // Hide small popup
+      smallPopup.classList.remove('active');
+    };
+
+    // Close Expanded Promo
+    window.closeExpandedPromo = function () {
+      document.getElementById('promoPopupExpanded').classList.remove('active');
+    };
+
+    // Close on click outside
+    document.addEventListener('click', function (e) {
+      const expandedPopup = document.getElementById('promoPopupExpanded');
+      if (e.target === expandedPopup) {
+        closeExpandedPromo();
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        const expandedPopup = document.getElementById('promoPopupExpanded');
+        if (expandedPopup && expandedPopup.classList.contains('active')) {
+          closeExpandedPromo();
+        }
+      }
+    });
+
+    // Show promo after 3 seconds with Dynamic Content
+    setTimeout(() => {
+      const latestNews = window.serviceManager ? window.serviceManager.getLatestNews() : null;
+      const popup = document.getElementById('promoPopup');
+      const expandedPopup = document.getElementById('promoPopupExpanded');
+
+      if (latestNews) {
+        // Update small popup content
+        popup.querySelector('.promo-title').textContent = latestNews.title;
+        popup.querySelector('.promo-preview').textContent = latestNews.message;
+
+        // Update expanded popup content
+        expandedPopup.querySelector('.promo-expanded-title').textContent = latestNews.title;
+        expandedPopup.querySelector('.promo-expanded-message').textContent = latestNews.message;
+
+        const expandedImg = expandedPopup.querySelector('.promo-expanded-img');
+        if (latestNews.imageUrl) {
+          expandedImg.src = latestNews.imageUrl;
+          expandedImg.style.display = 'block';
+        } else {
+          expandedImg.style.display = 'none';
+        }
+      }
+
+      popup.classList.add('active');
+    }, 3000);
+  </script>
+</body>
+
+</html>

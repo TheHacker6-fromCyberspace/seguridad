@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enfermería Escolar – Escuela Superior Vocacional Pablo Colón Berdecia</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dark-mode-fix.css">
+  <link rel="stylesheet" href="dropdown-fix.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* Estilos del Dashboard de Enfermería */
+    .nurse-dashboard {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 30px;
+      margin-top: 40px;
+      border: 1px solid #e9ecef;
+      display: none;
+      /* Oculto por defecto */
+    }
+
+    .nurse-dashboard.active {
+      display: block;
+      animation: fadeIn 0.5s;
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #dde1e3;
+      padding-bottom: 15px;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 36px;
+      font-weight: bold;
+      color: #3498db;
+    }
+
+    .stat-label {
+      color: #7f8c8d;
+      font-size: 14px;
+    }
+
+    .visit-form {
+      background: white;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-access {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-access:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .login-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .login-box {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      width: 300px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Popup de selección de tema -->
+  <div id="themePopup" class="theme-popup">
+    <div class="theme-popup-content">
+      <h2 data-translate="🎨 Selecciona tu tema preferido">🎨 Selecciona tu tema preferido</h2>
+      <p data-translate="Elige cómo quieres ver el sitio web">Elige cómo quieres ver el sitio web</p>
+      <div class="theme-buttons">
+        <button class="theme-btn theme-btn-light" id="btnLightMode" data-translate="☀️ Modo Claro">
+          ☀️ Modo Claro
+        </button>
+        <button class="theme-btn theme-btn-dark" id="btnDarkMode" data-translate="🌙 Modo Oscuro">
+          🌙 Modo Oscuro
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Script inline para modo claro/oscuro
+    (function () {
+      function hidePopup() {
+        document.getElementById('themePopup').classList.add('hidden');
+      }
+
+      function setLightMode() {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        hidePopup();
+      }
+
+      function setDarkMode() {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        hidePopup();
+      }
+
+      function checkTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          hidePopup();
+        } else if (savedTheme === 'light') {
+          hidePopup();
+        }
+      }
+
+      // Ejecutar inmediatamente
+      checkTheme();
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const btnLight = document.getElementById('btnLightMode');
+        const btnDark = document.getElementById('btnDarkMode');
+
+        if (btnLight) {
+          btnLight.addEventListener('click', setLightMode);
+        }
+        if (btnDark) {
+          btnDark.addEventListener('click', setDarkMode);
+        }
+      });
+    })();
+  </script>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo-area">
+        <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+        <div class="logo-text">
+          <span class="logo-title" data-translate="Escuela Superior Vocacional">Escuela Superior Vocacional</span>
+          <span class="logo-subtitle">Pablo Colón Berdecia</span>
+        </div>
+      </div>
+
+      <!-- Hamburger Menu Button -->
+      <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <button class="menu-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html#inicio" data-translate="Inicio">Inicio</a></li>
+          <li><a href="index.html#servicios" data-translate="Servicios">Servicios</a></li>
+          <li><a href="index.html#contacto" data-translate="Contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3 data-translate="⚙️ Configuración">⚙️ Configuración</h3>
+    </div>
+    <div class="sidebar-content">
+      <!-- Theme Toggle -->
+      <div class="sidebar-option" id="themeToggle">
+        <span data-translate="🎨 Cambiar Tema">🎨 Cambiar Tema</span>
+      </div>
+      <div class="theme-options" id="themeOptions">
+        <div class="theme-option" id="selectLightTheme">
+          <span data-translate="☀️ Modo Claro">☀️ Modo Claro</span>
+        </div>
+        <div class="theme-option" id="selectDarkTheme">
+          <span data-translate="🌙 Modo Oscuro">🌙 Modo Oscuro</span>
+        </div>
+      </div>
+
+      <!-- Language Toggle -->
+      <div class="sidebar-option" id="languageToggle">
+        <span data-translate="🌐 Cambiar Idioma">🌐 Cambiar Idioma</span>
+      </div>
+      <div class="language-options" id="languageOptions">
+        <div class="language-option" id="selectSpanish">
+          <span>🇵🇷 Español</span>
+        </div>
+        <div class="language-option" id="selectEnglish">
+          <span>🇺🇸 English</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Hamburger menu functionality
+    (function () {
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const themeToggle = document.getElementById('themeToggle');
+      const themeOptions = document.getElementById('themeOptions');
+      const languageToggle = document.getElementById('languageToggle');
+      const languageOptions = document.getElementById('languageOptions');
+      const selectLightTheme = document.getElementById('selectLightTheme');
+      const selectDarkTheme = document.getElementById('selectDarkTheme');
+      const selectSpanish = document.getElementById('selectSpanish');
+      const selectEnglish = document.getElementById('selectEnglish');
+
+      function openSidebarMenu() {
+        sidebarMenu.classList.add('active');
+        sidebarOverlay.classList.add('active');
+      }
+
+      function closeSidebarMenu() {
+        sidebarMenu.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+        themeOptions.classList.remove('active');
+        languageOptions.classList.remove('active');
+      }
+
+      if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', openSidebarMenu);
+      }
+
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeSidebarMenu);
+      }
+
+      // Theme toggle
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function () {
+          themeOptions.classList.toggle('active');
+          languageOptions.classList.remove('active');
+        });
+      }
+
+      // Language toggle
+      if (languageToggle) {
+        languageToggle.addEventListener('click', function () {
+          languageOptions.classList.toggle('active');
+          themeOptions.classList.remove('active');
+        });
+      }
+
+      // Select Light Theme
+      if (selectLightTheme) {
+        selectLightTheme.addEventListener('click', function () {
+          document.body.classList.remove('dark-mode');
+          localStorage.setItem('theme', 'light');
+          closeSidebarMenu();
+        });
+      }
+
+      // Select Dark Theme
+      if (selectDarkTheme) {
+        selectDarkTheme.addEventListener('click', function () {
+          document.body.classList.add('dark-mode');
+          localStorage.setItem('theme', 'dark');
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma español
+      if (selectSpanish) {
+        selectSpanish.addEventListener('click', function () {
+          localStorage.setItem('language', 'es');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'es');
+          if (typeof translatePage === 'function') {
+            translatePage('es');
+          }
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma inglés
+      if (selectEnglish) {
+        selectEnglish.addEventListener('click', function () {
+          localStorage.setItem('language', 'en');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'en');
+          if (typeof translatePage === 'function') {
+            translatePage('en');
+          }
+          closeSidebarMenu();
+        });
+      }
+    })();
+  </script>
+
+
+
+  <!-- Hero -->
+  <section class="hero" style="min-height: 350px; padding: 4rem 0;">
+    <div class="container">
+      <div class="section-header" style="margin-bottom: 0;">
+        <div style="font-size: 5rem; margin-bottom: 1rem;">⚕️</div>
+        <h1 style="color: #ffffff; font-size: 3rem; text-shadow: 0 2px 20px rgba(0,0,0,0.5);">Enfermería Escolar</h1>
+        <p style="color: rgba(255,255,255,0.95); font-size: 1.2rem; max-width: 800px; margin: 1rem auto;">
+          Atención básica de salud y bienestar estudiantil
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD DE ENFERMERÍA (Oculto) -->
+  <section class="container nurse-dashboard" id="nurseDashboard">
+    <div class="dashboard-header">
+      <h2><i class="fas fa-notes-medical"></i> Portal de Enfermería</h2>
+      <button class="btn btn-secondary" onclick="logoutNurse()">Cerrar Sesión</button>
+    </div>
+
+    <div class="dashboard-grid">
+      <!-- Columna 1: Registro de Visitas -->
+      <div class="visit-form">
+        <h3><i class="fas fa-plus-circle"></i> Nueva Visita</h3>
+        <form id="visitForm">
+          <div class="form-group">
+            <label class="form-label">Estudiante (Nombre o SIE)</label>
+            <input type="text" class="form-control" name="student" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Motivo de Visita</label>
+            <select class="form-control" name="reason" required>
+              <option value="dolor_cabeza">Dolor de Cabeza</option>
+              <option value="dolor_estomago">Dolor de Estómago</option>
+              <option value="herida_leve">Herida Leve / Caída</option>
+              <option value="medicamento">Administración Medicamento</option>
+              <option value="presion">Presión Arterial</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tratamiento / Notas</label>
+            <textarea class="form-control" name="notes" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Acción Tomada</label>
+            <select class="form-control" name="action">
+              <option value="regresa_clase">Regresa a clase</option>
+              <option value="descanso">Descanso en enfermería</option>
+              <option value="llama_padres">Se llama a padres</option>
+              <option value="referido">Referido médico</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Registrar Visita</button>
+        </form>
+      </div>
+
+      <!-- Columna 2: Estadísticas y Reportes -->
+      <div>
+        <div class="grid-2" style="gap: 15px;">
+          <div class="stat-card">
+            <div class="stat-number" id="statsTotal">0</div>
+            <div class="stat-label">Visitas Totales</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="statsWeek">0</div>
+            <div class="stat-label">Esta Semana</div>
+          </div>
+        </div>
+
+        <div class="visit-form" style="margin-top: 25px;">
+          <h3><i class="fas fa-chart-pie"></i> Reporte Anónimo</h3>
+          <p class="note" style="margin-bottom: 15px;">Generar reporte de incidencias para administración sin datos
+            sensibles.</p>
+          <button class="btn btn-primary" onclick="generateReport()" style="width: 100%; background: #9b59b6;">Generar
+            PDF Reporte</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Login Modal -->
+  <div class="login-modal" id="loginModal">
+    <div class="login-box">
+      <h3 style="text-align: center; margin-bottom: 20px;">Acceso Autorizado</h3>
+      <input type="password" class="form-control" id="nursePin" placeholder="PIN de Enfermería (1234)"
+        style="margin-bottom: 15px;">
+      <button class="btn btn-primary" style="width: 100%;" onclick="checkLogin()">Entrar</button>
+      <button class="btn btn-secondary" style="width: 100%; margin-top: 10px;" onclick="closeLogin()">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- Contenido principal (Público) -->
+  <section class="section">
+    <div class="container">
+      <div class="grid-2">
+        <!-- Información general -->
+        <article class="card">
+          <div class="card-icon">🏥</div>
+          <h3>Acerca del Servicio</h3>
+          <p>
+            El servicio de enfermería brinda atención básica en situaciones de salud que
+            ocurran durante la jornada escolar, velando por el bienestar de nuestros estudiantes.
+          </p>
+        </article>
+
+        <!-- Formulario de Autorización (Público) -->
+        <article class="card accent-left">
+          <div class="card-icon">📝</div>
+          <h3>Autorización de Medicamentos</h3>
+          <p>Descargue el formulario para administración de medicamentos.</p>
+          <a href="#" class="btn btn-secondary" style="margin-top: 10px;">Descargar Formulario PDF</a>
+          <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+          <p><strong>Subir Autorización Firmada:</strong></p>
+          <input type="file" class="form-control">
+          <button class="btn btn-primary" style="margin-top: 10px;"
+            onclick="alert('Documento subido correctamente. Pendiente de validación.')">Enviar</button>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2026 Escuela Superior Vocacional Pablo Colón Berdecia. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="js/services-manager.js"></script>
+  <script src="js/enfermeria.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

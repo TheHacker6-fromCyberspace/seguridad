@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="es" id="htmlRoot">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comedor Escolar – Escuela Superior Vocacional Pablo Colón Berdecia</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dark-mode-fix.css">
+  <link rel="stylesheet" href="dropdown-fix.css">
+  <link rel="stylesheet" href="image-popup.css">
+  <link rel="stylesheet" href="notification-bot.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="translations.js"></script>
+
+  <style>
+    /* Estilos para la encuesta del comedor */
+    .survey-card {
+      border-left: 4px solid #9b59b6 !important;
+      padding: 40px !important;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .survey-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .survey-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+    }
+
+    .survey-header h3 {
+      color: #2c3e50;
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+
+    .survey-header p {
+      color: #7f8c8d;
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .survey-form {
+      margin-top: 30px;
+    }
+
+    .survey-section {
+      background: #f8f9fa;
+      padding: 30px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      border: 2px solid #e9ecef;
+      transition: all 0.3s ease;
+    }
+
+    .survey-section:hover {
+      border-color: #9b59b6;
+      box-shadow: 0 5px 20px rgba(155, 89, 182, 0.1);
+    }
+
+    .survey-section-title {
+      color: #9b59b6;
+      font-size: 1.5rem;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #e9ecef;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .survey-question {
+      margin-bottom: 25px;
+    }
+
+    .survey-label {
+      display: block;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+
+    .survey-label i {
+      color: #9b59b6;
+      margin-right: 8px;
+    }
+
+    .rating-stars {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      padding: 15px;
+      background: white;
+      border-radius: 10px;
+      border: 2px solid #e9ecef;
+      transition: all 0.3s ease;
+    }
+
+    .rating-stars:hover {
+      border-color: #9b59b6;
+    }
+
+    .rating-stars .star {
+      font-size: 2.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      filter: grayscale(100%);
+      opacity: 0.4;
+    }
+
+    .rating-stars .star:hover,
+    .rating-stars .star.active {
+      filter: grayscale(0%);
+      opacity: 1;
+      transform: scale(1.2);
+    }
+
+    .rating-stars .star.active {
+      animation: starPulse 0.3s ease;
+    }
+
+    @keyframes starPulse {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.3);
+      }
+
+      100% {
+        transform: scale(1.2);
+      }
+    }
+
+    .survey-textarea {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: inherit;
+      resize: vertical;
+      transition: all 0.3s ease;
+    }
+
+    .survey-textarea:focus {
+      outline: none;
+      border-color: #9b59b6;
+      box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.1);
+    }
+
+    .survey-actions {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 40px;
+    }
+
+    .btn-survey {
+      padding: 15px 40px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-submit-survey {
+      background: linear-gradient(135deg, #9b59b6, #8e44ad);
+      color: white;
+      box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);
+    }
+
+    .btn-submit-survey:hover {
+      background: linear-gradient(135deg, #8e44ad, #7d3c98);
+      box-shadow: 0 6px 20px rgba(155, 89, 182, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .btn-cancel {
+      background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+      color: white;
+      box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+    }
+
+    .btn-cancel:hover {
+      background: linear-gradient(135deg, #7f8c8d, #6c7a7b);
+      box-shadow: 0 6px 20px rgba(149, 165, 166, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .survey-success {
+      text-align: center;
+      padding: 60px 40px;
+    }
+
+    .success-icon {
+      font-size: 5rem;
+      color: #27ae60;
+      margin-bottom: 20px;
+      animation: successPop 0.5s ease;
+    }
+
+    @keyframes successPop {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+
+      50% {
+        transform: scale(1.2);
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .survey-success h3 {
+      color: #27ae60;
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+
+    .survey-success p {
+      color: #7f8c8d;
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+
+    /* Dark Mode */
+    body.dark-mode .survey-card {
+      background: rgba(30, 41, 59, 0.95) !important;
+      border-left-color: #9b59b6 !important;
+    }
+
+    body.dark-mode .survey-header h3 {
+      color: #e5e7eb !important;
+    }
+
+    body.dark-mode .survey-header p {
+      color: #9ca3af !important;
+    }
+
+    body.dark-mode .survey-section {
+      background: rgba(15, 23, 42, 0.8);
+      border-color: #334155;
+    }
+
+    body.dark-mode .survey-section:hover {
+      border-color: #9b59b6;
+    }
+
+    body.dark-mode .survey-section-title {
+      color: #a78bfa !important;
+      border-bottom-color: #334155;
+    }
+
+    body.dark-mode .survey-label {
+      color: #e5e7eb !important;
+    }
+
+    body.dark-mode .rating-stars {
+      background: rgba(30, 41, 59, 0.8);
+      border-color: #334155;
+    }
+
+    body.dark-mode .rating-stars:hover {
+      border-color: #9b59b6;
+    }
+
+    body.dark-mode .survey-textarea {
+      background: rgba(30, 41, 59, 0.8) !important;
+      color: #e5e7eb !important;
+      border-color: #334155 !important;
+    }
+
+    body.dark-mode .survey-textarea:focus {
+      border-color: #9b59b6 !important;
+    }
+
+    body.dark-mode .survey-success h3 {
+      color: #34d399 !important;
+    }
+
+    body.dark-mode .survey-success p {
+      color: #9ca3af !important;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .survey-card {
+        padding: 20px !important;
+      }
+
+      .survey-section {
+        padding: 20px;
+      }
+
+      .rating-stars {
+        gap: 5px;
+      }
+
+      .rating-stars .star {
+        font-size: 2rem;
+      }
+
+      .survey-actions {
+        flex-direction: column;
+      }
+
+      .btn-survey {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Popup de selección de tema 
+  <div id="themePopup" class="theme-popup">
+    <div class="theme-popup-content">
+      <h2 data-translate="🎨 Selecciona tu tema preferido">🎨 Selecciona tu tema preferido</h2>
+      <p data-translate="Elige cómo quieres ver el sitio web">Elige cómo quieres ver el sitio web</p>
+      <div class="theme-buttons">
+        <button class="theme-btn theme-btn-light" id="btnLightMode" data-translate="☀️ Modo Claro">
+          ☀️ Modo Claro
+        </button>
+        <button class="theme-btn theme-btn-dark" id="btnDarkMode" data-translate="🌙 Modo Oscuro">
+          🌙 Modo Oscuro
+        </button>
+      </div>
+    </div>
+  </div> -->
+
+  <script>
+    // Script inline para modo claro/oscuro
+    (function () {
+      function hidePopup() {
+        document.getElementById('themePopup').classList.add('hidden');
+      }
+
+      function setLightMode() {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        hidePopup();
+      }
+
+      function setDarkMode() {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        hidePopup();
+      }
+
+      function checkTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          hidePopup();
+        } else if (savedTheme === 'light') {
+          hidePopup();
+        }
+      }
+
+      // Ejecutar inmediatamente
+      checkTheme();
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const btnLight = document.getElementById('btnLightMode');
+        const btnDark = document.getElementById('btnDarkMode');
+
+        if (btnLight) {
+          btnLight.addEventListener('click', setLightMode);
+        }
+        if (btnDark) {
+          btnDark.addEventListener('click', setDarkMode);
+        }
+      });
+    })();
+  </script>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo-area">
+        <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+        <div class="logo-text">
+          <span class="logo-title" data-translate="Escuela Superior Vocacional">Escuela Superior Vocacional</span>
+          <span class="logo-subtitle">Pablo Colón Berdecia</span>
+        </div>
+      </div>
+
+      <!-- Hamburger Menu Button -->
+      <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <button class="menu-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html#inicio" data-translate="Inicio">Inicio</a></li>
+          <li><a href="index.html#servicios" data-translate="Servicios">Servicios</a></li>
+          <li><a href="index.html#contacto" data-translate="Contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3 data-translate="⚙️ Configuración">⚙️ Configuración</h3>
+    </div>
+    <div class="sidebar-content">
+      <!-- Theme Toggle -->
+      <div class="sidebar-option" id="themeToggle">
+        <span data-translate="🎨 Cambiar Tema">🎨 Cambiar Tema</span>
+      </div>
+      <div class="theme-options" id="themeOptions">
+        <div class="theme-option" id="selectLightTheme">
+          <span data-translate="☀️ Modo Claro">☀️ Modo Claro</span>
+        </div>
+        <div class="theme-option" id="selectDarkTheme">
+          <span data-translate="🌙 Modo Oscuro">🌙 Modo Oscuro</span>
+        </div>
+      </div>
+
+      <!-- Language Toggle -->
+      <div class="sidebar-option" id="languageToggle">
+        <span data-translate="🌐 Cambiar Idioma">🌐 Cambiar Idioma</span>
+      </div>
+      <div class="language-options" id="languageOptions">
+        <div class="language-option" id="selectSpanish">
+          <span>🇵🇷 Español</span>
+        </div>
+        <div class="language-option" id="selectEnglish">
+          <span>🇺🇸 English</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Hamburger menu functionality
+    (function () {
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const themeToggle = document.getElementById('themeToggle');
+      const themeOptions = document.getElementById('themeOptions');
+      const languageToggle = document.getElementById('languageToggle');
+      const languageOptions = document.getElementById('languageOptions');
+      const selectLightTheme = document.getElementById('selectLightTheme');
+      const selectDarkTheme = document.getElementById('selectDarkTheme');
+      const selectSpanish = document.getElementById('selectSpanish');
+      const selectEnglish = document.getElementById('selectEnglish');
+
+      function openSidebarMenu() {
+        sidebarMenu.classList.add('active');
+        sidebarOverlay.classList.add('active');
+      }
+
+      function closeSidebarMenu() {
+        sidebarMenu.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+        themeOptions.classList.remove('active');
+        languageOptions.classList.remove('active');
+      }
+
+      if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', openSidebarMenu);
+      }
+
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeSidebarMenu);
+      }
+
+      // Theme toggle
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function () {
+          themeOptions.classList.toggle('active');
+          languageOptions.classList.remove('active');
+        });
+      }
+
+      // Language toggle
+      if (languageToggle) {
+        languageToggle.addEventListener('click', function () {
+          languageOptions.classList.toggle('active');
+          themeOptions.classList.remove('active');
+        });
+      }
+
+      // Select Light Theme
+      if (selectLightTheme) {
+        selectLightTheme.addEventListener('click', function () {
+          document.body.classList.remove('dark-mode');
+          localStorage.setItem('theme', 'light');
+          closeSidebarMenu();
+        });
+      }
+
+      // Select Dark Theme
+      if (selectDarkTheme) {
+        selectDarkTheme.addEventListener('click', function () {
+          document.body.classList.add('dark-mode');
+          localStorage.setItem('theme', 'dark');
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma español
+      if (selectSpanish) {
+        selectSpanish.addEventListener('click', function () {
+          localStorage.setItem('language', 'es');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'es');
+          if (typeof translatePage === 'function') {
+            translatePage('es');
+          }
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma inglés
+      if (selectEnglish) {
+        selectEnglish.addEventListener('click', function () {
+          localStorage.setItem('language', 'en');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'en');
+          if (typeof translatePage === 'function') {
+            translatePage('en');
+          }
+          closeSidebarMenu();
+        });
+      }
+    })();
+  </script>
+
+  <!-- Popup de selección de tema -->
+  <div id="themePopup" class="theme-popup">
+    <div class="theme-popup-content">
+      <h2 data-translate="🎨 Selecciona tu tema preferido">🎨 Selecciona tu tema preferido</h2>
+      <p data-translate="Elige cómo quieres ver el sitio web">Elige cómo quieres ver el sitio web</p>
+      <div class="theme-buttons">
+        <button class="theme-btn theme-btn-light" id="btnLightMode" data-translate="☀️ Modo Claro">
+          ☀️ Modo Claro
+        </button>
+        <button class="theme-btn theme-btn-dark" id="btnDarkMode" data-translate="🌙 Modo Oscuro">
+          🌙 Modo Oscuro
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Script inline para modo claro/oscuro
+    (function () {
+      function hidePopup() {
+        document.getElementById('themePopup').classList.add('hidden');
+      }
+
+      function setLightMode() {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        hidePopup();
+      }
+
+      function setDarkMode() {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        hidePopup();
+      }
+
+      function checkTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          hidePopup();
+        } else if (savedTheme === 'light') {
+          hidePopup();
+        }
+      }
+
+      // Ejecutar inmediatamente
+      checkTheme();
+
+      // Agregar event listeners cuando el DOM esté listo
+      document.addEventListener('DOMContentLoaded', function () {
+        const btnLight = document.getElementById('btnLightMode');
+        const btnDark = document.getElementById('btnDarkMode');
+
+        if (btnLight) {
+          btnLight.addEventListener('click', setLightMode);
+        }
+        if (btnDark) {
+          btnDark.addEventListener('click', setDarkMode);
+        }
+      });
+    })();
+  </script>
+
+
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3 data-translate="⚙️ Configuración">⚙️ Configuración</h3>
+    </div>
+    <div class="sidebar-content">
+      <!-- Theme Toggle -->
+      <div class="sidebar-option" id="themeToggle">
+        <span data-translate="🎨 Cambiar Tema">🎨 Cambiar Tema</span>
+      </div>
+      <div class="theme-options" id="themeOptions">
+        <div class="theme-option" id="selectLightTheme">
+          <span data-translate="☀️ Modo Claro">☀️ Modo Claro</span>
+        </div>
+        <div class="theme-option" id="selectDarkTheme">
+          <span data-translate="🌙 Modo Oscuro">🌙 Modo Oscuro</span>
+        </div>
+      </div>
+
+      <!-- Language Toggle -->
+      <div class="sidebar-option" id="languageToggle">
+        <span data-translate="🌐 Cambiar Idioma">🌐 Cambiar Idioma</span>
+      </div>
+      <div class="language-options" id="languageOptions">
+        <div class="language-option" id="selectSpanish">
+          <span>🇵🇷 Español</span>
+        </div>
+        <div class="language-option" id="selectEnglish">
+          <span>🇺🇸 English</span>
+        </div>
+      </div>
+
+      <!-- Separador -->
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 1rem 0;"></div>
+
+      <!-- Dashboard Administrativo -->
+      <a href="admin.html" class="sidebar-link"
+        style="display: flex; align-items: center; padding: 1rem; text-decoration: none; color: inherit; cursor: pointer; border-radius: 10px; transition: all 0.3s ease;">
+        <span style="font-size: 1.5rem; margin-right: 1rem;">⚙️</span>
+        <span style="flex: 1; font-weight: 500;" data-translate="Dashboard Admin">Dashboard Admin</span>
+        <span style="font-size: 1.2rem;">›</span>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // Hamburger menu functionality
+    (function () {
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const themeToggle = document.getElementById('themeToggle');
+      const themeOptions = document.getElementById('themeOptions');
+      const languageToggle = document.getElementById('languageToggle');
+      const languageOptions = document.getElementById('languageOptions');
+      const selectLightTheme = document.getElementById('selectLightTheme');
+      const selectDarkTheme = document.getElementById('selectDarkTheme');
+      const selectSpanish = document.getElementById('selectSpanish');
+      const selectEnglish = document.getElementById('selectEnglish');
+
+      function openSidebarMenu() {
+        sidebarMenu.classList.add('active');
+        sidebarOverlay.classList.add('active');
+      }
+
+      function closeSidebarMenu() {
+        sidebarMenu.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+        themeOptions.classList.remove('active');
+        languageOptions.classList.remove('active');
+      }
+
+      if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', openSidebarMenu);
+      }
+
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeSidebarMenu);
+      }
+
+      // Theme toggle
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function () {
+          themeOptions.classList.toggle('active');
+          languageOptions.classList.remove('active');
+        });
+      }
+
+      // Language toggle
+      if (languageToggle) {
+        languageToggle.addEventListener('click', function () {
+          languageOptions.classList.toggle('active');
+          themeOptions.classList.remove('active');
+        });
+      }
+
+      // Select Light Theme
+      if (selectLightTheme) {
+        selectLightTheme.addEventListener('click', function () {
+          document.body.classList.remove('dark-mode');
+          localStorage.setItem('theme', 'light');
+          closeSidebarMenu();
+        });
+      }
+
+      // Select Dark Theme
+      if (selectDarkTheme) {
+        selectDarkTheme.addEventListener('click', function () {
+          document.body.classList.add('dark-mode');
+          localStorage.setItem('theme', 'dark');
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma español
+      if (selectSpanish) {
+        selectSpanish.addEventListener('click', function () {
+          localStorage.setItem('language', 'es');
+          document.getElementById('htmlRoot').setAttribute('lang', 'es');
+          if (typeof translatePage === 'function') {
+            translatePage('es');
+          }
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma inglés
+      if (selectEnglish) {
+        selectEnglish.addEventListener('click', function () {
+          localStorage.setItem('language', 'en');
+          document.getElementById('htmlRoot').setAttribute('lang', 'en');
+          if (typeof translatePage === 'function') {
+            translatePage('en');
+          }
+          closeSidebarMenu();
+        });
+      }
+    })();
+  </script>
+
+  <!-- Hero -->
+  <section class="hero" style="min-height: 350px; padding: 4rem 0;">
+    <div class="container">
+      <div class="section-header" style="margin-bottom: 0;">
+        <div style="font-size: 5rem; margin-bottom: 1rem;">🍽️</div>
+        <h1 style="color: #ffffff; font-size: 3rem; text-shadow: 0 2px 20px rgba(0,0,0,0.5);"
+          data-translate="Comedor Escolar">Comedor Escolar</h1>
+        <p style="color: rgba(255,255,255,0.95); font-size: 1.2rem; max-width: 800px; margin: 1rem auto;"
+          data-translate="Servicio de alimentación escolar para nuestros estudiantes">
+          Servicio de alimentación escolar para nuestros estudiantes
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contenido principal -->
+  <section class="section">
+    <div class="container">
+      <div class="grid-2">
+        <!-- Información general -->
+        <article class="card">
+          <div class="card-icon">🥘</div>
+          <h3 data-translate="Acerca del Comedor">Acerca del Comedor</h3>
+          <p
+            data-translate="El comedor escolar ofrece servicios de alimentación de acuerdo al programa de comedores escolares del Departamento de Educación de Puerto Rico.">
+            El comedor escolar ofrece servicios de alimentación de acuerdo al programa de
+            comedores escolares del Departamento de Educación de Puerto Rico.
+          </p>
+          <p
+            data-translate="Proporcionamos comidas nutritivas y balanceadas que contribuyen al bienestar y desarrollo de nuestros estudiantes durante la jornada escolar.">
+            Proporcionamos comidas nutritivas y balanceadas que contribuyen al bienestar
+            y desarrollo de nuestros estudiantes durante la jornada escolar.
+          </p>
+        </article>
+
+        <!-- Horario -->
+        <article class="card">
+          <div class="card-icon">🕐</div>
+          <h3 data-translate="Horario de Servicio">Horario de Servicio</h3>
+          <p><strong data-translate="Horario de almuerzo:">Horario de almuerzo:</strong></p>
+          <p style="font-size: 1.3rem; color: var(--primary-light); margin: 1rem 0;"
+            data-translate="9no y 10mo 11:00AM a 11:50AM y 11mo 12mo de 11:50AM a 12:50PM">9no y 10mo 11:00AM a 11:50AM
+            y 11mo 12mo de 11:50AM a 12:50PM</p>
+          <p><strong data-translate="Ubicación:">Ubicación:</strong> <span data-translate="Área de comedor escolar">Área
+              de comedor escolar</span></p>
+          <p class="note" data-translate="El horario puede variar según el nivel y grupo">
+            El horario puede variar según el nivel y grupo
+          </p>
+        </article>
+
+        <!-- Menú y nutrición -->
+        <article class="card">
+          <div class="card-icon">🍎</div>
+          <h3 data-translate="Menú del día">Menú del día</h3>
+
+          <div id="menuDelDia">
+            <!-- El menú se cargará dinámicamente -->
+          </div>
+
+          <p class="note" style="margin-top: 1rem;"
+            data-translate="El menú puede variar según disponibilidad y programación del Departamento de Educación">
+            El menú puede variar según disponibilidad y programación del Departamento de Educación
+          </p>
+
+          <!-- Botones de Acción -->
+          <div style="display: flex; gap: 10px; margin-top: 15px; justify-content: center;">
+            <button class="btn btn-secondary"
+              onclick="alert('📊 Información Nutricional:\n\nBalanceado según estándares del USDA.\nBajo en sodio y grasas saturadas.\n\n⚠️ Alergenos comunes: Leche, Trigo, Soya.')">
+              <i class="fas fa-info-circle"></i> Info Nutricional
+            </button>
+            <button class="btn btn-primary"
+              onclick="document.getElementById('surveySection').style.display='block'; document.getElementById('surveySection').scrollIntoView({behavior: 'smooth'})">
+              <i class="fas fa-poll"></i> Evaluar Comedor
+            </button>
+          </div>
+
+          <p style="margin-top: 0.5rem; text-align: center;">
+            <a href="admin.html" style="color: #667eea; text-decoration: none;">✏️ Editar menú desde el panel
+              administrativo</a>
+          </p>
+        </article>
+
+        <!-- Encuesta de Satisfacción Mejorada -->
+        <article class="card survey-card" id="surveySection" style="display: none;">
+          <div class="survey-header">
+            <div class="survey-icon">📋</div>
+            <h3>Encuesta de Satisfacción del Comedor</h3>
+            <p>Tu opinión es muy importante para mejorar nuestro servicio. Por favor, evalúa los siguientes aspectos:
+            </p>
+          </div>
+
+          <form id="comedorSurveyForm" class="survey-form">
+            <!-- Sección: Desayuno -->
+            <div class="survey-section">
+              <h4 class="survey-section-title">
+                <i class="fas fa-sun"></i> Evaluación del Desayuno
+              </h4>
+
+              <div class="survey-question">
+                <label class="survey-label">
+                  <i class="fas fa-utensils"></i> Calidad de la comida del desayuno
+                </label>
+                <div class="rating-stars" data-question="desayuno-calidad">
+                  <span class="star" data-value="5">⭐</span>
+                  <span class="star" data-value="4">⭐</span>
+                  <span class="star" data-value="3">⭐</span>
+                  <span class="star" data-value="2">⭐</span>
+                  <span class="star" data-value="1">⭐</span>
+                </div>
+                <input type="hidden" name="desayuno-calidad" required>
+              </div>
+
+              <div class="survey-question">
+                <label class="survey-label">
+                  <i class="fas fa-list"></i> Variedad del menú del desayuno
+                </label>
+                <div class="rating-stars" data-question="desayuno-variedad">
+                  <span class="star" data-value="5">⭐</span>
+                  <span class="star" data-value="4">⭐</span>
+                  <span class="star" data-value="3">⭐</span>
+                  <span class="star" data-value="2">⭐</span>
+                  <span class="star" data-value="1">⭐</span>
+                </div>
+                <input type="hidden" name="desayuno-variedad" required>
+              </div>
+
+              <div class="survey-question">
+                <label class="survey-label">
+                  <i class="fas fa-temperature-high"></i> Temperatura de los alimentos (desayuno)
+                </label>
+                <div class="rating-stars" data-question="desayuno-temperatura">
+                  <span class="star" data-value="5">⭐</span>
+                  <span class="star" data-value="4">⭐</span>
+                  <span class="star" data-value="3">⭐</span>
+                  <span class="star" data-value="2">⭐</span>
+                  <span class="star" data-value="1">⭐</span>
+                </div>
+                <input type="hidden" name="desayuno-temperatura" required>
+              </div>
+            </div>
+
+            <!-- Sección: Almuerzo -->
+            <div class="survey-section">
+              <h4 class="survey-section-title">
+                <i class="fas fa-drumstick-bite"></i> Evaluación del Almuerzo
+              </h4>
+
+              <div class="survey-question">
+                <label class="survey-label">
+                  <i class="fas fa-utensils"></i> Calidad de la comida del almuerzo
+                </label>
+                <div class="rating-stars" data-question="almuerzo-calidad">
+                  <span class="star" data-value="5">⭐</span>
+                  <span class="star" data-value="4">⭐</span>
+                  <span class="star" data-value="3">⭐</span>
+                  <span class="star" data-value="2">⭐</span>
+                  <span class="star" data-value="1">⭐</span>
+                </div>
+                <input type="hidden" name="almuerzo-calidad" required>
+              </div>
+
+              <div class="survey-question">
+                <label class="survey-label">
+                  <i class="fas fa-list"></i> Variedad del menú del almuerzo
+                </label>
+                <div class="rating-stars" data-question="almuerzo-variedad">
+                  <span class="star" data-value="5">⭐</span>
+                  <span class="star" data-value="4">⭐</span>
+                  <span class="star" data-value="3">⭐</span>
+                  <span class="star" data-value="2">⭐</span>
+                  <span class="star" data-value="1">⭐</span>
+                </div>
+                <input type="hidden" name="almuerzo-variedad" required>
+              </div>
+
+              <div class="survey-question">
+                <label class="survey-label">
+                  <i class="fas fa-temperature-high"></i> Temperatura de los alimentos (almuerzo)
+                </label>
+                <div class="rating-stars" data-question="almuerzo-temperatura">
+                  <span class="star" data-value="5">⭐</span>
+                  <span class="star" data-value="4">⭐</span>
+                  <span class="star" data-value="3">⭐</span>
+                  <span class="star" data-value="2">⭐</span>
+                  <span class="star" data-value="1">⭐</span>
+                </div>
+                <input type="hidden" name="almuerzo-temperatura" required>
+              </div>
+
+              <div class="survey-question">
+                <label class="survey-label">
+                  <i class="fas fa-apple-alt"></i> Porciones servidas
+                </label>
+                <div class="rating-stars" data-question="almuerzo-porciones">
+                  <span class="star" data-value="5">⭐</span>
+                  <span class="star" data-value="4">⭐</span>
+                  <span class="star" data-value="3">⭐</span>
+                  <span class="star" data-value="2">⭐</span>
+                  <span class="star" data-value="1">⭐</span>
+                </div>
+                <input type="hidden" name="almuerzo-porciones" required>
+              </div>
+            </div>
+
+            <!-- Sección: Limpieza e Higiene -->
+            <div class="survey-section">
+              <h4 class="survey-section-title">
+                <i class="fas fa-broom"></i> Limpieza e Higiene
+              </h4>
+
+              <div class="survey-question">
+                <label class="survey-label">
+                  <i class="fas fa-soap"></i> Limpieza del área del comedor
+                </label>
+                <div class="rating-stars" data-question="limpieza-area">
+                  <span class="star" data-value="5">⭐</span>
+                  <span class="star" data-value="4">⭐</span>
+                  <span class="star" data-value="3">⭐</span>
+                  <span class="star" data-value="2">⭐</span>
+                  <span class="star" data-value="1">⭐</span>
+                </div>
+                <input type="hidden" name="limpieza-area" required>
+              </div>
+
+              <div class="survey-question">
+                <label class="survey-label">
+                  <i class="fas fa-table"></i> Limpieza de mesas y sillas
+                </label>
+                <div class="rating-stars" data-question="limpieza-mesas">
+                  <span class="star" data-value="5">⭐</span>
+                  <span class="star" data-value="4">⭐</span>
+                  <span class="star" data-value="3">⭐</span>
+                  <span class="star" data-value="2">⭐</span>
+                  <span class="star" data-value="1">⭐</span>
+                </div>
+                <input type="hidden" name="limpieza-mesas" required>
+              </div>
+
+              <div class="survey-question">
+                <label class="survey-label">
+                  <i class="fas fa-hands-wash"></i> Higiene del personal
+                </label>
+                <div class="rating-stars" data-question="higiene-personal">
+                  <span class="star" data-value="5">⭐</span>
+                  <span class="star" data-value="4">⭐</span>
+                  <span class="star" data-value="3">⭐</span>
+                  <span class="star" data-value="2">⭐</span>
+                  <span class="star" data-value="1">⭐</span>
+                </div>
+                <input type="hidden" name="higiene-personal" required>
+              </div>
+            </div>
+
+            <!-- Sección: Servicio -->
+            <div class="survey-section">
+              <h4 class="survey-section-title">
+                <i class="fas fa-user-friends"></i> Atención y Servicio
+              </h4>
+
+              <div class="survey-question">
+                <label class="survey-label">
+                  <i class="fas fa-smile"></i> Amabilidad del personal
+                </label>
+                <div class="rating-stars" data-question="servicio-amabilidad">
+                  <span class="star" data-value="5">⭐</span>
+                  <span class="star" data-value="4">⭐</span>
+                  <span class="star" data-value="3">⭐</span>
+                  <span class="star" data-value="2">⭐</span>
+                  <span class="star" data-value="1">⭐</span>
+                </div>
+                <input type="hidden" name="servicio-amabilidad" required>
+              </div>
+
+              <div class="survey-question">
+                <label class="survey-label">
+                  <i class="fas fa-clock"></i> Rapidez del servicio
+                </label>
+                <div class="rating-stars" data-question="servicio-rapidez">
+                  <span class="star" data-value="5">⭐</span>
+                  <span class="star" data-value="4">⭐</span>
+                  <span class="star" data-value="3">⭐</span>
+                  <span class="star" data-value="2">⭐</span>
+                  <span class="star" data-value="1">⭐</span>
+                </div>
+                <input type="hidden" name="servicio-rapidez" required>
+              </div>
+            </div>
+
+            <!-- Recomendaciones -->
+            <div class="survey-section">
+              <h4 class="survey-section-title">
+                <i class="fas fa-comment-dots"></i> Tus Recomendaciones
+              </h4>
+
+              <div class="survey-question">
+                <label class="survey-label">
+                  <i class="fas fa-lightbulb"></i> ¿Qué podemos mejorar? (Opcional)
+                </label>
+                <textarea name="recomendaciones" class="survey-textarea"
+                  placeholder="Comparte tus sugerencias para mejorar el servicio del comedor..." rows="5"></textarea>
+              </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="survey-actions">
+              <button type="button" class="btn-survey btn-cancel" onclick="closeSurvey()">
+                <i class="fas fa-times"></i> Cancelar
+              </button>
+              <button type="submit" class="btn-survey btn-submit-survey">
+                <i class="fas fa-paper-plane"></i> Enviar Encuesta
+              </button>
+            </div>
+          </form>
+
+          <!-- Mensaje de éxito -->
+          <div id="surveySuccess" class="survey-success" style="display: none;">
+            <div class="success-icon">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>¡Gracias por tu opinión!</h3>
+            <p>Tu evaluación nos ayuda a mejorar el servicio del comedor escolar.</p>
+            <button class="btn-survey btn-submit-survey" onclick="closeSurvey()">
+              <i class="fas fa-check"></i> Cerrar
+            </button>
+          </div>
+        </article>
+
+        <script>
+          // Cargar menú del día desde JSON o localStorage
+          (function () {
+            const menuContainer = document.getElementById('menuDelDia');
+
+            function renderMenu(menuData) {
+              menuContainer.innerHTML = `
+                <div style="margin-bottom: 1.5rem;">
+                  <h4 style="color: var(--primary); margin-bottom: 0.8rem; font-size: 1.1rem;" data-translate="🌅 Desayuno">🌅 Desayuno</h4>
+                  <ul>
+                    ${menuData.desayuno.map(item => `<li>${item}</li>`).join('')}
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 style="color: var(--primary); margin-bottom: 0.8rem; font-size: 1.1rem;" data-translate="🍽️ Almuerzo">🍽️ Almuerzo</h4>
+                  <ul>
+                    ${menuData.almuerzo.map(item => `<li>${item}</li>`).join('')}
+                  </ul>
+                </div>
+              `;
+            }
+
+            // Try to load from JSON file first
+            fetch('data/content-data.json')
+              .then(response => response.json())
+              .then(data => {
+                renderMenu(data.menu_comedor || {
+                  desayuno: ['Revoltillo', 'Peras Frescas', 'Melocotones', 'Leche'],
+                  almuerzo: ['Arroz', 'Habichuelas guisadas con calabaza', 'Carne de Cerdo', 'Zanahoria', 'Manzana', 'Coctel de fruta']
+                });
+              })
+              .catch(error => {
+                // Fallback to localStorage
+                const contentData = JSON.parse(localStorage.getItem('pcb_content_data') || '{}');
+                renderMenu(contentData.menu_comedor || {
+                  desayuno: ['Revoltillo', 'Peras Frescas', 'Melocotones', 'Leche'],
+                  almuerzo: ['Arroz', 'Habichuelas guisadas con calabaza', 'Carne de Cerdo', 'Zanahoria', 'Manzana', 'Coctel de fruta']
+                });
+              });
+          })();
+        </script>
+
+        <!-- Script para la encuesta -->
+        <script>
+          // Funcionalidad de estrellas de calificación
+          document.addEventListener('DOMContentLoaded', function () {
+            const ratingContainers = document.querySelectorAll('.rating-stars');
+
+            ratingContainers.forEach(container => {
+              const stars = container.querySelectorAll('.star');
+              const questionName = container.getAttribute('data-question');
+              const hiddenInput = document.querySelector(`input[name="${questionName}"]`);
+
+              stars.forEach(star => {
+                star.addEventListener('click', function () {
+                  const value = this.getAttribute('data-value');
+
+                  // Actualizar input oculto
+                  hiddenInput.value = value;
+
+                  // Actualizar estrellas visuales
+                  stars.forEach(s => {
+                    const starValue = parseInt(s.getAttribute('data-value'));
+                    if (starValue <= parseInt(value)) {
+                      s.classList.add('active');
+                    } else {
+                      s.classList.remove('active');
+                    }
+                  });
+                });
+
+                // Efecto hover
+                star.addEventListener('mouseenter', function () {
+                  const value = this.getAttribute('data-value');
+                  stars.forEach(s => {
+                    const starValue = parseInt(s.getAttribute('data-value'));
+                    if (starValue <= parseInt(value)) {
+                      s.style.filter = 'grayscale(0%)';
+                      s.style.opacity = '1';
+                    }
+                  });
+                });
+
+                container.addEventListener('mouseleave', function () {
+                  const currentValue = hiddenInput.value;
+                  stars.forEach(s => {
+                    const starValue = parseInt(s.getAttribute('data-value'));
+                    if (!currentValue || starValue > parseInt(currentValue)) {
+                      if (!s.classList.contains('active')) {
+                        s.style.filter = 'grayscale(100%)';
+                        s.style.opacity = '0.4';
+                      }
+                    }
+                  });
+                });
+              });
+            });
+
+            // Manejo del formulario
+            const surveyForm = document.getElementById('comedorSurveyForm');
+            if (surveyForm) {
+              surveyForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Validar que todas las preguntas requeridas estén respondidas
+                const requiredInputs = this.querySelectorAll('input[type="hidden"][required]');
+                let allAnswered = true;
+
+                requiredInputs.forEach(input => {
+                  if (!input.value) {
+                    allAnswered = false;
+                  }
+                });
+
+                if (!allAnswered) {
+                  alert('⚠️ Por favor, responde todas las preguntas con estrellas antes de enviar.');
+                  return;
+                }
+
+                // Recopilar datos
+                const formData = new FormData(this);
+                const surveyData = {
+                  fecha: new Date().toISOString(),
+                  desayuno: {
+                    calidad: formData.get('desayuno-calidad'),
+                    variedad: formData.get('desayuno-variedad'),
+                    temperatura: formData.get('desayuno-temperatura')
+                  },
+                  almuerzo: {
+                    calidad: formData.get('almuerzo-calidad'),
+                    variedad: formData.get('almuerzo-variedad'),
+                    temperatura: formData.get('almuerzo-temperatura'),
+                    porciones: formData.get('almuerzo-porciones')
+                  },
+                  limpieza: {
+                    area: formData.get('limpieza-area'),
+                    mesas: formData.get('limpieza-mesas'),
+                    higiene_personal: formData.get('higiene-personal')
+                  },
+                  servicio: {
+                    amabilidad: formData.get('servicio-amabilidad'),
+                    rapidez: formData.get('servicio-rapidez')
+                  },
+                  recomendaciones: formData.get('recomendaciones')
+                };
+
+                // Guardar en localStorage
+                const surveys = JSON.parse(localStorage.getItem('comedor_surveys') || '[]');
+                surveys.push(surveyData);
+                localStorage.setItem('comedor_surveys', JSON.stringify(surveys));
+
+                // Mostrar mensaje de éxito
+                document.getElementById('comedorSurveyForm').style.display = 'none';
+                document.getElementById('surveySuccess').style.display = 'block';
+
+                console.log('Encuesta guardada:', surveyData);
+              });
+            }
+          });
+
+          // Función para cerrar la encuesta
+          function closeSurvey() {
+            const surveySection = document.getElementById('surveySection');
+            surveySection.style.display = 'none';
+
+            // Reset form
+            const form = document.getElementById('comedorSurveyForm');
+            if (form) {
+              form.reset();
+              form.style.display = 'block';
+
+              // Reset stars
+              document.querySelectorAll('.rating-stars .star').forEach(star => {
+                star.classList.remove('active');
+                star.style.filter = 'grayscale(100%)';
+                star.style.opacity = '0.4';
+              });
+
+              // Reset hidden inputs
+              document.querySelectorAll('input[type="hidden"]').forEach(input => {
+                input.value = '';
+              });
+            }
+
+            // Hide success message
+            document.getElementById('surveySuccess').style.display = 'none';
+          }
+        </script>
+
+        <!-- Normas del comedor -->
+        <article class="card">
+          <div class="card-icon">📋</div>
+          <h3 data-translate="Normas del Comedor">Normas del Comedor</h3>
+          <ul>
+            <li data-translate="Mantener orden y respeto en todo momento">Mantener orden y respeto en todo momento</li>
+            <li data-translate="Hacer fila de manera organizada">Hacer fila de manera organizada</li>
+            <li data-translate="Consumir alimentos en el área designada">Consumir alimentos en el área designada</li>
+            <li data-translate="Depositar desperdicios en los recipientes apropiados">Depositar desperdicios en los
+              recipientes apropiados</li>
+            <li data-translate="Mantener limpieza en mesas y área de comedor">Mantener limpieza en mesas y área de
+              comedor</li>
+            <li data-translate="Respetar al personal del comedor">Respetar al personal del comedor</li>
+            <li data-translate="No desperdiciar alimentos">No desperdiciar alimentos</li>
+            <li data-translate="Seguir las instrucciones del personal a cargo">Seguir las instrucciones del personal a
+              cargo</li>
+          </ul>
+          <p class="note"
+            data-translate="El estudiantado debe seguir las normas establecidas por el personal del comedor">
+            El estudiantado debe seguir las normas establecidas por el personal del comedor
+          </p>
+        </article>
+      </div>
+
+      <!-- Información adicional -->
+      <div class="card" style="margin-top: 2rem;">
+        <h3 data-translate="Programa de Comedores Escolares">Programa de Comedores Escolares</h3>
+        <p
+          data-translate="El Programa de Comedores Escolares del Departamento de Educación tiene como objetivo garantizar que todos los estudiantes tengan acceso a alimentos nutritivos durante la jornada escolar, contribuyendo así a su rendimiento académico y desarrollo integral.">
+          El Programa de Comedores Escolares del Departamento de Educación tiene como objetivo
+          garantizar que todos los estudiantes tengan acceso a alimentos nutritivos durante
+          la jornada escolar, contribuyendo así a su rendimiento académico y desarrollo integral.
+        </p>
+      </div>
+
+      <!-- Galería de Fotos -->
+      <div class="section-header" style="margin-top: 4rem;">
+        <h2 data-translate="📸 Galería del Comedor">📸 Galería del Comedor</h2>
+      </div>
+
+      <div class="promotions-gallery" id="comedorGallery" style="margin-top: 2rem;">
+        <!-- Las imágenes se cargarán dinámicamente desde el dashboard -->
+      </div>
+
+      <script>
+        // Cargar galería del comedor desde JSON o localStorage
+        (function () {
+          const galleryContainer = document.getElementById('comedorGallery');
+
+          function renderGallery(comedorImages) {
+            console.log('🍽️ Renderizando galería del comedor:', comedorImages);
+
+            if (comedorImages.length > 0) {
+              galleryContainer.innerHTML = comedorImages.map((item, index) => {
+                // Use URL if available (external), otherwise use base64 or path
+                const imgSrc = item.url || item.base64 || item.path;
+                console.log(`Imagen ${index}:`, {
+                  title: item.title,
+                  url: item.url,
+                  hasBase64: !!item.base64,
+                  path: item.path,
+                  finalSrc: imgSrc,
+                  isExternal: item.isExternal
+                });
+
+                return `
+                  <div class="promotion-item">
+                    <img src="${imgSrc}" alt="${item.title}" class="promotion-image"
+                         onerror="console.error('❌ Error cargando imagen:', '${imgSrc}'); this.parentElement.innerHTML='<div style=padding:2rem;text-align:center;color:red>❌ Error cargando imagen<br><small>${imgSrc}</small></div>'">
+                    <div class="promotion-caption">
+                      <h3>${item.title || 'Foto del Comedor'}</h3>
+                      ${item.description ? `<p>${item.description}</p>` : ''}
+                      ${item.isExternal ? '<p style="font-size:0.8rem;color:#667eea;">🌐 Imagen externa</p>' : ''}
+                    </div>
+                  </div>
+                `;
+              }).join('') + `
+                <div class="promotion-placeholder">
+                  <div class="placeholder-icon">📸</div>
+                  <p>Gestiona las fotos desde el <a href="admin.html" style="color: #667eea;">panel administrativo</a></p>
+                </div>
+              `;
+            } else {
+              console.log('⚠️ No hay imágenes del comedor');
+              galleryContainer.innerHTML = `
+                <div class="promotion-placeholder">
+                  <div class="placeholder-icon">📸</div>
+                  <p>No hay fotos disponibles. <a href="admin.html" style="color: #667eea;">Añade fotos desde el panel administrativo</a></p>
+                </div>
+              `;
+            }
+          }
+
+          // Try to load from JSON file first
+          console.log('🔍 Intentando cargar desde data/content-data.json...');
+          fetch('data/content-data.json')
+            .then(response => {
+              console.log('✅ Respuesta recibida:', response.status);
+              return response.json();
+            })
+            .then(data => {
+              console.log('📦 Datos cargados desde JSON:', data);
+              console.log('🍽️ Datos del comedor:', data.comedor);
+              renderGallery(data.comedor || []);
+            })
+            .catch(error => {
+              // Fallback to localStorage
+              console.log('⚠️ Error cargando JSON, usando localStorage:', error);
+              const contentData = JSON.parse(localStorage.getItem('pcb_content_data') || '{}');
+              console.log('📦 Datos desde localStorage:', contentData);
+              renderGallery(contentData.comedor || []);
+            });
+        })();
+      </script>
+
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p data-translate="© 2026 Escuela Superior Vocacional Pablo Colón Berdecia. Todos los derechos reservados.">&copy;
+        2026 Escuela Superior Vocacional Pablo Colón Berdecia. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="image-popup.js"></script>
+  <script src="notification-bot.js"></script>
+</body>
+
+</html>

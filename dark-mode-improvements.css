@@ -1,0 +1,404 @@
+/* =========================================
+   DARK MODE IMPROVEMENTS - Futuristic Dark Tech Institutional
+   Aplicar estos cambios al archivo styles.css principal
+   ========================================= */
+
+/* PASO 1: Reemplazar las variables :root (líneas 9-30 aproximadamente) */
+/* Agregar estas nuevas variables al bloque :root existente: */
+
+:root {
+    --primary: #1d3557;
+    --primary-light: #457b9d;
+    --accent: #f2c94c;
+    --bg: #f5f7fb;
+    --bg-alt: #ffffff;
+    --text-main: #34495e;
+    --text-soft: #7f8c8d;
+    --border-soft: #dde3ee;
+    --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+
+    /* NUEVAS VARIABLES AGREGADAS */
+    --card: #ffffff;
+    --border: #dde3ee;
+    --accent-pink: #f093fb;
+    --accent-cyan: #4facfe;
+    --success: #22C55E;
+    --warning: #FACC15;
+    --danger: #EF4444;
+}
+
+/* PASO 2: Reemplazar COMPLETAMENTE el bloque body.dark-mode (líneas 32-55 aproximadamente) */
+
+body.dark-mode {
+    /* === PALETA DARK TECH FUTURISTA === */
+    --primary: #38BDF8;
+    /* Primary futurista */
+    --primary-light: #0EA5E9;
+    /* Primary hover */
+    --accent: #A855F7;
+    /* Acento IA con glow */
+    --bg: #0B1220;
+    /* Fondo principal dark tech */
+    --bg-alt: #0F172A;
+    /* Fondo alterno */
+    --card: #111827;
+    /* Cards */
+    --text-main: #E5E7EB;
+    /* Texto principal (WCAG AAA) */
+    --text-soft: #9CA3AF;
+    /* Texto secundario */
+    --border-soft: #1F2933;
+    /* Bordes oscuros */
+    --border: #1F2933;
+    --gradient-1: linear-gradient(135deg, #38BDF8 0%, #A855F7 100%);
+    --gradient-2: linear-gradient(135deg, #A855F7 0%, #EF4444 100%);
+    --gradient-3: linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%);
+    --accent-pink: #A855F7;
+    --accent-cyan: #38BDF8;
+    --success: #22C55E;
+    --warning: #FACC15;
+    --danger: #EF4444;
+}
+
+/* PASO 3: Agregar/Reemplazar estilos específicos de dark mode */
+/* Buscar y reemplazar o agregar después del bloque body.dark-mode */
+
+/* === HEADER DARK MODE === */
+body.dark-mode .site-header {
+    background: rgba(11, 18, 32, 0.95);
+    border-bottom: 1px solid var(--border-soft);
+    box-shadow: 0 2px 20px rgba(56, 189, 248, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+body.dark-mode .site-header.scrolled {
+    box-shadow: 0 4px 30px rgba(56, 189, 248, 0.15);
+}
+
+body.dark-mode .logo-title,
+body.dark-mode .logo-subtitle {
+    color: var(--text-main);
+}
+
+body.dark-mode .main-nav a {
+    color: var(--text-main);
+    transition: color 0.3s ease;
+}
+
+body.dark-mode .main-nav a:hover {
+    color: var(--primary);
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+}
+
+/* === HERO SECTION - FIX PARA IMÁGENES === */
+body.dark-mode .hero {
+    background: var(--bg);
+    position: relative;
+}
+
+/* Asegurar que las imágenes sean visibles en dark mode */
+body.dark-mode .hero img {
+    opacity: 0.9;
+    filter: brightness(0.95) contrast(1.1);
+    transition: all 0.3s ease;
+}
+
+body.dark-mode .hero img:hover {
+    opacity: 1;
+    filter: brightness(1) contrast(1.15);
+}
+
+body.dark-mode .hero-card {
+    background: var(--card);
+    border: 1px solid var(--border-soft);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+body.dark-mode .hero-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 8px 30px rgba(56, 189, 248, 0.2);
+    transform: translateY(-2px);
+}
+
+body.dark-mode .hero-card h2 {
+    color: var(--text-main);
+}
+
+body.dark-mode .hero-card li {
+    color: var(--text-soft);
+}
+
+/* === BOTONES DARK MODE === */
+body.dark-mode .btn-primary {
+    background: var(--primary);
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+}
+
+body.dark-mode .btn-primary:hover {
+    background: var(--primary-light);
+    box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
+    transform: translateY(-2px);
+}
+
+body.dark-mode .btn-secondary {
+    background: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--border-soft);
+}
+
+body.dark-mode .btn-secondary:hover {
+    background: var(--card);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* === CARDS DARK MODE === */
+body.dark-mode .card,
+body.dark-mode .service-card,
+body.dark-mode .program-card,
+body.dark-mode .resource-card {
+    background: var(--card);
+    border: 1px solid var(--border-soft);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .card:hover,
+body.dark-mode .service-card:hover,
+body.dark-mode .program-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 8px 25px rgba(56, 189, 248, 0.15);
+}
+
+body.dark-mode .card h2,
+body.dark-mode .card h3,
+body.dark-mode .service-card h3 {
+    color: var(--text-main);
+}
+
+body.dark-mode .card p,
+body.dark-mode .service-card p {
+    color: var(--text-soft);
+}
+
+/* === INPUTS DARK MODE === */
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-soft);
+    color: var(--text-main);
+}
+
+body.dark-mode input:focus,
+body.dark-mode textarea:focus,
+body.dark-mode select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+    color: var(--text-soft);
+    opacity: 0.6;
+}
+
+/* === SIDEBAR DARK MODE === */
+body.dark-mode .sidebar-menu {
+    background: var(--bg-alt);
+    border-left: 1px solid var(--border-soft);
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .sidebar-header {
+    background: var(--card);
+    border-bottom: 1px solid var(--border-soft);
+    color: var(--text-main);
+}
+
+body.dark-mode .sidebar-option {
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border-soft);
+}
+
+body.dark-mode .sidebar-option:hover {
+    background: var(--card);
+    color: var(--primary);
+}
+
+body.dark-mode .theme-option,
+body.dark-mode .language-option {
+    color: var(--text-soft);
+}
+
+body.dark-mode .theme-option:hover,
+body.dark-mode .language-option:hover {
+    background: var(--card);
+    color: var(--primary);
+}
+
+/* === THEME POPUP DARK MODE === */
+body.dark-mode .theme-popup-content {
+    background: var(--card);
+    border: 1px solid var(--border-soft);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .theme-popup-content h2 {
+    color: var(--text-main);
+}
+
+body.dark-mode .theme-popup-content p {
+    color: var(--text-soft);
+}
+
+/* === CALENDAR DARK MODE === */
+body.dark-mode .calendar-wrapper {
+    background: var(--card);
+    border: 1px solid var(--border-soft);
+}
+
+body.dark-mode .calendar-header {
+    background: var(--bg-alt);
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border-soft);
+}
+
+body.dark-mode .calendar-day {
+    border: 1px solid var(--border-soft);
+    color: var(--text-main);
+}
+
+body.dark-mode .calendar-day:hover {
+    background: var(--card);
+    border-color: var(--primary);
+}
+
+body.dark-mode .calendar-day.today {
+    background: rgba(56, 189, 248, 0.1);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* === EVENT LIST DARK MODE === */
+body.dark-mode .event-list {
+    background: var(--card);
+    border: 1px solid var(--border-soft);
+}
+
+body.dark-mode .event-item {
+    border-bottom: 1px solid var(--border-soft);
+}
+
+body.dark-mode .event-item:hover {
+    background: var(--bg-alt);
+}
+
+body.dark-mode .event-title {
+    color: var(--text-main);
+}
+
+body.dark-mode .event-date {
+    color: var(--text-soft);
+}
+
+/* === AI FLOATING BUTTON - FUTURISTIC === */
+body.dark-mode .ai-floating-btn {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    box-shadow: 0 6px 25px rgba(168, 85, 247, 0.4);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+body.dark-mode .ai-floating-btn:hover {
+    box-shadow: 0 8px 35px rgba(168, 85, 247, 0.6);
+    transform: scale(1.05);
+}
+
+body.dark-mode .ai-floating-btn::before {
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, transparent 70%);
+}
+
+/* === PROMO POPUP DARK MODE === */
+body.dark-mode .promo-popup {
+    background: var(--card);
+    border: 1px solid var(--border-soft);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .promo-popup h3 {
+    color: var(--text-main);
+}
+
+body.dark-mode .promo-popup p {
+    color: var(--text-soft);
+}
+
+/* === FUTURISTIC INPUTS (ya existentes, mejorados) === */
+body.dark-mode .futuristic-input {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(56, 189, 248, 0.3);
+    color: var(--text-main);
+}
+
+body.dark-mode .futuristic-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* === FUTURISTIC BUTTONS (ya existentes, mejorados) === */
+body.dark-mode .futuristic-btn {
+    background: linear-gradient(45deg, var(--primary), var(--accent));
+    box-shadow: 0 4px 20px rgba(56, 189, 248, 0.3);
+}
+
+body.dark-mode .futuristic-btn:hover {
+    box-shadow: 0 6px 30px rgba(56, 189, 248, 0.5);
+}
+
+/* === AI ASSISTANT BUTTON (nuevo estilo) === */
+body.dark-mode .ai-assistant-btn {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    box-shadow: 0 6px 25px rgba(168, 85, 247, 0.4);
+}
+
+body.dark-mode .ai-assistant-btn:hover {
+    box-shadow: 0 8px 35px rgba(168, 85, 247, 0.6);
+    transform: scale(1.1) rotate(5deg);
+}
+
+body.dark-mode .ai-assistant-btn::before {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    animation: pulse 2s infinite;
+}
+
+/* === BODY BACKGROUND === */
+body.dark-mode {
+    background: var(--bg);
+    color: var(--text-main);
+}
+
+/* === CONTAINER === */
+body.dark-mode .container {
+    background: transparent;
+}
+
+/* === LINKS === */
+body.dark-mode a {
+    color: var(--primary);
+}
+
+body.dark-mode a:hover {
+    color: var(--primary-light);
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+}
+
+/* =========================================
+   FIN DE MEJORAS DARK MODE
+   ========================================= */

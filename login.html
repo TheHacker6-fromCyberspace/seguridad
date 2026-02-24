@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Dashboard Administrativo</title>
+  <script src="js/crypto-utils.js"></script>
+  <script src="js/jwt-simple.js"></script>
+  <script src="js/auth-jwt.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .login-container {
+      background: white;
+      padding: 3rem;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .login-logo {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 1rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+
+    .login-header h1 {
+      color: #2c3e50;
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .login-header p {
+      color: #7f8c8d;
+      font-size: 0.9rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #2c3e50;
+      font-weight: 600;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-login:active {
+      transform: translateY(0);
+    }
+
+    .error-message {
+      background: #fee;
+      color: #c00;
+      padding: 0.75rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      display: none;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+
+    .back-link a {
+      color: #667eea;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+    <div class="login-header">
+      <div class="login-logo">🔐</div>
+      <h1>Panel Administrativo</h1>
+      <p>Escuela Superior Vocacional Pablo Colón Berdecia</p>
+    </div>
+
+    <div class="error-message" id="errorMessage">
+      Usuario o contraseña incorrectos
+    </div>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="username">Usuario</label>
+        <input type="text" id="username" name="username" required autocomplete="username">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" required autocomplete="current-password">
+      </div>
+
+      <button type="submit" class="btn-login">Iniciar Sesión</button>
+    </form>
+
+    <div class="back-link">
+      <a href="index.html">← Volver al sitio web</a>
+    </div>
+  </div>
+
+  <script>
+    // Login con JWT y encriptación
+    (async function () {
+      'use strict';
+
+      const loginForm = document.getElementById('loginForm');
+      const errorMessage = document.getElementById('errorMessage');
+      const usernameInput = document.getElementById('username');
+      const passwordInput = document.getElementById('password');
+
+      // Verificar si ya está autenticado
+      const isAuth = await AuthJWT.isAuthenticated();
+      if (isAuth) {
+        window.location.href = 'admin.html';
+        return;
+      }
+
+      // Manejar envío del formulario
+      loginForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value;
+
+        // Validar campos
+        if (!username || !password) {
+          showError('Por favor, completa todos los campos');
+          return;
+        }
+
+        // Deshabilitar botón mientras se procesa
+        const submitBtn = loginForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = '🔐 Verificando...';
+
+        try {
+          // Intentar login
+          const result = await AuthJWT.login(username, password);
+
+          if (result.success) {
+            // Mostrar mensaje de éxito
+            submitBtn.textContent = '✅ Acceso concedido';
+            submitBtn.style.background = 'linear-gradient(135deg, #22C55E 0%, #16A34A 100%)';
+
+            // Redirigir al dashboard
+            setTimeout(() => {
+              window.location.href = 'admin.html';
+            }, 500);
+          }
+        } catch (error) {
+          // Mostrar error
+          showError(error.message || 'Error al iniciar sesión');
+          passwordInput.value = '';
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        }
+      });
+
+      // Función para mostrar errores
+      function showError(message) {
+        errorMessage.textContent = message;
+        errorMessage.classList.add('show');
+
+        setTimeout(() => {
+          errorMessage.classList.remove('show');
+        }, 3000);
+      }
+
+      // Limpiar error al escribir
+      usernameInput.addEventListener('input', () => {
+        errorMessage.classList.remove('show');
+      });
+
+      passwordInput.addEventListener('input', () => {
+        errorMessage.classList.remove('show');
+      });
+
+    })();
+  </script>
+</body>
+
+</html>

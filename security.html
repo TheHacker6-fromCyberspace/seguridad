@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seguridad - Registro</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background: #f0f4f8; }
+    h1 { color: #1e3a5f; text-align: center; }
+    .card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .card h2 { color: #1e3a5f; margin-top: 0; border-bottom: 2px solid #1e3a5f; padding-bottom: 10px; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
+    .form-group input, .form-group select, .form-group textarea { 
+        width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 14px; 
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { 
+        border-color: #1e3a5f; outline: none; 
+    }
+    button { background: #1e3a5f; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 14px; width: 100%; }
+    button:hover { background: #2d4a6f; }
+    button.secondary { background: #4a90d9; }
+    button.secondary:hover { background: #3a7bc8; }
+    button.danger { background: #dc3545; }
+    button.danger:hover { background: #c82333; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+    th { background: #1e3a5f; color: white; }
+    tr:hover { background: #f5f5f5; }
+    .problem-card { background: #fff5f5; border-left: 4px solid #dc3545; }
+    .guest-register { background: #e8f5e9; border-left: 4px solid #28a745; }
+    .success { color: green; font-weight: bold; text-align: center; padding: 10px; }
+    .admin-section { background: #fff8e1; border: 2px solid #ffc107; }
+    .admin-section h3 { color: #f57c00; }
+    .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+    .tab { flex: 1; padding: 15px; text-align: center; background: white; border-radius: 8px; cursor: pointer; font-weight: bold; }
+    .tab.active { background: #1e3a5f; color: white; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <h1>🏫 Sistema de Seguridad PCB</h1>
+  
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('register')">📝 Registrarse</div>
+    <div class="tab" onclick="showTab('problem')">⚠️ Reportar Problema</div>
+    <div class="tab" onclick="showTab('admin')">🔐 Admin</div>
+  </div>
+
+  <!-- GUEST REGISTRATION -->
+  <div id="register-tab" class="card guest-register">
+    <h2>📝 Registro de Entrada/Salida</h2>
+    <form id="guestForm" onsubmit="guestRegister(event)">
+      <div class="form-group">
+        <label>Tu Nombre:</label>
+        <input type="text" id="guestName" placeholder="Escribe tu nombre" required>
+      </div>
+      <div class="form-group">
+        <label>Tipo de Visitante:</label>
+        <select id="guestType">
+          <option value="Estudiante">🎓 Estudiante</option>
+          <option value="Padre/Madre">👨‍👩‍👧 Padre/Madre</option>
+          <option value="Invitado">👤 Invitado</option>
+          <option value="Proveedor">📦 Proveedor</option>
+          <option value="Trabajador">👔 Trabajador</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Acción:</label>
+        <select id="guestAction">
+          <option value="Entrada">🚪 Entrada</option>
+          <option value="Salida">🚶 Salida</option>
+        </select>
+      </div>
+      <button type="submit" class="secondary">✅ Registrar</button>
+    </form>
+    <div id="registerMessage"></div>
+  </div>
+
+  <!-- PROBLEM REPORTING -->
+  <div id="problem-tab" class="card problem-card hidden">
+    <h2>⚠️ Reportar un Problema</h2>
+    <p>¿Viste algo sospechoso o tienes una emergencia? Repórtalo aquí.</p>
+    <form id="problemForm" onsubmit="reportProblem(event)">
+      <div class="form-group">
+        <label>Tipo de Problema:</label>
+        <select id="problemType">
+          <option value="Seguridad">🔒 Problema de Seguridad</option>
+          <option value="Emergencia">🚨 Emergencia Médica</option>
+          <option value="Instalaciones">🏠 Problema de Instalaciones</option>
+          <option value="Conducta">👥 Problema de Conducta</option>
+          <option value="Otro">❓ Otro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Lugar (donde ocurrió):</label>
+        <input type="text" id="problemLocation" placeholder="Ej: Entrada principal, Patio, etc." required>
+      </div>
+      <div class="form-group">
+        <label>Descripción del Problema:</label>
+        <textarea id="problemDesc" rows="4" placeholder="Describe lo que pasó..." required></textarea>
+      </div>
+      <div class="form-group">
+        <label>Foto (opcional):</label>
+        <input type="file" id="problemPhoto" accept="image/*" onchange="previewPhoto()">
+        <div id="photoPreview" style="margin-top:10px;"></div>
+      </div>
+      <div class="form-group">
+        <label>Tu Nombre (opcional):</label>
+        <input type="text" id="problemReporter" placeholder="Tu nombre">
+      </div>
+      <button type="submit">📨 Enviar Reporte</button>
+    </form>
+    <div id="problemMessage"></div>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div id="admin-tab" class="card admin-section hidden">
+    <h2>🔐 Panel de Administración</h2>
+    <div id="loginForm">
+      <div class="form-group">
+        <label>Contraseña:</label>
+        <input type="password" id="adminPassword" placeholder="Ingresa la contraseña">
+      </div>
+      <button onclick="adminLogin()">🔓 Iniciar Sesión</button>
+    </div>
+    
+    <div id="adminPanel" class="hidden">
+      <p style="color: green; font-weight: bold;">✓ Sesión activa como administrador</p>
+      
+      <button onclick="showAdminSection('entries')" class="secondary" style="margin-right: 10px;">📋 Ver Registros</button>
+      <button onclick="showAdminSection('problems')" class="secondary">⚠️ Ver Problemas</button>
+      
+      <div id="entriesSection" style="margin-top: 20px;">
+        <h3>📋 Registro de Entradas/Salidas</h3>
+        <button onclick="exportEntries()" class="secondary" style="width: auto;">📥 Exportar CSV</button>
+        <button onclick="clearEntries()" class="danger" style="width: auto; margin-left: 10px;">🗑️ Borrar Todo</button>
+        <table id="entriesTable">
+          <thead>
+            <tr><th>Nombre</th><th>Tipo</th><th>Acción</th><th>Hora</th><th></th></tr>
+          </thead>
+          <tbody id="entriesBody"></tbody>
+        </table>
+      </div>
+      
+      <div id="problemsSection" class="hidden" style="margin-top: 20px;">
+        <h3>⚠️ Problemas Reportados</h3>
+        <button onclick="exportProblems()" class="secondary" style="width: auto;">📥 Exportar CSV</button>
+        <table id="problemsTable">
+          <thead>
+            <tr><th>Tipo</th><th>Lugar</th><th>Descripción</th><th>Reportero</th><th>Fecha</th><th>Estado</th><th>Foto</th><th></th></tr>
+          </thead>
+          <tbody id="problemsBody"></tbody>
+        </table>
+      </div>
+      
+      <button onclick="adminLogout()" class="danger" style="margin-top: 20px;">🔒 Cerrar Sesión</button>
+    </div>
+  </div>
+
+  <script src="js/security.js"></script>
+</body>
+</html>

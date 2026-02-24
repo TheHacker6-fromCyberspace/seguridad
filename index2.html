@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todos los Servicios - PCB Digital</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .service-card-item {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .service-card-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #3498db;
+        }
+
+        .service-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .service-desc {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+
+  <!-- Popup de selección de tema -->
+  <div id="themePopup" class="theme-popup">
+    <div class="theme-popup-content">
+      <h2 data-translate="🎨 Selecciona tu tema preferido">🎨 Selecciona tu tema preferido</h2>
+      <p data-translate="Elige cómo quieres ver el sitio web">Elige cómo quieres ver el sitio web</p>
+      <div class="theme-buttons">
+        <button class="theme-btn theme-btn-light" id="btnLightMode" data-translate="☀️ Modo Claro">
+          ☀️ Modo Claro
+        </button>
+        <button class="theme-btn theme-btn-dark" id="btnDarkMode" data-translate="🌙 Modo Oscuro">
+          🌙 Modo Oscuro
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Script inline para modo claro/oscuro
+    (function() {
+      function hidePopup() {
+        document.getElementById('themePopup').classList.add('hidden');
+      }
+
+      function setLightMode() {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        hidePopup();
+      }
+
+      function setDarkMode() {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        hidePopup();
+      }
+
+      function checkTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          hidePopup();
+        } else if (savedTheme === 'light') {
+          hidePopup();
+        }
+      }
+
+      // Ejecutar inmediatamente
+      checkTheme();
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const btnLight = document.getElementById('btnLightMode');
+        const btnDark = document.getElementById('btnDarkMode');
+
+        if (btnLight) {
+          btnLight.addEventListener('click', setLightMode);
+        }
+        if (btnDark) {
+          btnDark.addEventListener('click', setDarkMode);
+        }
+      });
+    })();
+  </script>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo-area">
+        <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+        <div class="logo-text">
+          <span class="logo-title" data-translate="Escuela Superior Vocacional">Escuela Superior Vocacional</span>
+          <span class="logo-subtitle">Pablo Colón Berdecia</span>
+        </div>
+      </div>
+
+      <!-- Hamburger Menu Button -->
+      <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <button class="menu-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html#inicio" data-translate="Inicio">Inicio</a></li>
+          <li><a href="index.html#servicios" data-translate="Servicios">Servicios</a></li>
+          <li><a href="index.html#contacto" data-translate="Contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3 data-translate="⚙️ Configuración">⚙️ Configuración</h3>
+    </div>
+    <div class="sidebar-content">
+      <!-- Theme Toggle -->
+      <div class="sidebar-option" id="themeToggle">
+        <span data-translate="🎨 Cambiar Tema">🎨 Cambiar Tema</span>
+      </div>
+      <div class="theme-options" id="themeOptions">
+        <div class="theme-option" id="selectLightTheme">
+          <span data-translate="☀️ Modo Claro">☀️ Modo Claro</span>
+        </div>
+        <div class="theme-option" id="selectDarkTheme">
+          <span data-translate="🌙 Modo Oscuro">🌙 Modo Oscuro</span>
+        </div>
+      </div>
+
+      <!-- Language Toggle -->
+      <div class="sidebar-option" id="languageToggle">
+        <span data-translate="🌐 Cambiar Idioma">🌐 Cambiar Idioma</span>
+      </div>
+      <div class="language-options" id="languageOptions">
+        <div class="language-option" id="selectSpanish">
+          <span>🇵🇷 Español</span>
+        </div>
+        <div class="language-option" id="selectEnglish">
+          <span>🇺🇸 English</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Hamburger menu functionality
+    (function() {
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const themeToggle = document.getElementById('themeToggle');
+      const themeOptions = document.getElementById('themeOptions');
+      const languageToggle = document.getElementById('languageToggle');
+      const languageOptions = document.getElementById('languageOptions');
+      const selectLightTheme = document.getElementById('selectLightTheme');
+      const selectDarkTheme = document.getElementById('selectDarkTheme');
+      const selectSpanish = document.getElementById('selectSpanish');
+      const selectEnglish = document.getElementById('selectEnglish');
+
+      function openSidebarMenu() {
+        sidebarMenu.classList.add('active');
+        sidebarOverlay.classList.add('active');
+      }
+
+      function closeSidebarMenu() {
+        sidebarMenu.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+        themeOptions.classList.remove('active');
+        languageOptions.classList.remove('active');
+      }
+
+      if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', openSidebarMenu);
+      }
+
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeSidebarMenu);
+      }
+
+      // Theme toggle
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+          themeOptions.classList.toggle('active');
+          languageOptions.classList.remove('active');
+        });
+      }
+
+      // Language toggle
+      if (languageToggle) {
+        languageToggle.addEventListener('click', function() {
+          languageOptions.classList.toggle('active');
+          themeOptions.classList.remove('active');
+        });
+      }
+
+      // Select Light Theme
+      if (selectLightTheme) {
+        selectLightTheme.addEventListener('click', function() {
+          document.body.classList.remove('dark-mode');
+          localStorage.setItem('theme', 'light');
+          closeSidebarMenu();
+        });
+      }
+
+      // Select Dark Theme
+      if (selectDarkTheme) {
+        selectDarkTheme.addEventListener('click', function() {
+          document.body.classList.add('dark-mode');
+          localStorage.setItem('theme', 'dark');
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma español
+      if (selectSpanish) {
+        selectSpanish.addEventListener('click', function() {
+          localStorage.setItem('language', 'es');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'es');
+          if (typeof translatePage === 'function') {
+            translatePage('es');
+          }
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma inglés
+      if (selectEnglish) {
+        selectEnglish.addEventListener('click', function() {
+          localStorage.setItem('language', 'en');
+            const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'en');
+          if (typeof translatePage === 'function') {
+            translatePage('en');
+          }
+          closeSidebarMenu();
+        });
+      }
+    })();
+  </script>
+
+    
+
+    <div class="container" style="padding: 60px 0;">
+        
+
+        <div class="services-grid">
+
+            <!-- Phase 2: Administrative -->
+            <a href="solicitudes.html" class="service-card-item">
+                <div class="icon-box"><i class="fas fa-file-alt"></i></div>
+                <div class="service-title">Documentos</div>
+                <div class="service-desc">Solicita transcripciones, cartas y certificaciones oficiales en línea.</div>
+            </a>
+
+            <a href="matricula.html" class="service-card-item">
+                <div class="icon-box"><i class="fas fa-user-plus"></i></div>
+                <div class="service-title">Matrícula Digital</div>
+                <div class="service-desc">Proceso de admisión, renovación y selección de especialidad.</div>
+            </a>
+
+            <!-- Phase 3: Support -->
+            <a href="enfermeria.html" class="service-card-item">
+                <div class="icon-box"><i class="fas fa-user-nurse"></i></div>
+                <div class="service-title">Enfermería</div>
+                <div class="service-desc">Registro de visitas, control de medicamentos y reportes de salud.</div>
+            </a>
+
+            <a href="orientacion.html" class="service-card-item">
+                <div class="icon-box"><i class="fas fa-brain"></i></div>
+                <div class="service-title">Consejería</div>
+                <div class="service-desc">Citas, referidos y sistema de alerta temprana para estudiantes.</div>
+            </a>
+
+            <!-- Phase 4: Operational -->
+            <a href="servicios-tecnicos.html" class="service-card-item">
+                <div class="icon-box"><i class="fas fa-tools"></i></div>
+                <div class="service-title">Servicios Técnicos</div>
+                <div class="service-desc">Soporte IT, reporte de averías y portal WBL para técnicos.</div>
+            </a>
+
+            <a href="comedor.html" class="service-card-item">
+                <div class="icon-box"><i class="fas fa-utensils"></i></div>
+                <div class="service-title">Comedor Escolar</div>
+                <div class="service-desc">Menú digital, información nutricional y encuestas de satisfacción.</div>
+            </a>
+
+            <a href="biblioteca.html" class="service-card-item">
+                <div class="icon-box"><i class="fas fa-book"></i></div>
+                <div class="service-title">Biblioteca</div>
+                <div class="service-desc">Catálogo en línea, reservas de libros y recursos educativos.</div>
+            </a>
+
+            <a href="padres.html" class="service-card-item">
+                <div class="icon-box"><i class="fas fa-users"></i></div>
+                <div class="service-title">Portal de Padres</div>
+                <div class="service-desc">Comunicación directa, citas y gestión familiar.</div>
+            </a>
+
+            <!-- Phase 5: Security & AI -->
+            <a href="seguridad.html" class="service-card-item">
+                <div class="icon-box"><i class="fas fa-shield-alt"></i></div>
+                <div class="service-title">Seguridad</div>
+                <div class="service-desc">Control de acceso, registro de visitantes y reportes de incidentes.</div>
+            </a>
+
+            <a href="asistente.html" class="service-card-item">
+                <div class="icon-box"><i class="fas fa-robot"></i></div>
+                <div class="service-title">Asistente IA</div>
+                <div class="service-desc">Chatbot inteligente para responder dudas frecuentes 24/7.</div>
+            </a>
+
+            <!-- Phase 6: Analytics -->
+            <a href="evidencia.html" class="service-card-item">
+                <div class="icon-box"><i class="fas fa-chart-line"></i></div>
+                <div class="service-title">Transparencia</div>
+                <div class="service-desc">Dashboard de métricas, estadísticas y evidencias de uso.</div>
+            </a>
+
+        </div>
+
+        <div style="text-align: center; margin-top: 50px;">
+            <a href="index.html" class="btn btn-secondary">← Volver al Inicio</a>
+        </div>
+    </div>
+
+    <!-- Floating AI Button -->
+    <!-- Floating AI Button (Updated Tech Design) -->
+    <a href="asistente.html" class="ai-floating-btn" title="Asistente AI Inteligente">
+        PCB<br>AI
+    </a>
+</body>
+
+</html>

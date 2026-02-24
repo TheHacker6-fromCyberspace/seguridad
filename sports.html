@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>School Sports — Scores & Schedule</title>
+  <link rel="stylesheet" href="sports.css" />
+</head>
+<body>
+  <header class="top">
+    <h1>School Sports</h1>
+    <div class="controls">
+      <button id="admin-toggle">Enter Admin Mode</button>
+      <button id="export-data" title="Export data">Export</button>
+      <input id="import-file" type="file" accept="application/json" style="display:none" />
+      <button id="import-button" title="Import data">Import</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel" id="teams-panel">
+      <h2>Teams <button id="add-team" class="icon-btn" title="Add team">＋</button></h2>
+      <ul id="teams-list" class="list"></ul>
+    </section>
+
+    <section class="panel" id="schedule-panel">
+      <h2>Schedule <button id="add-game" class="icon-btn" title="Add game">＋</button></h2>
+      <table id="games-table">
+        <thead>
+          <tr><th>Date</th><th>Home</th><th>Score</th><th>Away</th><th class="actions-col">Actions</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section class="panel" id="help-panel">
+      <h2>Quick Help</h2>
+      <p>Use <strong>Admin Mode</strong> to add teams, schedule games, and update scores. Data is saved locally in your browser; export to back it up.</p>
+    </section>
+  </main>
+
+  <!-- Admin modals / forms -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <button class="close" id="modal-close">✕</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <script src="sports.js"></script>
+</body>
+</html>

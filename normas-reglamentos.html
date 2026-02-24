@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Normas y Reglamentos - Escuela Superior Vocacional Pablo Colón Berdecia</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dark-mode-fix-v2.css?v=2">
+  <link rel="stylesheet" href="image-popup.css">
+  <link rel="stylesheet" href="notification-bot.css">
+  <style>
+    /* Fix dark mode para normas-reglamentos */
+    body.dark-mode {
+      background: #0B1220 !important;
+      color: #E5E7EB !important;
+    }
+
+    body.dark-mode .section {
+      background: #0B1220 !important;
+    }
+
+    body.dark-mode .section-alt {
+      background: #0F172A !important;
+    }
+
+    body.dark-mode .card,
+    body.dark-mode .rule-card,
+    body.dark-mode .regulation-card {
+      background: rgba(17, 24, 39, 0.95) !important;
+      border: 1px solid rgba(56, 189, 248, 0.2) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+      color: #E5E7EB !important;
+    }
+
+    body.dark-mode .card:hover,
+    body.dark-mode .rule-card:hover,
+    body.dark-mode .regulation-card:hover {
+      border-color: #38BDF8 !important;
+      box-shadow: 0 8px 30px rgba(56, 189, 248, 0.4) !important;
+      transform: translateY(-5px) !important;
+    }
+
+    body.dark-mode h1,
+    body.dark-mode h2,
+    body.dark-mode h3,
+    body.dark-mode h4 {
+      color: #38BDF8 !important;
+    }
+
+    body.dark-mode p,
+    body.dark-mode li {
+      color: #E5E7EB !important;
+    }
+
+    body.dark-mode strong {
+      color: #38BDF8 !important;
+    }
+
+    body.dark-mode .rule-icon {
+      background: rgba(56, 189, 248, 0.1) !important;
+      color: #38BDF8 !important;
+    }
+
+    body.dark-mode .accordion-header {
+      background: rgba(17, 24, 39, 0.95) !important;
+      border: 1px solid rgba(56, 189, 248, 0.2) !important;
+      color: #E5E7EB !important;
+    }
+
+    body.dark-mode .accordion-header:hover {
+      background: rgba(56, 189, 248, 0.1) !important;
+    }
+
+    body.dark-mode .accordion-content {
+      background: rgba(17, 24, 39, 0.8) !important;
+      border: 1px solid rgba(56, 189, 248, 0.1) !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Popup de selección de tema 
+  <div id="themePopup" class="theme-popup">
+    <div class="theme-popup-content">
+      <h2 data-translate="🎨 Selecciona tu tema preferido">🎨 Selecciona tu tema preferido</h2>
+      <p data-translate="Elige cómo quieres ver el sitio web">Elige cómo quieres ver el sitio web</p>
+      <div class="theme-buttons">
+        <button class="theme-btn theme-btn-light" id="btnLightMode" data-translate="☀️ Modo Claro">
+          ☀️ Modo Claro
+        </button>
+        <button class="theme-btn theme-btn-dark" id="btnDarkMode" data-translate="🌙 Modo Oscuro">
+          🌙 Modo Oscuro
+        </button>
+      </div>
+    </div>
+  </div> -->
+
+  <script>
+    // Script inline para modo claro/oscuro
+    (function () {
+      function hidePopup() {
+        document.getElementById('themePopup').classList.add('hidden');
+      }
+
+      function setLightMode() {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        hidePopup();
+      }
+
+      function setDarkMode() {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        hidePopup();
+      }
+
+      function checkTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          hidePopup();
+        } else if (savedTheme === 'light') {
+          hidePopup();
+        }
+      }
+
+      // Ejecutar inmediatamente
+      checkTheme();
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const btnLight = document.getElementById('btnLightMode');
+        const btnDark = document.getElementById('btnDarkMode');
+
+        if (btnLight) {
+          btnLight.addEventListener('click', setLightMode);
+        }
+        if (btnDark) {
+          btnDark.addEventListener('click', setDarkMode);
+        }
+      });
+    })();
+  </script>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo-area">
+        <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+        <div class="logo-text">
+          <span class="logo-title" data-translate="Escuela Superior Vocacional">Escuela Superior Vocacional</span>
+          <span class="logo-subtitle">Pablo Colón Berdecia</span>
+        </div>
+      </div>
+
+      <!-- Hamburger Menu Button -->
+      <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <button class="menu-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html#inicio" data-translate="Inicio">Inicio</a></li>
+          <li><a href="index.html#servicios" data-translate="Servicios">Servicios</a></li>
+          <li><a href="index.html#contacto" data-translate="Contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3 data-translate="⚙️ Configuración">⚙️ Configuración</h3>
+    </div>
+    <div class="sidebar-content">
+      <!-- Theme Toggle -->
+      <div class="sidebar-option" id="themeToggle">
+        <span data-translate="🎨 Cambiar Tema">🎨 Cambiar Tema</span>
+      </div>
+      <div class="theme-options" id="themeOptions">
+        <div class="theme-option" id="selectLightTheme">
+          <span data-translate="☀️ Modo Claro">☀️ Modo Claro</span>
+        </div>
+        <div class="theme-option" id="selectDarkTheme">
+          <span data-translate="🌙 Modo Oscuro">🌙 Modo Oscuro</span>
+        </div>
+      </div>
+
+      <!-- Language Toggle -->
+      <div class="sidebar-option" id="languageToggle">
+        <span data-translate="🌐 Cambiar Idioma">🌐 Cambiar Idioma</span>
+      </div>
+      <div class="language-options" id="languageOptions">
+        <div class="language-option" id="selectSpanish">
+          <span>🇵🇷 Español</span>
+        </div>
+        <div class="language-option" id="selectEnglish">
+          <span>🇺🇸 English</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Hamburger menu functionality
+    (function () {
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const themeToggle = document.getElementById('themeToggle');
+      const themeOptions = document.getElementById('themeOptions');
+      const languageToggle = document.getElementById('languageToggle');
+      const languageOptions = document.getElementById('languageOptions');
+      const selectLightTheme = document.getElementById('selectLightTheme');
+      const selectDarkTheme = document.getElementById('selectDarkTheme');
+      const selectSpanish = document.getElementById('selectSpanish');
+      const selectEnglish = document.getElementById('selectEnglish');
+
+      function openSidebarMenu() {
+        sidebarMenu.classList.add('active');
+        sidebarOverlay.classList.add('active');
+      }
+
+      function closeSidebarMenu() {
+        sidebarMenu.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+        themeOptions.classList.remove('active');
+        languageOptions.classList.remove('active');
+      }
+
+      if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', openSidebarMenu);
+      }
+
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeSidebarMenu);
+      }
+
+      // Theme toggle
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function () {
+          themeOptions.classList.toggle('active');
+          languageOptions.classList.remove('active');
+        });
+      }
+
+      // Language toggle
+      if (languageToggle) {
+        languageToggle.addEventListener('click', function () {
+          languageOptions.classList.toggle('active');
+          themeOptions.classList.remove('active');
+        });
+      }
+
+      // Select Light Theme
+      if (selectLightTheme) {
+        selectLightTheme.addEventListener('click', function () {
+          document.body.classList.remove('dark-mode');
+          localStorage.setItem('theme', 'light');
+          closeSidebarMenu();
+        });
+      }
+
+      // Select Dark Theme
+      if (selectDarkTheme) {
+        selectDarkTheme.addEventListener('click', function () {
+          document.body.classList.add('dark-mode');
+          localStorage.setItem('theme', 'dark');
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma español
+      if (selectSpanish) {
+        selectSpanish.addEventListener('click', function () {
+          localStorage.setItem('language', 'es');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'es');
+          if (typeof translatePage === 'function') {
+            translatePage('es');
+          }
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma inglés
+      if (selectEnglish) {
+        selectEnglish.addEventListener('click', function () {
+          localStorage.setItem('language', 'en');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'en');
+          if (typeof translatePage === 'function') {
+            translatePage('en');
+          }
+          closeSidebarMenu();
+        });
+      }
+    })();
+  </script>
+
+  <!-- Popup de selección de tema -->
+  <div id="themePopup" class="theme-popup">
+    <div class="theme-popup-content">
+      <h2 data-translate="🎨 Selecciona tu tema preferido">🎨 Selecciona tu tema preferido</h2>
+      <p data-translate="Elige cómo quieres ver el sitio web">Elige cómo quieres ver el sitio web</p>
+      <div class="theme-buttons">
+        <button class="theme-btn theme-btn-light" id="btnLightMode" data-translate="☀️ Modo Claro">
+          ☀️ Modo Claro
+        </button>
+        <button class="theme-btn theme-btn-dark" id="btnDarkMode" data-translate="🌙 Modo Oscuro">
+          🌙 Modo Oscuro
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Script inline para modo claro/oscuro y hamburger menu
+    (function () {
+      function hidePopup() {
+        document.getElementById('themePopup').classList.add('hidden');
+      }
+
+      function setLightMode() {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        hidePopup();
+      }
+
+      function setDarkMode() {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        hidePopup();
+      }
+
+      function checkTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          hidePopup();
+        } else if (savedTheme === 'light') {
+          hidePopup();
+        }
+      }
+
+      // Ejecutar inmediatamente
+      checkTheme();
+
+      // Agregar event listeners cuando el DOM esté listo
+      document.addEventListener('DOMContentLoaded', function () {
+        const btnLight = document.getElementById('btnLightMode');
+        const btnDark = document.getElementById('btnDarkMode');
+
+        if (btnLight) {
+          btnLight.addEventListener('click', setLightMode);
+        }
+        if (btnDark) {
+          btnDark.addEventListener('click', setDarkMode);
+        }
+
+        // Hamburger menu functionality
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const closeSidebar = document.getElementById('closeSidebar');
+        const themeToggle = document.getElementById('themeToggle');
+        const themeOptions = document.getElementById('themeOptions');
+        const selectLightMode = document.getElementById('selectLightMode');
+        const selectDarkMode = document.getElementById('selectDarkMode');
+        const languageToggle = document.getElementById('languageToggle');
+        const languageOptions = document.getElementById('languageOptions');
+        const selectSpanish = document.getElementById('selectSpanish');
+        const selectEnglish = document.getElementById('selectEnglish');
+
+        function openSidebarMenu() {
+          if (sidebarMenu) {
+            sidebarMenu.classList.add('active');
+          }
+          if (sidebarOverlay) {
+            sidebarOverlay.classList.add('active');
+          }
+        }
+
+        function closeSidebarMenu() {
+          if (sidebarMenu) {
+            sidebarMenu.classList.remove('active');
+          }
+          if (sidebarOverlay) {
+            sidebarOverlay.classList.remove('active');
+          }
+          // Cerrar opciones de tema e idioma
+          if (themeOptions) {
+            themeOptions.style.display = 'none';
+          }
+          if (languageOptions) {
+            languageOptions.style.display = 'none';
+          }
+        }
+
+        // Abrir sidebar
+        if (hamburgerBtn) {
+          hamburgerBtn.addEventListener('click', openSidebarMenu);
+        }
+
+        // Cerrar sidebar
+        if (closeSidebar) {
+          closeSidebar.addEventListener('click', closeSidebarMenu);
+        }
+
+        // Cerrar sidebar al hacer clic en overlay
+        if (sidebarOverlay) {
+          sidebarOverlay.addEventListener('click', closeSidebarMenu);
+        }
+
+        // Toggle theme options
+        if (themeToggle) {
+          themeToggle.addEventListener('click', function () {
+            if (themeOptions.style.display === 'none') {
+              themeOptions.style.display = 'block';
+            } else {
+              themeOptions.style.display = 'none';
+            }
+          });
+        }
+
+        // Seleccionar modo claro desde sidebar
+        if (selectLightMode) {
+          selectLightMode.addEventListener('click', function () {
+            setLightMode();
+            closeSidebarMenu();
+          });
+        }
+
+        // Seleccionar modo oscuro desde sidebar
+        if (selectDarkMode) {
+          selectDarkMode.addEventListener('click', function () {
+            setDarkMode();
+            closeSidebarMenu();
+          });
+        }
+
+        // Toggle language options
+        if (languageToggle) {
+          languageToggle.addEventListener('click', function () {
+            if (languageOptions.style.display === 'none') {
+              languageOptions.style.display = 'block';
+            } else {
+              languageOptions.style.display = 'none';
+            }
+          });
+        }
+
+        // Seleccionar idioma español
+        if (selectSpanish) {
+          selectSpanish.addEventListener('click', function () {
+            localStorage.setItem('language', 'es');
+            document.getElementById('htmlRoot').setAttribute('lang', 'es');
+            if (typeof translatePage === 'function') {
+              translatePage('es');
+            }
+            closeSidebarMenu();
+          });
+        }
+
+        // Seleccionar idioma inglés
+        if (selectEnglish) {
+          selectEnglish.addEventListener('click', function () {
+            localStorage.setItem('language', 'en');
+            document.getElementById('htmlRoot').setAttribute('lang', 'en');
+            if (typeof translatePage === 'function') {
+              translatePage('en');
+            }
+            closeSidebarMenu();
+          });
+        }
+      });
+    })();
+  </script>
+
+  <!-- HEADER -->
+
+
+  <!-- Menú lateral hamburguesa -->
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3 data-translate="⚙️ Configuración">⚙️ Configuración</h3>
+      <button class="sidebar-close" id="closeSidebar">&times;</button>
+    </div>
+    <div class="sidebar-content">
+      <!-- Cambiar Tema -->
+      <div class="sidebar-item" id="themeToggle">
+        <span class="sidebar-icon">🎨</span>
+        <span class="sidebar-text" data-translate="Cambiar Tema">Cambiar Tema</span>
+        <span class="sidebar-arrow">›</span>
+      </div>
+      <div class="theme-options" id="themeOptions" style="display: none;">
+        <button class="theme-option" id="selectLightMode" data-translate="Modo Claro">
+          <span>☀️</span> Modo Claro
+        </button>
+        <button class="theme-option" id="selectDarkMode" data-translate="Modo Oscuro">
+          <span>🌙</span> Modo Oscuro
+        </button>
+      </div>
+
+      <!-- Cambiar Idioma -->
+      <div class="sidebar-item" id="languageToggle">
+        <span class="sidebar-icon">🌐</span>
+        <span class="sidebar-text" data-translate="Cambiar Idioma">Cambiar Idioma</span>
+        <span class="sidebar-arrow">›</span>
+      </div>
+      <div class="theme-options" id="languageOptions" style="display: none;">
+        <button class="theme-option" id="selectSpanish" data-translate="Español">
+          <span>🇵🇷</span> Español
+        </button>
+        <button class="theme-option" id="selectEnglish" data-translate="English">
+          <span>🇺🇸</span> English
+        </button>
+      </div>
+
+      <!-- Separador -->
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 1rem 0;"></div>
+
+      <!-- Dashboard Administrativo -->
+      <a href="admin.html" class="sidebar-item sidebar-link"
+        style="text-decoration: none; color: inherit; display: flex; align-items: center; padding: 1rem; cursor: pointer; transition: background 0.3s;">
+        <span class="sidebar-icon">⚙️</span>
+        <span class="sidebar-text" data-translate="Dashboard Admin">Dashboard Admin</span>
+        <span class="sidebar-arrow">›</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Overlay para cerrar el menú -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content-centered">
+        <h1 data-translate="Normas y Reglamentos">Normas y Reglamentos</h1>
+        <p data-translate="Conoce las normas que rigen nuestra convivencia escolar">
+          Conoce las normas que rigen nuestra convivencia escolar
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <section class="section">
+    <div class="container">
+
+      <!-- Introducción -->
+      <div class="card" style="margin-bottom: 2rem;">
+        <h3 style="color: var(--primary); margin-bottom: 1rem;">📋 Reglamento Escolar</h3>
+        <p>
+          El presente reglamento tiene como propósito establecer las normas de convivencia que promuevan un ambiente
+          educativo seguro, respetuoso y propicio para el aprendizaje de todos los miembros de nuestra comunidad
+          escolar.
+        </p>
+      </div>
+
+      <!-- Asistencia y Puntualidad -->
+      <div class="card" style="margin-bottom: 2rem;">
+        <h3 style="color: var(--primary); margin-bottom: 1rem;">⏰ Asistencia y Puntualidad</h3>
+        <ul>
+          <li>La asistencia a clases es obligatoria y se tomará lista diariamente.</li>
+          <li>Los estudiantes deben llegar puntualmente a todas sus clases.</li>
+          <li>Las ausencias deben ser justificadas por los padres o encargados dentro de los tres (3) días siguientes.
+          </li>
+          <li>Tres (3) tardanzas injustificadas equivalen a una ausencia.</li>
+          <li>El estudiante que acumule más de 10 ausencias injustificadas será referido a Trabajo Social.</li>
+        </ul>
+      </div>
+
+      <!-- Uniforme y Apariencia -->
+      <div class="card" style="margin-bottom: 2rem;">
+        <h3 style="color: var(--primary); margin-bottom: 1rem;">👔 Uniforme y Apariencia Personal</h3>
+        <ul>
+          <li>El uso del uniforme escolar es obligatorio todos los días.</li>
+          <li>El uniforme debe estar limpio, planchado y en buen estado.</li>
+          <li>Los estudiantes deben portar su identificación escolar en todo momento.</li>
+          <li>No se permite el uso de gorras, sombreros o accesorios no autorizados dentro del plantel.</li>
+          <li>El cabello debe estar limpio y bien arreglado.</li>
+          <li>No se permiten modificaciones al uniforme escolar.</li>
+        </ul>
+      </div>
+
+      <!-- Conducta y Disciplina -->
+      <div class="card" style="margin-bottom: 2rem;">
+        <h3 style="color: var(--primary); margin-bottom: 1rem;">⚖️ Conducta y Disciplina</h3>
+        <ul>
+          <li>Se espera que todos los estudiantes mantengan un comportamiento respetuoso hacia maestros, personal y
+            compañeros.</li>
+          <li>Está prohibido el uso de lenguaje obsceno, vulgar o irrespetuoso.</li>
+          <li>No se tolerará ningún tipo de violencia física, verbal o psicológica (bullying).</li>
+          <li>Está prohibido el uso de dispositivos electrónicos durante las horas de clase sin autorización del
+            maestro.</li>
+          <li>No se permite comer o beber en los salones de clase, excepto agua.</li>
+          <li>Los estudiantes deben mantener limpias las facilidades escolares.</li>
+          <li>Está prohibido el uso, posesión o distribución de sustancias controladas, alcohol o tabaco.</li>
+        </ul>
+      </div>
+
+      <!-- Uso de Tecnología -->
+      <div class="card" style="margin-bottom: 2rem;">
+        <h3 style="color: var(--primary); margin-bottom: 1rem;">📱 Uso de Tecnología</h3>
+        <ul>
+          <li>Los teléfonos celulares deben permanecer apagados o en modo silencioso durante las clases.</li>
+          <li>El uso de dispositivos electrónicos con fines educativos debe ser autorizado por el maestro.</li>
+          <li>Está prohibido tomar fotos o videos sin autorización.</li>
+          <li>El uso indebido de la tecnología escolar resultará en medidas disciplinarias.</li>
+          <li>Los estudiantes son responsables del cuidado de los equipos tecnológicos asignados.</li>
+        </ul>
+      </div>
+
+      <!-- Evaluación y Trabajos -->
+      <div class="card" style="margin-bottom: 2rem;">
+        <h3 style="color: var(--primary); margin-bottom: 1rem;">📝 Evaluación y Trabajos Académicos</h3>
+        <ul>
+          <li>Los estudiantes deben completar y entregar todos los trabajos asignados en la fecha establecida.</li>
+          <li>El plagio o copia en trabajos y exámenes está estrictamente prohibido.</li>
+          <li>Los estudiantes tienen derecho a conocer sus calificaciones y recibir retroalimentación.</li>
+          <li>Las ausencias justificadas dan derecho a reponer exámenes y trabajos.</li>
+          <li>Se espera honestidad académica en todo momento.</li>
+        </ul>
+      </div>
+
+      <!-- Derechos de los Estudiantes -->
+      <div class="card" style="margin-bottom: 2rem;">
+        <h3 style="color: var(--primary); margin-bottom: 1rem;">✅ Derechos de los Estudiantes</h3>
+        <ul>
+          <li>Recibir una educación de calidad en un ambiente seguro y respetuoso.</li>
+          <li>Ser tratado con dignidad y respeto por todos los miembros de la comunidad escolar.</li>
+          <li>Expresar sus opiniones de manera respetuosa.</li>
+          <li>Recibir ayuda y orientación académica cuando la necesiten.</li>
+          <li>Participar en actividades extracurriculares.</li>
+          <li>Ser escuchado en procesos disciplinarios.</li>
+          <li>Acceder a los servicios de apoyo disponibles en la escuela.</li>
+        </ul>
+      </div>
+
+      <!-- Responsabilidades -->
+      <div class="card" style="margin-bottom: 2rem;">
+        <h3 style="color: var(--primary); margin-bottom: 1rem;">📌 Responsabilidades de los Estudiantes</h3>
+        <ul>
+          <li>Asistir regularmente a clases y llegar puntualmente.</li>
+          <li>Completar todas las asignaciones y trabajos académicos.</li>
+          <li>Respetar a maestros, personal y compañeros.</li>
+          <li>Cuidar las facilidades y el equipo escolar.</li>
+          <li>Seguir las normas y reglamentos establecidos.</li>
+          <li>Informar a las autoridades escolares sobre situaciones que afecten la seguridad.</li>
+          <li>Representar dignamente a la escuela en actividades dentro y fuera del plantel.</li>
+        </ul>
+      </div>
+
+      <!-- Medidas Disciplinarias -->
+      <div class="card" style="margin-bottom: 2rem; border-left: 4px solid #e74c3c;">
+        <h3 style="color: #e74c3c; margin-bottom: 1rem;">⚠️ Medidas Disciplinarias</h3>
+        <p style="margin-bottom: 1rem;">
+          El incumplimiento de las normas establecidas puede resultar en las siguientes medidas disciplinarias,
+          dependiendo de la gravedad de la falta:
+        </p>
+        <ol>
+          <li>Amonestación verbal</li>
+          <li>Amonestación escrita</li>
+          <li>Notificación a padres o encargados</li>
+          <li>Detención después de clases</li>
+          <li>Suspensión temporal</li>
+          <li>Referido a consejería o trabajo social</li>
+          <li>Suspensión prolongada</li>
+          <li>Expulsión (casos graves)</li>
+        </ol>
+      </div>
+
+      <!-- Botón de regreso -->
+      <div style="text-align: center; margin-top: 3rem;">
+        <a href="index.html" class="btn btn-primary" data-translate="← Volver al inicio">← Volver al inicio</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Escuela Superior Vocacional Pablo Colón Berdecia. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="translations.js"></script>
+  <script src="image-popup.js"></script>
+  <script src="notification-bot.js"></script>
+</body>
+
+</html>

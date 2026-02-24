@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orientación y Consejería - Ecosistema Escolar</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dark-mode-fix.css">
+  <link rel="stylesheet" href="dropdown-fix.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* Hero Section */
+    .hero-orientacion {
+      background: linear-gradient(135deg, rgba(155, 89, 182, 0.95), rgba(142, 68, 173, 0.95)),
+        url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200') center/cover;
+      padding: 100px 20px;
+      text-align: center;
+      color: white;
+      margin-bottom: 60px;
+    }
+
+    .hero-orientacion h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-orientacion p {
+      font-size: 1.3rem;
+      max-width: 700px;
+      margin: 0 auto;
+      opacity: 0.95;
+    }
+
+    /* Service Cards Modernos */
+    .service-card {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      height: 100%;
+      border: 2px solid transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, #1abc9c, #16a085);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .service-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .service-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      border-color: #1abc9c;
+    }
+
+    .service-icon {
+      font-size: 50px;
+      margin-bottom: 25px;
+      display: inline-block;
+      background: linear-gradient(135deg, #1abc9c, #16a085);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.1);
+      }
+    }
+
+    .service-card h3 {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      color: #2c3e50;
+    }
+
+    .service-card p {
+      color: #7f8c8d;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .service-card ul {
+      margin: 20px 0;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .service-card ul li {
+      padding: 10px 0;
+      padding-left: 30px;
+      position: relative;
+      color: #555;
+    }
+
+    .service-card ul li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #1abc9c;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    /* Tabs Modernos */
+    .tabs {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 50px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 15px 40px;
+      border: none;
+      background: linear-gradient(135deg, #ecf0f1, #bdc3c7);
+      color: #2c3e50;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 700;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tab-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .tab-btn:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #9b59b6, #8e44ad);
+      color: white;
+      box-shadow: 0 8px 25px rgba(155, 89, 182, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeInUp 0.5s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Alert System Panel Moderno */
+    .alert-system-panel {
+      background: linear-gradient(135deg, #fff9e6, #ffe6cc);
+      border: 3px solid #f39c12;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 15px 50px rgba(243, 156, 18, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .alert-system-panel::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(243, 156, 18, 0.1) 0%, transparent 70%);
+      animation: rotate 20s linear infinite;
+    }
+
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .alert-system-panel h2 {
+      color: #d68910;
+      margin-bottom: 20px;
+      font-size: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .alert-system-panel p {
+      color: #856404;
+      font-size: 1.1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .risk-indicators {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .risk-indicators label {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      font-weight: 500;
+      color: #2c3e50;
+    }
+
+    .risk-indicators label:hover {
+      background: #f8f9fa;
+      transform: translateX(5px);
+    }
+
+    .risk-indicators input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-right: 12px;
+      cursor: pointer;
+      accent-color: #f39c12;
+    }
+
+    /* Dark Mode Fixes */
+    body.dark-mode .hero-orientacion {
+      background: linear-gradient(135deg, rgba(155, 89, 182, 0.95), rgba(142, 68, 173, 0.95)),
+        url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200') center/cover;
+    }
+
+    body.dark-mode .service-card {
+      background: rgba(30, 41, 59, 0.95) !important;
+      border-color: rgba(56, 189, 248, 0.3);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    body.dark-mode .service-card:hover {
+      border-color: #38bdf8;
+      box-shadow: 0 20px 60px rgba(56, 189, 248, 0.3);
+    }
+
+    body.dark-mode .service-card h3 {
+      color: #e5e7eb !important;
+    }
+
+    body.dark-mode .service-card p {
+      color: #9ca3af !important;
+    }
+
+    body.dark-mode .service-card ul li {
+      color: #d1d5db !important;
+    }
+
+    body.dark-mode .tab-btn {
+      background: linear-gradient(135deg, #1e293b, #334155);
+      color: #e5e7eb;
+    }
+
+    body.dark-mode .tab-btn.active {
+      background: linear-gradient(135deg, #9b59b6, #8e44ad);
+      color: white;
+    }
+
+    body.dark-mode .alert-system-panel {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(51, 65, 85, 0.95));
+      border-color: #f39c12;
+    }
+
+    body.dark-mode .alert-system-panel h2 {
+      color: #fbbf24 !important;
+    }
+
+    body.dark-mode .alert-system-panel p {
+      color: #e5e7eb !important;
+    }
+
+    body.dark-mode .risk-indicators {
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    body.dark-mode .risk-indicators label {
+      color: #e5e7eb !important;
+    }
+
+    body.dark-mode .risk-indicators label:hover {
+      background: rgba(56, 189, 248, 0.1);
+    }
+
+    /* Dark mode para el formulario interno */
+    body.dark-mode .alert-system-panel form>div {
+      background: rgba(15, 23, 42, 0.8) !important;
+    }
+
+    body.dark-mode .alert-system-panel .form-label {
+      color: #e5e7eb !important;
+    }
+
+    body.dark-mode #alertSuccess {
+      background: linear-gradient(135deg, #2ecc71, #27ae60) !important;
+    }
+
+    /* Botones de Servicio - Modo Claro */
+    .btn-apoyo {
+      background: linear-gradient(135deg, #1abc9c, #16a085) !important;
+      color: white !important;
+      box-shadow: 0 4px 15px rgba(26, 188, 156, 0.3) !important;
+      transition: all 0.3s ease !important;
+    }
+
+    .btn-apoyo:hover {
+      background: linear-gradient(135deg, #16a085, #138d75) !important;
+      box-shadow: 0 6px 20px rgba(26, 188, 156, 0.5) !important;
+      transform: translateY(-2px) !important;
+    }
+
+    .btn-solicitudes {
+      background: linear-gradient(135deg, #e67e22, #d35400) !important;
+      color: white !important;
+      box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3) !important;
+      transition: all 0.3s ease !important;
+    }
+
+    .btn-solicitudes:hover {
+      background: linear-gradient(135deg, #d35400, #ba4a00) !important;
+      box-shadow: 0 6px 20px rgba(230, 126, 34, 0.5) !important;
+      transform: translateY(-2px) !important;
+    }
+
+    /* Botones de Servicio - Modo Oscuro */
+    body.dark-mode .btn-apoyo {
+      background: linear-gradient(135deg, #10b981, #059669) !important;
+      color: white !important;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4) !important;
+    }
+
+    body.dark-mode .btn-apoyo:hover {
+      background: linear-gradient(135deg, #059669, #047857) !important;
+      box-shadow: 0 6px 25px rgba(16, 185, 129, 0.6) !important;
+      transform: translateY(-2px) !important;
+    }
+
+    body.dark-mode .btn-solicitudes {
+      background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+      color: white !important;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4) !important;
+    }
+
+    body.dark-mode .btn-solicitudes:hover {
+      background: linear-gradient(135deg, #d97706, #b45309) !important;
+      box-shadow: 0 6px 25px rgba(245, 158, 11, 0.6) !important;
+      transform: translateY(-2px) !important;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-orientacion h1 {
+        font-size: 2rem;
+      }
+
+      .hero-orientacion p {
+        font-size: 1.1rem;
+      }
+
+      .service-card {
+        padding: 30px 20px;
+      }
+
+      .tabs {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .tab-btn {
+        width: 100%;
+      }
+
+      .risk-indicators {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Popup de selección de tema -->
+  <div id="themePopup" class="theme-popup">
+    <div class="theme-popup-content">
+      <h2 data-translate="🎨 Selecciona tu tema preferido">🎨 Selecciona tu tema preferido</h2>
+      <p data-translate="Elige cómo quieres ver el sitio web">Elige cómo quieres ver el sitio web</p>
+      <div class="theme-buttons">
+        <button class="theme-btn theme-btn-light" id="btnLightMode" data-translate="☀️ Modo Claro">
+          ☀️ Modo Claro
+        </button>
+        <button class="theme-btn theme-btn-dark" id="btnDarkMode" data-translate="🌙 Modo Oscuro">
+          🌙 Modo Oscuro
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Script inline para modo claro/oscuro
+    (function () {
+      function hidePopup() {
+        document.getElementById('themePopup').classList.add('hidden');
+      }
+
+      function setLightMode() {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        hidePopup();
+      }
+
+      function setDarkMode() {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        hidePopup();
+      }
+
+      function checkTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          hidePopup();
+        } else if (savedTheme === 'light') {
+          hidePopup();
+        }
+      }
+
+      // Ejecutar inmediatamente
+      checkTheme();
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const btnLight = document.getElementById('btnLightMode');
+        const btnDark = document.getElementById('btnDarkMode');
+
+        if (btnLight) {
+          btnLight.addEventListener('click', setLightMode);
+        }
+        if (btnDark) {
+          btnDark.addEventListener('click', setDarkMode);
+        }
+      });
+    })();
+  </script>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo-area">
+        <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+        <div class="logo-text">
+          <span class="logo-title" data-translate="Escuela Superior Vocacional">Escuela Superior Vocacional</span>
+          <span class="logo-subtitle">Pablo Colón Berdecia</span>
+        </div>
+      </div>
+
+      <!-- Hamburger Menu Button -->
+      <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <button class="menu-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html#inicio" data-translate="Inicio">Inicio</a></li>
+          <li><a href="index.html#servicios" data-translate="Servicios">Servicios</a></li>
+          <li><a href="index.html#contacto" data-translate="Contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3 data-translate="⚙️ Configuración">⚙️ Configuración</h3>
+    </div>
+    <div class="sidebar-content">
+      <!-- Theme Toggle -->
+      <div class="sidebar-option" id="themeToggle">
+        <span data-translate="🎨 Cambiar Tema">🎨 Cambiar Tema</span>
+      </div>
+      <div class="theme-options" id="themeOptions">
+        <div class="theme-option" id="selectLightTheme">
+          <span data-translate="☀️ Modo Claro">☀️ Modo Claro</span>
+        </div>
+        <div class="theme-option" id="selectDarkTheme">
+          <span data-translate="🌙 Modo Oscuro">🌙 Modo Oscuro</span>
+        </div>
+      </div>
+
+      <!-- Language Toggle -->
+      <div class="sidebar-option" id="languageToggle">
+        <span data-translate="🌐 Cambiar Idioma">🌐 Cambiar Idioma</span>
+      </div>
+      <div class="language-options" id="languageOptions">
+        <div class="language-option" id="selectSpanish">
+          <span>🇵🇷 Español</span>
+        </div>
+        <div class="language-option" id="selectEnglish">
+          <span>🇺🇸 English</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Hamburger menu functionality
+    (function () {
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const themeToggle = document.getElementById('themeToggle');
+      const themeOptions = document.getElementById('themeOptions');
+      const languageToggle = document.getElementById('languageToggle');
+      const languageOptions = document.getElementById('languageOptions');
+      const selectLightTheme = document.getElementById('selectLightTheme');
+      const selectDarkTheme = document.getElementById('selectDarkTheme');
+      const selectSpanish = document.getElementById('selectSpanish');
+      const selectEnglish = document.getElementById('selectEnglish');
+
+      function openSidebarMenu() {
+        sidebarMenu.classList.add('active');
+        sidebarOverlay.classList.add('active');
+      }
+
+      function closeSidebarMenu() {
+        sidebarMenu.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+        themeOptions.classList.remove('active');
+        languageOptions.classList.remove('active');
+      }
+
+      if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', openSidebarMenu);
+      }
+
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeSidebarMenu);
+      }
+
+      // Theme toggle
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function () {
+          themeOptions.classList.toggle('active');
+          languageOptions.classList.remove('active');
+        });
+      }
+
+      // Language toggle
+      if (languageToggle) {
+        languageToggle.addEventListener('click', function () {
+          languageOptions.classList.toggle('active');
+          themeOptions.classList.remove('active');
+        });
+      }
+
+      // Select Light Theme
+      if (selectLightTheme) {
+        selectLightTheme.addEventListener('click', function () {
+          document.body.classList.remove('dark-mode');
+          localStorage.setItem('theme', 'light');
+          closeSidebarMenu();
+        });
+      }
+
+      // Select Dark Theme
+      if (selectDarkTheme) {
+        selectDarkTheme.addEventListener('click', function () {
+          document.body.classList.add('dark-mode');
+          localStorage.setItem('theme', 'dark');
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma español
+      if (selectSpanish) {
+        selectSpanish.addEventListener('click', function () {
+          localStorage.setItem('language', 'es');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'es');
+          if (typeof translatePage === 'function') {
+            translatePage('es');
+          }
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma inglés
+      if (selectEnglish) {
+        selectEnglish.addEventListener('click', function () {
+          localStorage.setItem('language', 'en');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'en');
+          if (typeof translatePage === 'function') {
+            translatePage('en');
+          }
+          closeSidebarMenu();
+        });
+      }
+    })();
+  </script>
+
+
+
+
+
+
+  <!-- Hero Section -->
+  <section class="hero-orientacion">
+    <div class="container">
+      <h1><i class="fas fa-brain"></i> Orientación y Consejería</h1>
+      <p>Apoyo integral para tu desarrollo académico, vocacional y socioemocional. Estamos aquí para guiarte en cada
+        paso de tu camino.</p>
+    </div>
+  </section>
+
+  <div class="container" style="margin-bottom: 60px;">
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('estudiantes')">
+        <i class="fas fa-user-graduate"></i> Para Estudiantes
+      </button>
+      <button class="tab-btn" onclick="switchTab('maestros')">
+        <i class="fas fa-chalkboard-teacher"></i> Acceso Maestros
+      </button>
+    </div>
+
+    <!-- VISTA ESTUDIANTES -->
+    <div id="tab-estudiantes" class="tab-content active">
+      <div class="grid-2">
+        <!-- Unidad de Apoyo Socioemocional -->
+        <div class="service-card">
+          <div class="service-icon"><i class="fas fa-hands-helping"></i></div>
+          <h3>Unidad de Apoyo Socioemocional</h3>
+          <p>Accede a recursos de bienestar y solicita citas con tu consejero/a escolar a través de nuestra unidad
+            especializada.</p>
+
+          <ul>
+            <li>Consejería individual y grupal</li>
+            <li>Manejo de estrés y ansiedad</li>
+            <li>Desarrollo de habilidades sociales</li>
+            <li>Apoyo en crisis emocionales</li>
+          </ul>
+
+          <div style="margin-top: 30px;">
+            <a href="https://hackerpcb1.github.io/Apoyo-Socioemocional-PCB/" target="_blank"
+              class="btn-submit btn-apoyo"
+              style="text-decoration: none; display: inline-block; text-align: center; border: none;">
+              <i class="fas fa-external-link-alt"></i> Acceder a la Unidad
+            </a>
+          </div>
+        </div>
+
+        <!-- Documentos -->
+        <div class="service-card">
+          <div class="service-icon"><i class="fas fa-file-contract"></i></div>
+          <h3>Cartas y Recomendaciones</h3>
+          <p>Solicita cartas de recomendación para universidad, empleo o internados de manera rápida y sencilla.</p>
+          <ul>
+            <li>Cartas de Recomendación (College Board)</li>
+            <li>Referidos Vocacionales</li>
+            <li>Autorizaciones de práctica</li>
+            <li>Certificaciones académicas</li>
+          </ul>
+          <div style="margin-top: 30px;">
+            <a href="solicitudes.html" class="btn-submit btn-solicitudes"
+              style="text-decoration: none; display: inline-block; text-align: center;">
+              <i class="fas fa-file-alt"></i> Ir a Solicitudes
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISTA MAESTROS (Alertas Tempranas) -->
+    <div id="tab-maestros" class="tab-content">
+      <div class="alert-system-panel">
+        <h2><i class="fas fa-exclamation-triangle"></i> Sistema de Alerta Temprana</h2>
+        <p style="margin-bottom: 30px;">Identifica estudiantes en riesgo académico o socioemocional. Marca los
+          indicadores observados y envía una alerta al departamento de orientación.</p>
+
+        <form id="earlyAlertForm" style="position: relative; z-index: 2;">
+          <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
+            <div class="grid-2" style="gap: 20px; margin-bottom: 25px;">
+              <div>
+                <label class="form-label"
+                  style="display: block; margin-bottom: 10px; font-weight: 600; color: #2c3e50;">
+                  <i class="fas fa-user"></i> Nombre del Estudiante
+                </label>
+                <input type="text" class="form-control" name="studentName" required
+                  placeholder="Ingresa el nombre completo" style="padding: 15px; font-size: 1rem; border-radius: 10px;">
+              </div>
+              <div>
+                <label class="form-label"
+                  style="display: block; margin-bottom: 10px; font-weight: 600; color: #2c3e50;">
+                  <i class="fas fa-chalkboard-teacher"></i> Maestro que Refiere
+                </label>
+                <input type="text" class="form-control" name="teacherName" required placeholder="Tu nombre completo"
+                  style="padding: 15px; font-size: 1rem; border-radius: 10px;">
+              </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+              <label class="form-label" style="display: block; margin-bottom: 15px; font-weight: 600; color: #2c3e50;">
+                <i class="fas fa-clipboard-check"></i> Indicadores de Riesgo
+              </label>
+              <div class="risk-indicators">
+                <label>
+                  <input type="checkbox" name="risks" value="ausentismo">
+                  <span>Ausentismo Crónico</span>
+                </label>
+                <label>
+                  <input type="checkbox" name="risks" value="conducta">
+                  <span>Problemas de Conducta</span>
+                </label>
+                <label>
+                  <input type="checkbox" name="risks" value="fracaso">
+                  <span>Fracaso en 2 o más materias</span>
+                </label>
+                <label>
+                  <input type="checkbox" name="risks" value="rezago">
+                  <span>Rezago Académico Significativo</span>
+                </label>
+                <label>
+                  <input type="checkbox" name="risks" value="aislamiento">
+                  <span>Aislamiento Social</span>
+                </label>
+                <label>
+                  <input type="checkbox" name="risks" value="emocional">
+                  <span>Cambios Emocionales</span>
+                </label>
+                <label>
+                  <input type="checkbox" name="risks" value="motivacion">
+                  <span>Falta de Motivación</span>
+                </label>
+                <label>
+                  <input type="checkbox" name="risks" value="familiar">
+                  <span>Problemas Familiares</span>
+                </label>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+              <label class="form-label" style="display: block; margin-bottom: 10px; font-weight: 600; color: #2c3e50;">
+                <i class="fas fa-comment-alt"></i> Observaciones Adicionales
+              </label>
+              <textarea class="form-control" name="observations" rows="5"
+                placeholder="Describe detalladamente la situación observada, comportamientos específicos, fechas relevantes, etc."
+                style="padding: 15px; font-size: 1rem; border-radius: 10px; resize: vertical;"></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit"
+              style="background: linear-gradient(135deg, #e74c3c, #c0392b); width: 100%; padding: 18px; font-size: 1.2rem; font-weight: 700; box-shadow: 0 6px 20px rgba(231, 76, 60, 0.3); transition: all 0.3s ease;">
+              <i class="fas fa-paper-plane"></i> Enviar Alerta Confidencial
+            </button>
+          </div>
+        </form>
+
+        <div id="alertSuccess"
+          style="display: none; margin-top: 30px; padding: 25px; background: linear-gradient(135deg, #2ecc71, #27ae60); color: white; border-radius: 15px; text-align: center; box-shadow: 0 6px 20px rgba(46, 204, 113, 0.3); position: relative; z-index: 2;">
+          <i class="fas fa-check-circle" style="font-size: 3rem; margin-bottom: 15px;"></i>
+          <h3 style="margin-bottom: 10px;">¡Alerta Enviada Exitosamente!</h3>
+          <p style="margin: 0;">El departamento de orientación ha sido notificado y se comunicará contigo pronto.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/services-manager.js"></script>
+  <script src="js/orientacion.js"></script>
+</body>
+
+</html>
