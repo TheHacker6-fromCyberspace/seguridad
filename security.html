@@ -3,162 +3,1113 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Seguridad - Registro</title>
+  <title>Seguridad - Registro | PCB</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dark-mode-fix-v2.css?v=2">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background: #f0f4f8; }
-    h1 { color: #1e3a5f; text-align: center; }
-    .card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    .card h2 { color: #1e3a5f; margin-top: 0; border-bottom: 2px solid #1e3a5f; padding-bottom: 10px; }
-    .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
-    .form-group input, .form-group select, .form-group textarea { 
-        width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 14px; 
+    /* Professional Security Page Styles - Matching Main Website */
+    :root {
+      --security-primary: #1d3557;
+      --security-primary-light: #457b9d;
+      --security-accent: #f2c94c;
+      --security-success: #22C55E;
+      --security-warning: #FACC15;
+      --security-danger: #EF4444;
+      --security-bg: #f5f7fb;
+      --security-card: #ffffff;
+      --security-text: #34495e;
+      --security-text-soft: #7f8c8d;
+      --security-border: #dde3ee;
     }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { 
-        border-color: #1e3a5f; outline: none; 
+
+    body.dark-mode {
+      --security-primary: #4a90e2;
+      --security-primary-light: #64a8f5;
+      --security-accent: #ffc107;
+      --security-bg: #1e1e1e;
+      --security-card: #2d2d2d;
+      --security-text: #e0e0e0;
+      --security-text-soft: #b0b0b0;
+      --security-border: #404040;
     }
-    button { background: #1e3a5f; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 14px; width: 100%; }
-    button:hover { background: #2d4a6f; }
-    button.secondary { background: #4a90d9; }
-    button.secondary:hover { background: #3a7bc8; }
-    button.danger { background: #dc3545; }
-    button.danger:hover { background: #c82333; }
-    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-    th { background: #1e3a5f; color: white; }
-    tr:hover { background: #f5f5f5; }
-    .problem-card { background: #fff5f5; border-left: 4px solid #dc3545; }
-    .guest-register { background: #e8f5e9; border-left: 4px solid #28a745; }
-    .success { color: green; font-weight: bold; text-align: center; padding: 10px; }
-    .admin-section { background: #fff8e1; border: 2px solid #ffc107; }
-    .admin-section h3 { color: #f57c00; }
-    .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-    .tab { flex: 1; padding: 15px; text-align: center; background: white; border-radius: 8px; cursor: pointer; font-weight: bold; }
-    .tab.active { background: #1e3a5f; color: white; }
-    .hidden { display: none; }
+
+    /* Page Header */
+    .security-page-header {
+      background: linear-gradient(135deg, var(--security-primary) 0%, var(--security-primary-light) 100%);
+      padding: 30px;
+      border-radius: 20px;
+      margin-bottom: 30px;
+      color: white;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .security-page-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+      background-size: cover;
+      pointer-events: none;
+    }
+
+    .security-page-header h1 {
+      margin: 0 0 8px 0;
+      font-size: 1.8rem;
+      font-weight: 700;
+      position: relative;
+      z-index: 1;
+    }
+
+    .security-page-header p {
+      margin: 0;
+      opacity: 0.9;
+      font-size: 0.95rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Dashboard Stats */
+    .security-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .security-stat-card {
+      background: var(--security-card);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border: 1px solid var(--security-border);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .security-stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .security-stat-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .security-stat-icon.entries {
+      background: rgba(29, 53, 87, 0.15);
+      color: var(--security-primary);
+    }
+
+    .security-stat-icon.problems {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--security-danger);
+    }
+
+    .security-stat-icon.solved {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--security-success);
+    }
+
+    .security-stat-info h4 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--security-text);
+    }
+
+    .security-stat-info p {
+      margin: 4px 0 0 0;
+      font-size: 0.85rem;
+      color: var(--security-text-soft);
+    }
+
+    /* Security Cards */
+    .security-card {
+      background: var(--security-card);
+      border-radius: 20px;
+      border: 1px solid var(--security-border);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .security-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .security-card-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--security-border);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: linear-gradient(135deg, rgba(29, 53, 87, 0.03) 0%, rgba(69, 123, 157, 0.03) 100%);
+    }
+
+    .security-card-header h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--security-text);
+    }
+
+    .security-card-header .header-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .security-card.visitor-card .header-icon {
+      background: rgba(29, 53, 87, 0.15);
+      color: var(--security-primary);
+    }
+
+    .security-card.problem-card .header-icon {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--security-danger);
+    }
+
+    .security-card.admin-card .header-icon {
+      background: rgba(250, 204, 21, 0.15);
+      color: var(--security-warning);
+    }
+
+    .security-card-body {
+      padding: 24px;
+    }
+
+    /* Form Styles */
+    .security-form .form-group {
+      margin-bottom: 18px;
+    }
+
+    .security-form label {
+      display: block;
+      font-weight: 600;
+      color: var(--security-text);
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    .security-form input,
+    .security-form select,
+    .security-form textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--security-border);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      background: var(--security-bg);
+      color: var(--security-text);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .security-form input:focus,
+    .security-form select:focus,
+    .security-form textarea:focus {
+      outline: none;
+      border-color: var(--security-primary);
+      box-shadow: 0 0 0 4px rgba(29, 53, 87, 0.1);
+    }
+
+    body.dark-mode .security-form input,
+    body.dark-mode .security-form select,
+    body.dark-mode .security-form textarea {
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .security-form textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    /* Buttons */
+    .security-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .security-btn-primary {
+      background: linear-gradient(135deg, var(--security-primary) 0%, var(--security-primary-light) 100%);
+      color: white;
+    }
+
+    .security-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(29, 53, 87, 0.3);
+    }
+
+    .security-btn-success {
+      background: var(--security-success);
+      color: white;
+    }
+
+    .security-btn-success:hover {
+      background: #16a34a;
+      transform: translateY(-2px);
+    }
+
+    .security-btn-danger {
+      background: linear-gradient(135deg, var(--security-danger) 0%, #dc2626 100%);
+      color: white;
+    }
+
+    .security-btn-danger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+    }
+
+    .security-btn-warning {
+      background: linear-gradient(135deg, var(--security-warning) 0%, #eab308 100%);
+      color: #1f2937;
+    }
+
+    .security-btn-warning:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(250, 204, 21, 0.3);
+    }
+
+    .security-btn-block {
+      width: 100%;
+    }
+
+    /* Tables */
+    .security-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+
+    .security-table th {
+      background: linear-gradient(135deg, var(--security-primary) 0%, var(--security-primary-light) 100%);
+      color: white;
+      padding: 14px 16px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .security-table th:first-child {
+      border-radius: 10px 0 0 0;
+    }
+
+    .security-table th:last-child {
+      border-radius: 0 10px 0 0;
+    }
+
+    .security-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--security-border);
+      color: var(--security-text);
+      font-size: 0.9rem;
+    }
+
+    .security-table tr:hover {
+      background: rgba(29, 53, 87, 0.03);
+    }
+
+    body.dark-mode .security-table tr:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    /* Action Buttons in Table */
+    .action-btn {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .action-btn.delete {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--security-danger);
+    }
+
+    .action-btn.delete:hover {
+      background: var(--security-danger);
+      color: white;
+    }
+
+    .action-btn.solve {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--security-success);
+    }
+
+    .action-btn.solve:hover {
+      background: var(--security-success);
+      color: white;
+    }
+
+    .action-btn.view {
+      background: rgba(69, 123, 157, 0.15);
+      color: var(--security-primary-light);
+    }
+
+    .action-btn.view:hover {
+      background: var(--security-primary-light);
+      color: white;
+    }
+
+    /* Status Badges */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .status-badge.pending {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--security-danger);
+    }
+
+    .status-badge.solved {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--security-success);
+    }
+
+    /* Tabs */
+    .security-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      background: var(--security-card);
+      padding: 8px;
+      border-radius: 14px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .security-tab {
+      flex: 1;
+      padding: 14px 20px;
+      text-align: center;
+      background: transparent;
+      border: none;
+      border-radius: 10px;
+      color: var(--security-text-soft);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .security-tab:hover {
+      color: var(--security-text);
+      background: rgba(29, 53, 87, 0.05);
+    }
+
+    .security-tab.active {
+      background: linear-gradient(135deg, var(--security-primary) 0%, var(--security-primary-light) 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(29, 53, 87, 0.3);
+    }
+
+    /* Admin Panel */
+    .admin-panel {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border-radius: 16px;
+      border: 2px solid var(--security-warning);
+      padding: 24px;
+      margin-bottom: 30px;
+    }
+
+    body.dark-mode .admin-panel {
+      background: linear-gradient(135deg, #422006 0%, #713f12 100%);
+    }
+
+    .admin-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .admin-panel-header h3 {
+      margin: 0;
+      color: #92400e;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    body.dark-mode .admin-panel-header h3 {
+      color: #fbbf24;
+    }
+
+    /* Success Message */
+    .success-message {
+      padding: 16px 20px;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 10px;
+      color: var(--security-success);
+      font-weight: 600;
+      text-align: center;
+      margin-top: 16px;
+      animation: fadeInUp 0.3s ease;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--security-text-soft);
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    /* Grid Layout */
+    .security-dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 24px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .security-dashboard {
+        grid-template-columns: 1fr;
+      }
+
+      .security-tabs {
+        flex-direction: column;
+      }
+
+      .security-stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .security-page-header h1 {
+        font-size: 1.4rem;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Photo Preview */
+    #photoPreview {
+      margin-top: 12px;
+    }
+
+    #photoPreview img {
+      max-width: 200px;
+      max-height: 150px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    #photoPreview button {
+      margin-left: 10px;
+      padding: 8px 12px;
+    }
+
+    /* Login Form */
+    .login-container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 30px;
+      background: var(--security-card);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Current Time */
+    .current-time {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    /* Filter Section */
+    .filter-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
   </style>
 </head>
 <body>
-  <h1>🏫 Sistema de Seguridad PCB</h1>
-  
-  <div class="tabs">
-    <div class="tab active" onclick="showTab('register')">📝 Registrarse</div>
-    <div class="tab" onclick="showTab('problem')">⚠️ Reportar Problema</div>
-    <div class="tab" onclick="showTab('admin')">🔐 Admin</div>
-  </div>
-
-  <!-- GUEST REGISTRATION -->
-  <div id="register-tab" class="card guest-register">
-    <h2>📝 Registro de Entrada/Salida</h2>
-    <form id="guestForm" onsubmit="guestRegister(event)">
-      <div class="form-group">
-        <label>Tu Nombre:</label>
-        <input type="text" id="guestName" placeholder="Escribe tu nombre" required>
+  <!-- Popup de selección de tema -->
+  <div id="themePopup" class="theme-popup">
+    <div class="theme-popup-content">
+      <h2 data-translate="🎨 Selecciona tu tema preferido">🎨 Selecciona tu tema preferido</h2>
+      <p data-translate="Elige cómo quieres ver el sitio web">Elige cómo quieres ver el sitio web</p>
+      <div class="theme-buttons">
+        <button class="theme-btn theme-btn-light" id="btnLightMode" data-translate="☀️ Modo Claro">
+          ☀️ Modo Claro
+        </button>
+        <button class="theme-btn theme-btn-dark" id="btnDarkMode" data-translate="🌙 Modo Oscuro">
+          🌙 Modo Oscuro
+        </button>
       </div>
-      <div class="form-group">
-        <label>Tipo de Visitante:</label>
-        <select id="guestType">
-          <option value="Estudiante">🎓 Estudiante</option>
-          <option value="Padre/Madre">👨‍👩‍👧 Padre/Madre</option>
-          <option value="Invitado">👤 Invitado</option>
-          <option value="Proveedor">📦 Proveedor</option>
-          <option value="Trabajador">👔 Trabajador</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Acción:</label>
-        <select id="guestAction">
-          <option value="Entrada">🚪 Entrada</option>
-          <option value="Salida">🚶 Salida</option>
-        </select>
-      </div>
-      <button type="submit" class="secondary">✅ Registrar</button>
-    </form>
-    <div id="registerMessage"></div>
-  </div>
-
-  <!-- PROBLEM REPORTING -->
-  <div id="problem-tab" class="card problem-card hidden">
-    <h2>⚠️ Reportar un Problema</h2>
-    <p>¿Viste algo sospechoso o tienes una emergencia? Repórtalo aquí.</p>
-    <form id="problemForm" onsubmit="reportProblem(event)">
-      <div class="form-group">
-        <label>Tipo de Problema:</label>
-        <select id="problemType">
-          <option value="Seguridad">🔒 Problema de Seguridad</option>
-          <option value="Emergencia">🚨 Emergencia Médica</option>
-          <option value="Instalaciones">🏠 Problema de Instalaciones</option>
-          <option value="Conducta">👥 Problema de Conducta</option>
-          <option value="Otro">❓ Otro</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Lugar (donde ocurrió):</label>
-        <input type="text" id="problemLocation" placeholder="Ej: Entrada principal, Patio, etc." required>
-      </div>
-      <div class="form-group">
-        <label>Descripción del Problema:</label>
-        <textarea id="problemDesc" rows="4" placeholder="Describe lo que pasó..." required></textarea>
-      </div>
-      <div class="form-group">
-        <label>Foto (opcional):</label>
-        <input type="file" id="problemPhoto" accept="image/*" onchange="previewPhoto()">
-        <div id="photoPreview" style="margin-top:10px;"></div>
-      </div>
-      <div class="form-group">
-        <label>Tu Nombre (opcional):</label>
-        <input type="text" id="problemReporter" placeholder="Tu nombre">
-      </div>
-      <button type="submit">📨 Enviar Reporte</button>
-    </form>
-    <div id="problemMessage"></div>
-  </div>
-
-  <!-- ADMIN PANEL -->
-  <div id="admin-tab" class="card admin-section hidden">
-    <h2>🔐 Panel de Administración</h2>
-    <div id="loginForm">
-      <div class="form-group">
-        <label>Contraseña:</label>
-        <input type="password" id="adminPassword" placeholder="Ingresa la contraseña">
-      </div>
-      <button onclick="adminLogin()">🔓 Iniciar Sesión</button>
     </div>
-    
-    <div id="adminPanel" class="hidden">
-      <p style="color: green; font-weight: bold;">✓ Sesión activa como administrador</p>
+  </div>
+
+  <script>
+    // Script inline para modo claro/oscuro
+    (function () {
+      function hidePopup() {
+        document.getElementById('themePopup').classList.add('hidden');
+      }
+
+      function setLightMode() {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        hidePopup();
+      }
+
+      function setDarkMode() {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        hidePopup();
+      }
+
+      function checkTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          hidePopup();
+        } else if (savedTheme === 'light') {
+          hidePopup();
+        }
+      }
+
+      // Ejecutar inmediatamente
+      checkTheme();
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const btnLight = document.getElementById('btnLightMode');
+        const btnDark = document.getElementById('btnDarkMode');
+
+        if (btnLight) {
+          btnLight.addEventListener('click', setLightMode);
+        }
+        if (btnDark) {
+          btnDark.addEventListener('click', setDarkMode);
+        }
+      });
+    })();
+  </script>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo-area">
+        <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+        <div class="logo-text">
+          <span class="logo-title" data-translate="Escuela Superior Vocacional">Escuela Superior Vocacional</span>
+          <span class="logo-subtitle">Pablo Colón Berdecia</span>
+        </div>
+      </div>
+
+      <!-- Hamburger Menu Button -->
+      <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <button class="menu-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html#inicio" data-translate="Inicio">Inicio</a></li>
+          <li><a href="index.html#servicios" data-translate="Servicios">Servicios</a></li>
+          <li><a href="index.html#contacto" data-translate="Contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3 data-translate="⚙️ Configuración">⚙️ Configuración</h3>
+    </div>
+    <div class="sidebar-content">
+      <!-- Theme Toggle -->
+      <div class="sidebar-option" id="themeToggle">
+        <span data-translate="🎨 Cambiar Tema">🎨 Cambiar Tema</span>
+      </div>
+      <div class="theme-options" id="themeOptions">
+        <div class="theme-option" id="selectLightTheme">
+          <span data-translate="☀️ Modo Claro">☀️ Modo Claro</span>
+        </div>
+        <div class="theme-option" id="selectDarkTheme">
+          <span data-translate="🌙 Modo Oscuro">🌙 Modo Oscuro</span>
+        </div>
+      </div>
+
+      <!-- Language Toggle -->
+      <div class="sidebar-option" id="languageToggle">
+        <span data-translate="🌐 Cambiar Idioma">🌐 Cambiar Idioma</span>
+      </div>
+      <div class="language-options" id="languageOptions">
+        <div class="language-option" id="selectSpanish">
+          <span>🇵🇷 Español</span>
+        </div>
+        <div class="language-option" id="selectEnglish">
+          <span>🇺🇸 English</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Hamburger menu functionality
+    (function () {
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const themeToggle = document.getElementById('themeToggle');
+      const themeOptions = document.getElementById('themeOptions');
+      const languageToggle = document.getElementById('languageToggle');
+      const languageOptions = document.getElementById('languageOptions');
+      const selectLightTheme = document.getElementById('selectLightTheme');
+      const selectDarkTheme = document.getElementById('selectDarkTheme');
+      const selectSpanish = document.getElementById('selectSpanish');
+      const selectEnglish = document.getElementById('selectEnglish');
+
+      function openSidebarMenu() {
+        sidebarMenu.classList.add('active');
+        sidebarOverlay.classList.add('active');
+      }
+
+      function closeSidebarMenu() {
+        sidebarMenu.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+        themeOptions.classList.remove('active');
+        languageOptions.classList.remove('active');
+      }
+
+      if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', openSidebarMenu);
+      }
+
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeSidebarMenu);
+      }
+
+      // Theme toggle
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function () {
+          themeOptions.classList.toggle('active');
+          languageOptions.classList.remove('active');
+        });
+      }
+
+      // Language toggle
+      if (languageToggle) {
+        languageToggle.addEventListener('click', function () {
+          languageOptions.classList.toggle('active');
+          themeOptions.classList.remove('active');
+        });
+      }
+
+      // Select Light Theme
+      if (selectLightTheme) {
+        selectLightTheme.addEventListener('click', function () {
+          document.body.classList.remove('dark-mode');
+          localStorage.setItem('theme', 'light');
+          closeSidebarMenu();
+        });
+      }
+
+      // Select Dark Theme
+      if (selectDarkTheme) {
+        selectDarkTheme.addEventListener('click', function () {
+          document.body.classList.add('dark-mode');
+          localStorage.setItem('theme', 'dark');
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma español
+      if (selectSpanish) {
+        selectSpanish.addEventListener('click', function () {
+          localStorage.setItem('language', 'es');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'es');
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma inglés
+      if (selectEnglish) {
+        selectEnglish.addEventListener('click', function () {
+          localStorage.setItem('language', 'en');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'en');
+          closeSidebarMenu();
+        });
+      }
+    })();
+  </script>
+
+  <div class="container" style="padding: 40px 0;">
+    <!-- Professional Header -->
+    <div class="security-page-header">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <h1><i class="fas fa-shield-alt"></i> Sistema de Seguridad PCB</h1>
+          <p>Registro de visitantes, control de acceso y reporte de incidentes</p>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <div class="current-time">
+            <i class="fas fa-clock"></i>
+            <span id="currentDateTime"></span>
+          </div>
+          <button id="adminToggleBtn" class="security-btn security-btn-warning" onclick="toggleAdminMode()">
+            <i class="fas fa-cog"></i> Admin
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistics Dashboard -->
+    <div class="security-stats">
+      <div class="security-stat-card">
+        <div class="security-stat-icon entries">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="security-stat-info">
+          <h4 id="statTotalEntries">0</h4>
+          <p>Total Registros</p>
+        </div>
+      </div>
+      <div class="security-stat-card">
+        <div class="security-stat-icon problems">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <div class="security-stat-info">
+          <h4 id="statTotalProblems">0</h4>
+          <p>Problemas Reportados</p>
+        </div>
+      </div>
+      <div class="security-stat-card">
+        <div class="security-stat-icon solved">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="security-stat-info">
+          <h4 id="statSolvedProblems">0</h4>
+          <p>Problemas Resueltos</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="admin-panel hidden">
+      <div class="admin-panel-header">
+        <h3><i class="fas fa-user-shield"></i> Panel de Administración</h3>
+        <button class="security-btn security-btn-danger" onclick="toggleAdminMode()" style="padding: 10px 16px;">
+          <i class="fas fa-times"></i> Cerrar
+        </button>
+      </div>
       
-      <button onclick="showAdminSection('entries')" class="secondary" style="margin-right: 10px;">📋 Ver Registros</button>
-      <button onclick="showAdminSection('problems')" class="secondary">⚠️ Ver Problemas</button>
+      <div class="filter-buttons">
+        <button onclick="showAdminSection('entries')" class="security-btn security-btn-primary" style="padding: 10px 16px;">
+          <i class="fas fa-list"></i> Registros
+        </button>
+        <button onclick="showAdminSection('problems')" class="security-btn security-btn-primary" style="padding: 10px 16px;">
+          <i class="fas fa-exclamation-triangle"></i> Problemas
+        </button>
+      </div>
       
-      <div id="entriesSection" style="margin-top: 20px;">
-        <h3>📋 Registro de Entradas/Salidas</h3>
-        <button onclick="exportEntries()" class="secondary" style="width: auto;">📥 Exportar CSV</button>
-        <button onclick="clearEntries()" class="danger" style="width: auto; margin-left: 10px;">🗑️ Borrar Todo</button>
-        <table id="entriesTable">
+      <!-- Entries Section -->
+      <div id="entriesSection">
+        <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+          <button onclick="exportEntries()" class="security-btn security-btn-primary" style="padding: 10px 16px;">
+            <i class="fas fa-download"></i> Exportar CSV
+          </button>
+          <button onclick="clearEntries()" class="security-btn security-btn-danger" style="padding: 10px 16px;">
+            <i class="fas fa-trash"></i> Borrar Todo
+          </button>
+        </div>
+        <table class="security-table">
           <thead>
-            <tr><th>Nombre</th><th>Tipo</th><th>Acción</th><th>Hora</th><th></th></tr>
+            <tr>
+              <th>Nombre</th>
+              <th>Tipo</th>
+              <th>Acción</th>
+              <th>Hora</th>
+              <th>Acciones</th>
+            </tr>
           </thead>
           <tbody id="entriesBody"></tbody>
         </table>
       </div>
       
-      <div id="problemsSection" class="hidden" style="margin-top: 20px;">
-        <h3>⚠️ Problemas Reportados</h3>
-        <button onclick="exportProblems()" class="secondary" style="width: auto;">📥 Exportar CSV</button>
-        <table id="problemsTable">
+      <!-- Problems Section -->
+      <div id="problemsSection" class="hidden">
+        <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+          <button onclick="exportProblems()" class="security-btn security-btn-primary" style="padding: 10px 16px;">
+            <i class="fas fa-download"></i> Exportar CSV
+          </button>
+          <button onclick="clearAllProblems()" class="security-btn security-btn-danger" style="padding: 10px 16px;">
+            <i class="fas fa-trash"></i> Borrar Todos
+          </button>
+        </div>
+        <table class="security-table">
           <thead>
-            <tr><th>Tipo</th><th>Lugar</th><th>Descripción</th><th>Reportero</th><th>Fecha</th><th>Estado</th><th>Foto</th><th></th></tr>
+            <tr>
+              <th>Tipo</th>
+              <th>Lugar</th>
+              <th>Descripción</th>
+              <th>Reportero</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+              <th>Foto</th>
+              <th>Acciones</th>
+            </tr>
           </thead>
           <tbody id="problemsBody"></tbody>
         </table>
       </div>
-      
-      <button onclick="adminLogout()" class="danger" style="margin-top: 20px;">🔒 Cerrar Sesión</button>
     </div>
+
+    <!-- Tabs -->
+    <div class="security-tabs">
+      <button class="security-tab active" data-tab="register" onclick="showTab('register')">
+        <i class="fas fa-user-plus"></i> Registrarse
+      </button>
+      <button class="security-tab" data-tab="problem" onclick="showTab('problem')">
+        <i class="fas fa-exclamation-triangle"></i> Reportar Problema
+      </button>
+      <button class="security-tab" data-tab="admin" onclick="showTab('admin')">
+        <i class="fas fa-lock"></i> Admin
+      </button>
+    </div>
+
+    <!-- Guest Registration -->
+    <div id="register-tab" class="security-dashboard">
+      <div class="security-card visitor-card">
+        <div class="security-card-header">
+          <div class="header-icon">
+            <i class="fas fa-door-open"></i>
+          </div>
+          <h3>Registro de Entrada/Salida</h3>
+        </div>
+        <div class="security-card-body">
+          <form id="guestForm" class="security-form" onsubmit="guestRegister(event)">
+            <div class="form-group">
+              <label><i class="fas fa-user"></i> Tu Nombre:</label>
+              <input type="text" id="guestName" placeholder="Escribe tu nombre" required>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-users"></i> Tipo de Visitante:</label>
+              <select id="guestType">
+                <option value="Estudiante">🎓 Estudiante</option>
+                <option value="Padre/Madre">👨‍👩‍👧 Padre/Madre</option>
+                <option value="Invitado">👤 Invitado</option>
+                <option value="Proveedor">📦 Proveedor</option>
+                <option value="Trabajador">👔 Trabajador</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-sign-in-alt"></i> Acción:</label>
+              <select id="guestAction">
+                <option value="Entrada">🚪 Entrada</option>
+                <option value="Salida">🚶 Salida</option>
+              </select>
+            </div>
+            <button type="submit" class="security-btn security-btn-primary security-btn-block">
+              <i class="fas fa-check"></i> Registrar
+            </button>
+          </form>
+          <div id="registerMessage"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Problem Reporting -->
+    <div id="problem-tab" class="hidden">
+      <div class="security-card problem-card">
+        <div class="security-card-header">
+          <div class="header-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <h3>Reportar un Problema</h3>
+        </div>
+        <div class="security-card-body">
+          <p style="color: var(--security-text-soft); margin-bottom: 20px;">
+            ¿Viste algo sospechoso o tienes una emergencia? Repórtalo aquí de manera confidencial.
+          </p>
+          <form id="problemForm" class="security-form" onsubmit="reportProblem(event)">
+            <div class="form-group">
+              <label><i class="fas fa-tags"></i> Tipo de Problema:</label>
+              <select id="problemType">
+                <option value="Seguridad">🔒 Problema de Seguridad</option>
+                <option value="Emergencia">🚨 Emergencia Médica</option>
+                <option value="Instalaciones">🏠 Problema de Instalaciones</option>
+                <option value="Conducta">👥 Problema de Conducta</option>
+                <option value="Otro">❓ Otro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-map-marker-alt"></i> Lugar (donde ocurrió):</label>
+              <input type="text" id="problemLocation" placeholder="Ej: Entrada principal, Patio, etc." required>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-align-left"></i> Descripción del Problema:</label>
+              <textarea id="problemDesc" rows="4" placeholder="Describe lo que pasó..." required></textarea>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-camera"></i> Foto (opcional):</label>
+              <input type="file" id="problemPhoto" accept="image/*" onchange="previewPhoto()">
+              <div id="photoPreview"></div>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-user"></i> Tu Nombre (opcional):</label>
+              <input type="text" id="problemReporter" placeholder="Tu nombre">
+            </div>
+            <button type="submit" class="security-btn security-btn-danger security-btn-block">
+              <i class="fas fa-paper-plane"></i> Enviar Reporte
+            </button>
+          </form>
+          <div id="problemMessage"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Login -->
+    <div id="admin-tab" class="hidden">
+      <div class="login-container">
+        <div class="security-card admin-card">
+          <div class="security-card-header">
+            <div class="header-icon">
+              <i class="fas fa-lock"></i>
+            </div>
+            <h3>Acceso de Administrador</h3>
+          </div>
+          <div class="security-card-body">
+<div id="loginForm">
+              <form class="security-form" onsubmit="adminLogin(); return false;">
+                <div class="form-group">
+                  <label><i class="fas fa-key"></i> Contraseña:</label>
+                  <input type="password" id="adminPassword" placeholder="Ingresa la contraseña" required>
+                </div>
+                <button type="submit" class="security-btn security-btn-warning security-btn-block">
+                  <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </button>
+              </form>
+            </div>
+            <div id="adminWelcome" class="hidden">
+              <div class="success-message" style="margin-bottom: 20px;">
+                <i class="fas fa-check-circle"></i> Sesión activa como administrador
+              </div>
+              <button onclick="toggleAdminMode()" class="security-btn security-btn-primary security-btn-block">
+                <i class="fas fa-cog"></i> Ir al Panel de Admin
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script src="js/security.js"></script>
+  <script>
+    // Update date/time
+    function updateDateTime() {
+      const now = new Date();
+      const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric',
+        hour: '2-digit', 
+        minute: '2-digit'
+      };
+      const dateTimeStr = now.toLocaleDateString('es-ES', options);
+      const element = document.getElementById('currentDateTime');
+      if (element) {
+        element.textContent = dateTimeStr;
+      }
+    }
+    
+    updateDateTime();
+    setInterval(updateDateTime, 60000);
+
+    // Update stats
+    function updateStats() {
+      const entries = loadEntries();
+      const problems = loadProblems();
+      
+      document.getElementById('statTotalEntries').textContent = entries.length;
+      document.getElementById('statTotalProblems').textContent = problems.length;
+      
+      const solved = problems.filter(p => p.resolved).length;
+      document.getElementById('statSolvedProblems').textContent = solved;
+    }
+
+    // Initial stats update
+    document.addEventListener('DOMContentLoaded', function() {
+      updateStats();
+    });
+  </script>
 </body>
 </html>
