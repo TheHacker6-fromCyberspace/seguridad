@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seguridad - Registro | PCB</title>
+  <link rel="stylesheet" href="js/styles.css">
+  <link rel="stylesheet" href="dark-mode-fix-v2.css?v=2">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* Professional Security Page Styles - Enhanced Professional Design */
+    :root {
+      --security-primary: #1a365d;
+      --security-primary-light: #2d3748;
+      --security-secondary: #4a5568;
+      --security-accent: #3182ce;
+      --security-success: #38a169;
+      --security-warning: #d69e2e;
+      --security-danger: #e53e3e;
+      --security-bg: #f7fafc;
+      --security-card: #ffffff;
+      --security-text: #2d3748;
+      --security-text-soft: #718096;
+      --security-border: #e2e8f0;
+      --security-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --security-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --security-radius: 12px;
+      --security-radius-lg: 16px;
+    }
+
+    body.dark-mode {
+      --security-primary: #2d3748;
+      --security-primary-light: #4a5568;
+      --security-secondary: #718096;
+      --security-accent: #63b3ed;
+      --security-bg: #1a202c;
+      --security-card: #2d3748;
+      --security-text: #f7fafc;
+      --security-text-soft: #a0aec0;
+      --security-border: #4a5568;
+      --security-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+      --security-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: var(--security-text);
+      background: var(--security-bg);
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Page Header */
+    .security-page-header {
+      background: linear-gradient(135deg, var(--security-primary) 0%, var(--security-primary-light) 100%);
+      padding: 40px;
+      border-radius: var(--security-radius-lg);
+      margin-bottom: 40px;
+      color: white;
+      box-shadow: var(--security-shadow-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .security-page-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.05" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+      background-size: cover;
+      pointer-events: none;
+    }
+
+    .security-page-header h1 {
+      margin: 0 0 12px 0;
+      font-size: 2.2rem;
+      font-weight: 800;
+      position: relative;
+      z-index: 1;
+      letter-spacing: -0.025em;
+    }
+
+    .security-page-header p {
+      margin: 0;
+      opacity: 0.95;
+      font-size: 1.1rem;
+      position: relative;
+      z-index: 1;
+      font-weight: 400;
+    }
+
+    /* Dashboard Stats */
+    .security-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .security-stat-card {
+      background: var(--security-card);
+      border-radius: var(--security-radius-lg);
+      padding: 28px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      box-shadow: var(--security-shadow);
+      border: 1px solid var(--security-border);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .security-stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--security-primary), var(--security-accent));
+    }
+
+    .security-stat-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--security-shadow-lg);
+      border-color: var(--security-primary-light);
+    }
+
+    .security-stat-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: var(--security-radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      flex-shrink: 0;
+    }
+
+    .security-stat-icon.entries {
+      background: linear-gradient(135deg, rgba(26, 54, 93, 0.1), rgba(45, 116, 148, 0.1));
+      color: var(--security-primary);
+      border: 2px solid rgba(26, 54, 93, 0.1);
+    }
+
+    .security-stat-icon.problems {
+      background: linear-gradient(135deg, rgba(229, 62, 62, 0.1), rgba(197, 48, 48, 0.1));
+      color: var(--security-danger);
+      border: 2px solid rgba(229, 62, 62, 0.1);
+    }
+
+    .security-stat-icon.solved {
+      background: linear-gradient(135deg, rgba(56, 161, 105, 0.1), rgba(34, 197, 94, 0.1));
+      color: var(--security-success);
+      border: 2px solid rgba(56, 161, 105, 0.1);
+    }
+
+    .security-stat-info h4 {
+      margin: 0 0 4px 0;
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: var(--security-text);
+      line-height: 1.2;
+    }
+
+    .security-stat-info p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--security-text-soft);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Security Cards */
+    .security-card {
+      background: var(--security-card);
+      border-radius: 20px;
+      border: 1px solid var(--security-border);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .security-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .security-card-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--security-border);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: linear-gradient(135deg, rgba(29, 53, 87, 0.03) 0%, rgba(69, 123, 157, 0.03) 100%);
+    }
+
+    .security-card-header h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--security-text);
+    }
+
+    .security-card-header .header-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .security-card.visitor-card .header-icon {
+      background: rgba(29, 53, 87, 0.15);
+      color: var(--security-primary);
+    }
+
+    .security-card.problem-card .header-icon {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--security-danger);
+    }
+
+    .security-card.admin-card .header-icon {
+      background: rgba(250, 204, 21, 0.15);
+      color: var(--security-warning);
+    }
+
+    .security-card-body {
+      padding: 24px;
+    }
+
+    /* Form Styles */
+    .security-form .form-group {
+      margin-bottom: 18px;
+    }
+
+    .security-form label {
+      display: block;
+      font-weight: 600;
+      color: var(--security-text);
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    .security-form input,
+    .security-form select,
+    .security-form textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--security-border);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      background: var(--security-bg);
+      color: var(--security-text);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .security-form input:focus,
+    .security-form select:focus,
+    .security-form textarea:focus {
+      outline: none;
+      border-color: var(--security-primary);
+      box-shadow: 0 0 0 4px rgba(29, 53, 87, 0.1);
+    }
+
+    body.dark-mode .security-form input,
+    body.dark-mode .security-form select,
+    body.dark-mode .security-form textarea {
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .security-form textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    /* Buttons */
+    .security-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .security-btn-primary {
+      background: linear-gradient(135deg, var(--security-primary) 0%, var(--security-primary-light) 100%);
+      color: white;
+    }
+
+    .security-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(29, 53, 87, 0.3);
+    }
+
+    .security-btn-success {
+      background: var(--security-success);
+      color: white;
+    }
+
+    .security-btn-success:hover {
+      background: #16a34a;
+      transform: translateY(-2px);
+    }
+
+    .security-btn-danger {
+      background: linear-gradient(135deg, var(--security-danger) 0%, #dc2626 100%);
+      color: white;
+    }
+
+    .security-btn-danger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+    }
+
+    .security-btn-warning {
+      background: linear-gradient(135deg, var(--security-warning) 0%, #eab308 100%);
+      color: #1f2937;
+    }
+
+    .security-btn-warning:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(250, 204, 21, 0.3);
+    }
+
+    .security-btn-block {
+      width: 100%;
+    }
+
+    /* Tables */
+    .security-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+
+    .security-table th {
+      background: linear-gradient(135deg, var(--security-primary) 0%, var(--security-primary-light) 100%);
+      color: white;
+      padding: 14px 16px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .security-table th:first-child {
+      border-radius: 10px 0 0 0;
+    }
+
+    .security-table th:last-child {
+      border-radius: 0 10px 0 0;
+    }
+
+    .security-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--security-border);
+      color: var(--security-text);
+      font-size: 0.9rem;
+    }
+
+    .security-table tr:hover {
+      background: rgba(29, 53, 87, 0.03);
+    }
+
+    body.dark-mode .security-table tr:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    /* Action Buttons in Table */
+    .action-btn {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .action-btn.delete {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--security-danger);
+    }
+
+    .action-btn.delete:hover {
+      background: var(--security-danger);
+      color: white;
+    }
+
+    .action-btn.solve {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--security-success);
+    }
+
+    .action-btn.solve:hover {
+      background: var(--security-success);
+      color: white;
+    }
+
+    .action-btn.view {
+      background: rgba(69, 123, 157, 0.15);
+      color: var(--security-primary-light);
+    }
+
+    .action-btn.view:hover {
+      background: var(--security-primary-light);
+      color: white;
+    }
+
+    /* Status Badges */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .status-badge.pending {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--security-danger);
+    }
+
+    .status-badge.solved {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--security-success);
+    }
+
+    /* Tabs */
+    .security-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      background: var(--security-card);
+      padding: 8px;
+      border-radius: 14px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .security-tab {
+      flex: 1;
+      padding: 14px 20px;
+      text-align: center;
+      background: transparent;
+      border: none;
+      border-radius: 10px;
+      color: var(--security-text-soft);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .security-tab:hover {
+      color: var(--security-text);
+      background: rgba(29, 53, 87, 0.05);
+    }
+
+    .security-tab.active {
+      background: linear-gradient(135deg, var(--security-primary) 0%, var(--security-primary-light) 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(29, 53, 87, 0.3);
+    }
+
+    /* Admin Panel */
+    .admin-panel {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border-radius: 16px;
+      border: 2px solid var(--security-warning);
+      padding: 24px;
+      margin-bottom: 30px;
+    }
+
+    body.dark-mode .admin-panel {
+      background: linear-gradient(135deg, #422006 0%, #713f12 100%);
+    }
+
+    .admin-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .admin-panel-header h3 {
+      margin: 0;
+      color: #92400e;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    body.dark-mode .admin-panel-header h3 {
+      color: #fbbf24;
+    }
+
+    /* Success Message */
+    .success-message {
+      padding: 16px 20px;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 10px;
+      color: var(--security-success);
+      font-weight: 600;
+      text-align: center;
+      margin-top: 16px;
+      animation: fadeInUp 0.3s ease;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--security-text-soft);
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    /* Grid Layout */
+    .security-dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 24px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .security-dashboard {
+        grid-template-columns: 1fr;
+      }
+
+      .security-tabs {
+        flex-direction: column;
+      }
+
+      .security-stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .security-page-header h1 {
+        font-size: 1.4rem;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Photo Preview */
+    #photoPreview {
+      margin-top: 12px;
+    }
+
+    #photoPreview img {
+      max-width: 200px;
+      max-height: 150px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    #photoPreview button {
+      margin-left: 10px;
+      padding: 8px 12px;
+    }
+
+    /* Thumbnail in admin problems table */
+    .problem-thumb {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* Login Form */
+    .login-container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 30px;
+      background: var(--security-card);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Current Time */
+    .current-time {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    /* Filter Section */
+    .filter-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      cursor: pointer;
+    }
+
+    .modal-content {
+      margin: 10% auto;
+      padding: 20px;
+      width: 80%;
+      max-width: 600px;
+      cursor: default;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- Popup de selección de tema -->
+  <div id="themePopup" class="theme-popup">
+    <div class="theme-popup-content">
+      <h2 data-translate="🎨 Selecciona tu tema preferido">🎨 Selecciona tu tema preferido</h2>
+      <p data-translate="Elige cómo quieres ver el sitio web">Elige cómo quieres ver el sitio web</p>
+      <div class="theme-buttons">
+        <button class="theme-btn theme-btn-light" id="btnLightMode" data-translate="☀️ Modo Claro">
+          ☀️ Modo Claro
+        </button>
+        <button class="theme-btn theme-btn-dark" id="btnDarkMode" data-translate="🌙 Modo Oscuro">
+          🌙 Modo Oscuro
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Script inline para modo claro/oscuro
+    (function () {
+      function hidePopup() {
+        document.getElementById('themePopup').classList.add('hidden');
+      }
+
+      function setLightMode() {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        hidePopup();
+      }
+
+      function setDarkMode() {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        hidePopup();
+      }
+
+      function checkTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          hidePopup();
+        } else if (savedTheme === 'light') {
+          hidePopup();
+        }
+      }
+
+      // Ejecutar inmediatamente
+      checkTheme();
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const btnLight = document.getElementById('btnLightMode');
+        const btnDark = document.getElementById('btnDarkMode');
+
+        if (btnLight) {
+          btnLight.addEventListener('click', setLightMode);
+        }
+        if (btnDark) {
+          btnDark.addEventListener('click', setDarkMode);
+        }
+      });
+    })();
+  </script>
+
+  <header>
+    <div class="container navbar">
+      <div class="logo">
+        <img src="LOGO6.png" alt="Logo Escuela" class="logo-image">
+        <div class="logo-text">
+          <span class="logo-title" data-translate="Escuela Superior Vocacional">Escuela Superior Vocacional</span>
+          <span class="logo-subtitle">Pablo Colón Berdecia</span>
+        </div>
+      </div>
+      <ul class="nav-menu"></ul>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Seguridad - Registro</h1>
+      <p>Formulario seguro para controlar accesos e incidencias</p>
+    </div>
+  </section>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3 data-translate="⚙️ Configuración">⚙️ Configuración</h3>
+    </div>
+    <div class="sidebar-content">
+      <!-- Theme Toggle -->
+      <div class="sidebar-option" id="themeToggle">
+        <span data-translate="🎨 Cambiar Tema">🎨 Cambiar Tema</span>
+      </div>
+      <div class="theme-options" id="themeOptions">
+        <div class="theme-option" id="selectLightTheme">
+          <span data-translate="☀️ Modo Claro">☀️ Modo Claro</span>
+        </div>
+        <div class="theme-option" id="selectDarkTheme">
+          <span data-translate="🌙 Modo Oscuro">🌙 Modo Oscuro</span>
+        </div>
+      </div>
+
+      <!-- Language Toggle -->
+      <div class="sidebar-option" id="languageToggle">
+        <span data-translate="🌐 Cambiar Idioma">🌐 Cambiar Idioma</span>
+      </div>
+      <div class="language-options" id="languageOptions">
+        <div class="language-option" id="selectSpanish">
+          <span>🇵🇷 Español</span>
+        </div>
+        <div class="language-option" id="selectEnglish">
+          <span>🇺🇸 English</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Hamburger menu functionality
+    (function () {
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const themeToggle = document.getElementById('themeToggle');
+      const themeOptions = document.getElementById('themeOptions');
+      const languageToggle = document.getElementById('languageToggle');
+      const languageOptions = document.getElementById('languageOptions');
+      const selectLightTheme = document.getElementById('selectLightTheme');
+      const selectDarkTheme = document.getElementById('selectDarkTheme');
+      const selectSpanish = document.getElementById('selectSpanish');
+      const selectEnglish = document.getElementById('selectEnglish');
+
+      function openSidebarMenu() {
+        sidebarMenu.classList.add('active');
+        sidebarOverlay.classList.add('active');
+      }
+
+      function closeSidebarMenu() {
+        sidebarMenu.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+        themeOptions.classList.remove('active');
+        languageOptions.classList.remove('active');
+      }
+
+      if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', openSidebarMenu);
+      }
+
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeSidebarMenu);
+      }
+
+      // Theme toggle
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function () {
+          themeOptions.classList.toggle('active');
+          languageOptions.classList.remove('active');
+        });
+      }
+
+      // Language toggle
+      if (languageToggle) {
+        languageToggle.addEventListener('click', function () {
+          languageOptions.classList.toggle('active');
+          themeOptions.classList.remove('active');
+        });
+      }
+
+      // Select Light Theme
+      if (selectLightTheme) {
+        selectLightTheme.addEventListener('click', function () {
+          document.body.classList.remove('dark-mode');
+          localStorage.setItem('theme', 'light');
+          closeSidebarMenu();
+        });
+      }
+
+      // Select Dark Theme
+      if (selectDarkTheme) {
+        selectDarkTheme.addEventListener('click', function () {
+          document.body.classList.add('dark-mode');
+          localStorage.setItem('theme', 'dark');
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma español
+      if (selectSpanish) {
+        selectSpanish.addEventListener('click', function () {
+          localStorage.setItem('language', 'es');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'es');
+          closeSidebarMenu();
+        });
+      }
+
+      // Seleccionar idioma inglés
+      if (selectEnglish) {
+        selectEnglish.addEventListener('click', function () {
+          localStorage.setItem('language', 'en');
+          const htmlRoot = document.getElementById('htmlRoot');
+          if (htmlRoot) htmlRoot.setAttribute('lang', 'en');
+          closeSidebarMenu();
+        });
+      }
+    })();
+  </script>
+
+  <div class="container" style="padding: 40px 0;">
+    <!-- Professional Header -->
+    <div class="security-page-header">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <h1><i class="fas fa-shield-alt"></i> Sistema de Seguridad PCB</h1>
+          <p>Registro de visitantes, control de acceso y reporte de incidentes</p>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <div class="current-time">
+            <i class="fas fa-clock"></i>
+            <span id="currentDateTime"></span>
+          </div>
+          <button id="adminToggleBtn" class="security-btn security-btn-warning" onclick="toggleAdminMode()">
+            <i class="fas fa-cog"></i> Admin
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistics Dashboard -->
+    <div class="security-stats">
+      <div class="security-stat-card">
+        <div class="security-stat-icon entries">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="security-stat-info">
+          <h4 id="statTotalEntries">0</h4>
+          <p>Total Registros</p>
+        </div>
+      </div>
+      <div class="security-stat-card">
+        <div class="security-stat-icon problems">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <div class="security-stat-info">
+          <h4 id="statTotalProblems">0</h4>
+          <p>Problemas Reportados</p>
+        </div>
+      </div>
+      <div class="security-stat-card">
+        <div class="security-stat-icon solved">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="security-stat-info">
+          <h4 id="statSolvedProblems">0</h4>
+          <p>Problemas Resueltos</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="admin-panel hidden">
+      <div class="admin-panel-header">
+        <h3><i class="fas fa-user-shield"></i> Panel de Administración</h3>
+        <button class="security-btn security-btn-danger" onclick="toggleAdminMode()" style="padding: 10px 16px;">
+          <i class="fas fa-times"></i> Cerrar
+        </button>
+      </div>
+      
+      <div class="filter-buttons">
+        <button onclick="showAdminSection('entries')" class="security-btn security-btn-primary" style="padding: 10px 16px;">
+          <i class="fas fa-list"></i> Registros
+        </button>
+        <button onclick="showAdminSection('problems')" class="security-btn security-btn-primary" style="padding: 10px 16px;">
+          <i class="fas fa-exclamation-triangle"></i> Problemas
+        </button>
+      </div>
+      
+      <!-- Entries Section -->
+      <div id="entriesSection">
+        <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+          <button onclick="exportEntries()" class="security-btn security-btn-primary" style="padding: 10px 16px;">
+            <i class="fas fa-download"></i> Exportar CSV
+          </button>
+          <button onclick="clearEntries()" class="security-btn security-btn-danger" style="padding: 10px 16px;">
+            <i class="fas fa-trash"></i> Borrar Todo
+          </button>
+        </div>
+        <table class="security-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Tipo</th>
+              <th>Acción</th>
+              <th>Hora</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="entriesBody"></tbody>
+        </table>
+      </div>
+      
+      <!-- Problems Section -->
+      <div id="problemsSection" class="hidden">
+        <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+          <button onclick="exportProblems()" class="security-btn security-btn-primary" style="padding: 10px 16px;">
+            <i class="fas fa-download"></i> Exportar CSV
+          </button>
+          <button onclick="clearAllProblems()" class="security-btn security-btn-danger" style="padding: 10px 16px;">
+            <i class="fas fa-trash"></i> Borrar Todos
+          </button>
+        </div>
+        <table class="security-table">
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>Lugar</th>
+              <th>Descripción</th>
+              <th>Reportero</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+              <th>Foto</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="problemsBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="security-tabs">
+      <button class="security-tab active" data-tab="register" onclick="showTab('register')">
+        <i class="fas fa-user-plus"></i> Registrarse
+      </button>
+      <button class="security-tab" data-tab="problem" onclick="showTab('problem')">
+        <i class="fas fa-exclamation-triangle"></i> Reportar Problema
+      </button>
+      <button class="security-tab" data-tab="admin" onclick="showTab('admin')">
+        <i class="fas fa-lock"></i> Admin
+      </button>
+    </div>
+
+    <!-- Guest Registration -->
+    <div id="register-tab" class="security-dashboard">
+      <div class="security-card visitor-card">
+        <div class="security-card-header">
+          <div class="header-icon">
+            <i class="fas fa-door-open"></i>
+          </div>
+          <h3>Registro de Entrada/Salida</h3>
+        </div>
+        <div class="security-card-body">
+          <form id="guestForm" class="security-form" onsubmit="guestRegister(event)">
+            <div class="form-group">
+              <label><i class="fas fa-user"></i> Tu Nombre:</label>
+              <input type="text" id="guestName" placeholder="Escribe tu nombre" required>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-users"></i> Tipo de Visitante:</label>
+              <select id="guestType">
+                <option value="Estudiante">🎓 Estudiante</option>
+                <option value="Padre/Madre">👨‍👩‍👧 Padre/Madre</option>
+                <option value="Invitado">👤 Invitado</option>
+                <option value="Proveedor">📦 Proveedor</option>
+                <option value="Trabajador">👔 Trabajador</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-sign-in-alt"></i> Acción:</label>
+              <select id="guestAction">
+                <option value="Entrada">🚪 Entrada</option>
+                <option value="Salida">🚶 Salida</option>
+              </select>
+            </div>
+            <button type="submit" class="security-btn security-btn-primary security-btn-block">
+              <i class="fas fa-check"></i> Registrar
+            </button>
+          </form>
+          <div id="registerMessage"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Problem Reporting -->
+    <div id="problem-tab" class="hidden">
+      <div class="security-card problem-card">
+        <div class="security-card-header">
+          <div class="header-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <h3>Reportar un Problema</h3>
+        </div>
+        <div class="security-card-body">
+          <p style="color: var(--security-text-soft); margin-bottom: 20px;">
+            ¿Viste algo sospechoso o tienes una emergencia? Repórtalo aquí de manera confidencial.
+          </p>
+          <form id="problemForm" class="security-form" onsubmit="reportProblem(event)">
+            <div class="form-group">
+              <label><i class="fas fa-tags"></i> Tipo de Problema:</label>
+              <select id="problemType">
+                <option value="Seguridad">🔒 Problema de Seguridad</option>
+                <option value="Emergencia">🚨 Emergencia Médica</option>
+                <option value="Instalaciones">🏠 Problema de Instalaciones</option>
+                <option value="Conducta">👥 Problema de Conducta</option>
+                <option value="Otro">❓ Otro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-map-marker-alt"></i> Lugar (donde ocurrió):</label>
+              <input type="text" id="problemLocation" placeholder="Ej: Entrada principal, Patio, etc." required>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-align-left"></i> Descripción del Problema:</label>
+              <textarea id="problemDesc" rows="4" placeholder="Describe lo que pasó..." required></textarea>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-camera"></i> Foto (opcional):</label>
+              <input type="file" id="problemPhoto" accept="image/*" onchange="previewPhoto()">
+              <div id="photoPreview"></div>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-user"></i> Tu Nombre:</label>
+              <input type="text" id="problemReporter" placeholder="Tu nombre" required>
+            </div>
+            <button type="submit" class="security-btn security-btn-danger security-btn-block">
+              <i class="fas fa-paper-plane"></i> Enviar Reporte
+            </button>
+          </form>
+          <div id="problemMessage"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Login -->
+    <div id="admin-tab" class="hidden">
+      <div class="login-container">
+        <div class="security-card admin-card">
+          <div class="security-card-header">
+            <div class="header-icon">
+              <i class="fas fa-lock"></i>
+            </div>
+            <h3>Acceso de Administrador</h3>
+          </div>
+          <div class="security-card-body">
+<div id="loginForm">
+              <form class="security-form" onsubmit="adminLogin(); return false;">
+                <div class="form-group">
+                  <label><i class="fas fa-key"></i> Contraseña:</label>
+                  <input type="password" id="adminPassword" placeholder="Ingresa la contraseña" required>
+                </div>
+                <button type="submit" class="security-btn security-btn-warning security-btn-block">
+                  <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </button>
+              </form>
+            </div>
+            <div id="adminWelcome" class="hidden">
+              <div class="success-message" style="margin-bottom: 20px;">
+                <i class="fas fa-check-circle"></i> Sesión activa como administrador
+              </div>
+              <button onclick="showAdminPanel()" class="security-btn security-btn-primary security-btn-block">
+                <i class="fas fa-cog"></i> Ir al Panel de Admin
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/security.js"></script>
+  <script>
+    // Update date/time
+    function updateDateTime() {
+      const now = new Date();
+      const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric',
+        hour: '2-digit', 
+        minute: '2-digit'
+      };
+      const dateTimeStr = now.toLocaleDateString('es-ES', options);
+      const element = document.getElementById('currentDateTime');
+      if (element) {
+        element.textContent = dateTimeStr;
+      }
+    }
+    
+    updateDateTime();
+    setInterval(updateDateTime, 60000);
+
+    // Update stats
+    function updateStats() {
+      const entries = loadEntries();
+      const problems = loadProblems();
+      
+      document.getElementById('statTotalEntries').textContent = entries.length;
+      document.getElementById('statTotalProblems').textContent = problems.length;
+      
+      const solved = problems.filter(p => p.resolved).length;
+      document.getElementById('statSolvedProblems').textContent = solved;
+    }
+
+    // Initial stats update
+    document.addEventListener('DOMContentLoaded', function() {
+      updateStats();
+    });
+  </script>
+</body>
+</html>
